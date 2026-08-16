@@ -173,6 +173,7 @@ export function CubeProvider({ children }: { children: ReactNode }) {
   return (
     <CubeContext.Provider value={{
       current,
+      previous,
       staging,
       direction,
       isAnimating,

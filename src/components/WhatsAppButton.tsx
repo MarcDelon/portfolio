@@ -24,8 +24,8 @@ export default function WhatsAppButton() {
       id="global-whatsapp-floating-btn"
       style={{
         position: 'fixed',
-        bottom: '28px',
-        right: '28px',
+        bottom: 'clamp(16px, 3.5vw, 28px)',
+        right: 'clamp(16px, 3.5vw, 28px)',
         zIndex: 9999,
         display: 'flex',
         alignItems: 'center',
@@ -36,6 +36,7 @@ export default function WhatsAppButton() {
     >
       {/* Floating Tooltip Bubble */}
       <div
+        className="whatsapp-tooltip"
         style={{
           background: 'rgba(22, 11, 6, 0.95)',
           color: '#ffffff',
@@ -69,8 +70,8 @@ export default function WhatsAppButton() {
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
         style={{
-          width: '58px',
-          height: '58px',
+          width: 'clamp(48px, 12vw, 58px)',
+          height: 'clamp(48px, 12vw, 58px)',
           borderRadius: '50%',
           background: 'linear-gradient(135deg, #25D366 0%, #128C7E 100%)',
           display: 'flex',
@@ -100,8 +101,8 @@ export default function WhatsAppButton() {
 
         {/* WhatsApp Vector SVG */}
         <svg
-          width="32"
-          height="32"
+          width="28"
+          height="28"
           viewBox="0 0 24 24"
           fill="currentColor"
           style={{ filter: 'drop-shadow(0 2px 4px rgba(0,0,0,0.2))' }}

@@ -380,76 +380,123 @@ export default function Hero() {
             gap: 1.35rem !important;
           }
           .hero-photo-row {
-            gap: 1.35rem !important;
+            gap: 1rem !important;
             align-items: center !important;
+            justify-content: center !important;
+            flex-wrap: wrap !important;
           }
           .hero-photo-box {
-            width: 175px !important;
-            height: 220px !important;
-            border-radius: 22px !important;
+            width: clamp(140px, 40vw, 175px) !important;
+            height: clamp(175px, 50vw, 220px) !important;
+            border-radius: 20px !important;
+            flex-shrink: 0 !important;
           }
           .hero-name-quote-col {
             gap: 0.55rem !important;
+            min-width: 160px !important;
+            flex: 1 1 180px !important;
           }
           .hero-name-title {
-            font-size: 1.65rem !important;
+            font-size: clamp(1.35rem, 5vw, 1.65rem) !important;
             letter-spacing: 0.08em !important;
           }
           .hero-quote-txt {
-            font-size: 0.85rem !important;
-            line-height: 1.5 !important;
-            max-width: 230px !important;
+            font-size: 0.82rem !important;
+            line-height: 1.45 !important;
+            max-width: 260px !important;
           }
           .hero-role-wrap {
-            gap: 0.6rem !important;
+            gap: 0.5rem !important;
+            flex-wrap: wrap !important;
           }
           .hero-role-box {
-            height: 2.2rem !important;
+            height: auto !important;
+            min-height: 2rem !important;
           }
           .hero-role-txt {
-            font-size: 1.15rem !important;
+            font-size: clamp(0.95rem, 3.5vw, 1.15rem) !important;
           }
           .hero-cta-group {
-            gap: 0.85rem !important;
+            gap: 0.75rem !important;
+            flex-wrap: wrap !important;
           }
           .hero-cta-btn {
-            font-size: 0.92rem !important;
-            padding: 12px 24px !important;
+            font-size: 0.88rem !important;
+            padding: 10px 20px !important;
+            flex: 1 1 auto !important;
+            justify-content: center !important;
           }
           #hero-social-links {
             order: 3 !important;
             width: 100% !important;
-            align-items: flex-end !important;
-            gap: 0.65rem !important;
-            padding-right: 0.5rem !important;
-            margin-top: 0.6rem !important;
+            align-items: center !important;
+            justify-content: center !important;
+            flex-direction: row !important;
+            flex-wrap: wrap !important;
+            gap: 1rem !important;
+            padding: 0.5rem 0 !important;
+            margin-top: 0.5rem !important;
           }
           .hero-social-item {
-            gap: 0.65rem !important;
+            gap: 0.5rem !important;
           }
           .hero-social-icon-box {
             width: 32px !important;
             height: 32px !important;
           }
           .hero-social-icon-box svg {
-            width: 16px !important;
-            height: 16px !important;
+            width: 15px !important;
+            height: 15px !important;
           }
           .hero-social-txt {
-            font-size: 0.84rem !important;
+            font-size: 0.8rem !important;
           }
           .hero-scroll-wrapper {
             padding-bottom: 1.25rem !important;
           }
           #scroll-down-btn {
-            width: 64px !important;
-            height: 64px !important;
-            font-size: 0.62rem !important;
-            gap: 4px !important;
+            width: 60px !important;
+            height: 60px !important;
+            font-size: 0.6rem !important;
+            gap: 3px !important;
           }
           #scroll-down-btn svg {
-            width: 15px !important;
-            height: 15px !important;
+            width: 14px !important;
+            height: 14px !important;
+          }
+        }
+
+        @media (max-width: 480px) {
+          .hero-giant-title-line {
+            margin-left: 0 !important;
+            font-size: clamp(2.4rem, 11vw, 3.6rem) !important;
+            text-align: center !important;
+          }
+          .hero-photo-row {
+            flex-direction: column !important;
+            text-align: center !important;
+          }
+          .hero-name-quote-col {
+            align-items: center !important;
+            text-align: center !important;
+          }
+          .hero-quote-txt {
+            max-width: 100% !important;
+          }
+          .hero-role-wrap {
+            justify-content: center !important;
+          }
+          .hero-cta-group {
+            flex-direction: column !important;
+            width: 100% !important;
+          }
+          .hero-cta-btn {
+            width: 100% !important;
+          }
+          #hero-social-links {
+            flex-direction: column !important;
+            align-items: center !important;
+            gap: 0.5rem !important;
           }
         }
       `}</style>

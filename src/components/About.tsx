@@ -294,8 +294,8 @@ export default function About() {
             margin: 0.1rem 0 !important;
           }
           #about-photo-wrapper {
-            width: 175px !important;
-            height: 220px !important;
+            width: clamp(140px, 45vw, 175px) !important;
+            height: clamp(175px, 58vw, 220px) !important;
           }
           #about-photo-wrapper img {
             width: 100% !important;
@@ -318,6 +318,28 @@ export default function About() {
           #about-contact-card {
             order: 7 !important;
             margin-top: 0.5rem !important;
+            width: 100% !important;
+          }
+        }
+
+        @media(max-width:480px){
+          #about-photo-block {
+            flex-direction: column !important;
+            align-items: center !important;
+            text-align: center !important;
+            gap: 0.65rem !important;
+          }
+          #about-buttons {
+            flex-direction: column !important;
+            width: 100% !important;
+          }
+          #about-buttons a {
+            width: 100% !important;
+            justify-content: center !important;
+          }
+          #about-stats {
+            gap: 1rem !important;
+            justify-content: space-between !important;
           }
         }
       `}</style>

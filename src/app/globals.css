@@ -248,14 +248,35 @@ hr { border: none; border-top: 1px solid rgba(255,255,255,.08); }
    ══════════════════════════════════════════════════════════════════ */
 
 :root {
-  --cube-size: 360px;
-  --cube-half: 180px;
+  --cube-size: min(360px, 80vw);
+  --cube-half: calc(var(--cube-size) / 2);
+}
+
+@media (max-width: 1024px) {
+  :root {
+    --cube-size: min(320px, 76vw);
+    --cube-half: calc(var(--cube-size) / 2);
+  }
 }
 
 @media (max-width: 768px) {
   :root {
-    --cube-size: 290px;
-    --cube-half: 145px;
+    --cube-size: min(280px, 74vw);
+    --cube-half: calc(var(--cube-size) / 2);
+  }
+}
+
+@media (max-width: 480px) {
+  :root {
+    --cube-size: min(250px, 72vw);
+    --cube-half: calc(var(--cube-size) / 2);
+  }
+}
+
+@media (max-width: 360px) {
+  :root {
+    --cube-size: min(225px, 70vw);
+    --cube-half: calc(var(--cube-size) / 2);
   }
 }
 

@@ -72,7 +72,7 @@ export default function Navbar() {
           }}
         >
           {/* Logo & 3D Mode Quick Action */}
-          <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 'clamp(0.5rem, 2vw, 1rem)', flexShrink: 0 }}>
             <button
               id="nav-logo"
               onClick={() => {
@@ -84,7 +84,7 @@ export default function Navbar() {
               }}
               style={{
                 fontFamily: 'var(--font-serif)',
-                fontSize: '1.25rem',
+                fontSize: 'clamp(1.05rem, 4vw, 1.25rem)',
                 fontWeight: 900,
                 color: 'var(--white)',
                 padding: 0,
@@ -95,16 +95,18 @@ export default function Navbar() {
                 border: 'none',
                 cursor: 'pointer',
                 background: 'none',
+                whiteSpace: 'nowrap',
+                flexShrink: 0,
               }}
             >
               <span style={{ color: 'var(--amber)', fontSize: '1.1rem' }}>◆</span>
-              <span>Marc Delon</span>
+              <span style={{ whiteSpace: 'nowrap' }}>Marc Delon</span>
             </button>
 
             {/* 3D Overview Pill indicator */}
             <button
               type="button"
-              className={`nav-3d-toggle ${viewMode === 'cube' ? 'active' : ''}`}
+              className={`nav-3d-toggle ${viewMode === 'cube' ? 'active is-cube-view' : ''}`}
               onClick={() => {
                 if (viewMode === 'cube') {
                   openFace(current);
@@ -546,10 +548,47 @@ export default function Navbar() {
           border-radius: 14px;
         }
 
+        .nav-3d-toggle {
+          display: inline-flex;
+          align-items: center;
+          gap: 6px;
+          padding: 6px 14px;
+          border-radius: var(--r-full, 9999px);
+          background: rgba(224, 123, 31, 0.12);
+          border: 1px solid rgba(224, 123, 31, 0.35);
+          color: var(--amber, #e07b1f);
+          font-size: 0.8rem;
+          font-weight: 700;
+          cursor: pointer;
+          transition: all 0.25s ease;
+          white-space: nowrap;
+          flex-shrink: 0;
+        }
+        .nav-3d-toggle:hover {
+          background: rgba(224, 123, 31, 0.25);
+          border-color: var(--amber, #e07b1f);
+          transform: translateY(-1px);
+        }
+        .nav-3d-toggle.active {
+          background: rgba(224, 123, 31, 0.2);
+          border-color: rgba(224, 123, 31, 0.5);
+          box-shadow: 0 0 14px rgba(224, 123, 31, 0.25);
+        }
+
         @media(max-width:960px){
           #nav-links{display:none!important;}
           .nav-cta-btn{display:none!important;}
           .hamburger{display:flex!important;}
+        }
+
+        @media(max-width:640px){
+          .nav-3d-toggle.is-cube-view {
+            display: none !important;
+          }
+          .nav-3d-toggle {
+            padding: 4px 10px;
+            font-size: 0.72rem;
+          }
         }
       `}</style>
     </>

@@ -71,9 +71,10 @@ button { font-family: var(--font-sans); cursor: pointer; border: none; backgroun
 .container {
   max-width: var(--container);
   margin: 0 auto;
-  padding: 0 2.5rem;
+  padding: 0 clamp(1rem, 3.5vw, 2.5rem);
+  width: 100%;
+  box-sizing: border-box;
 }
-@media(max-width:768px){ .container { padding: 0 1.25rem; } }
 
 /* ── Buttons ─────────────────────── */
 .btn {
@@ -248,34 +249,13 @@ hr { border: none; border-top: 1px solid rgba(255,255,255,.08); }
    ══════════════════════════════════════════════════════════════════ */
 
 :root {
-  --cube-size: min(360px, 80vw);
+  --cube-size: clamp(260px, 38vw, 360px);
   --cube-half: calc(var(--cube-size) / 2);
-}
-
-@media (max-width: 1024px) {
-  :root {
-    --cube-size: min(320px, 76vw);
-    --cube-half: calc(var(--cube-size) / 2);
-  }
 }
 
 @media (max-width: 768px) {
   :root {
-    --cube-size: min(280px, 74vw);
-    --cube-half: calc(var(--cube-size) / 2);
-  }
-}
-
-@media (max-width: 480px) {
-  :root {
-    --cube-size: min(250px, 72vw);
-    --cube-half: calc(var(--cube-size) / 2);
-  }
-}
-
-@media (max-width: 360px) {
-  :root {
-    --cube-size: min(225px, 70vw);
+    --cube-size: clamp(220px, 68vw, 290px);
     --cube-half: calc(var(--cube-size) / 2);
   }
 }

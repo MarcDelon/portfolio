@@ -296,7 +296,7 @@ export default function Contact() {
 
       <style>{`
         @keyframes spin{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
-        @media(max-width:860px){
+        @media(max-width:960px){
           #contact-grid{
             grid-template-columns:1fr!important;
             gap: 2rem !important;
@@ -306,6 +306,18 @@ export default function Contact() {
           }
           #form-name-email{
             grid-template-columns:1fr!important;
+          }
+        }
+        @media(max-width:480px){
+          #contact-section-root {
+            padding-top: 3.5rem !important;
+            padding-bottom: 5rem !important;
+          }
+          .contact-heading-title {
+            font-size: clamp(2rem, 8vw, 2.5rem) !important;
+          }
+          .contact-info-cards-list {
+            gap: 0.85rem !important;
           }
         }
       `}</style>

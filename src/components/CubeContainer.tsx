@@ -419,12 +419,14 @@ export default function CubeContainer({ faces }: Props) {
             inset: 0,
             zIndex: 100,
             width: '100vw',
-            height: '100vh',
+            height: '100dvh',
+            minHeight: '100dvh',
             overflowY: 'auto',
             overflowX: 'hidden',
             WebkitOverflowScrolling: 'touch',
             pointerEvents: 'auto',
             overscrollBehavior: 'none',
+            paddingBottom: 'env(safe-area-inset-bottom, 0px)',
           }}
         >
           {faces[current]}

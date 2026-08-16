@@ -546,7 +546,7 @@ export default function Navbar() {
           border-radius: 14px;
         }
 
-        @media(max-width:860px){
+        @media(max-width:960px){
           #nav-links{display:none!important;}
           .nav-cta-btn{display:none!important;}
           .hamburger{display:flex!important;}

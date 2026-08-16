@@ -263,7 +263,7 @@ export default function About() {
       </div>
 
       <style>{`
-        @media(max-width:860px){
+        @media(max-width:960px){
           #about-intro {
             padding-top: calc(var(--navbar-h) - 24px) !important;
             padding-bottom: 2rem !important;
@@ -288,14 +288,15 @@ export default function About() {
             line-height: 1.55 !important;
             margin: 0 !important;
             padding: 0 !important;
+            max-width: 100% !important;
           }
           #about-photo-block {
             order: 3 !important;
             margin: 0.1rem 0 !important;
           }
           #about-photo-wrapper {
-            width: clamp(140px, 45vw, 175px) !important;
-            height: clamp(175px, 58vw, 220px) !important;
+            width: 175px !important;
+            height: 220px !important;
           }
           #about-photo-wrapper img {
             width: 100% !important;
@@ -314,32 +315,34 @@ export default function About() {
           #about-stats {
             order: 6 !important;
             padding-top: 0.85rem !important;
+            gap: 0.65rem !important;
           }
           #about-contact-card {
             order: 7 !important;
             margin-top: 0.5rem !important;
-            width: 100% !important;
           }
         }
 
-        @media(max-width:480px){
-          #about-photo-block {
-            flex-direction: column !important;
-            align-items: center !important;
-            text-align: center !important;
-            gap: 0.65rem !important;
+        @media(max-width:440px){
+          #about-title {
+            font-size: clamp(2rem, 9vw, 2.5rem) !important;
           }
-          #about-buttons {
-            flex-direction: column !important;
-            width: 100% !important;
+          #about-photo-wrapper {
+            width: 145px !important;
+            height: 185px !important;
+          }
+          #about-stats {
+            gap: 0.45rem !important;
+          }
+          .stat-card-title {
+            font-size: 1.35rem !important;
+          }
+          .stat-card-label {
+            font-size: 0.68rem !important;
           }
           #about-buttons a {
             width: 100% !important;
             justify-content: center !important;
-          }
-          #about-stats {
-            gap: 1rem !important;
-            justify-content: space-between !important;
           }
         }
       `}</style>

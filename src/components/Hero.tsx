@@ -380,123 +380,125 @@ export default function Hero() {
             gap: 1.35rem !important;
           }
           .hero-photo-row {
-            gap: 1rem !important;
+            gap: 1.35rem !important;
             align-items: center !important;
-            justify-content: center !important;
-            flex-wrap: wrap !important;
           }
           .hero-photo-box {
-            width: clamp(140px, 40vw, 175px) !important;
-            height: clamp(175px, 50vw, 220px) !important;
-            border-radius: 20px !important;
-            flex-shrink: 0 !important;
+            width: 175px !important;
+            height: 220px !important;
+            border-radius: 22px !important;
           }
           .hero-name-quote-col {
             gap: 0.55rem !important;
-            min-width: 160px !important;
-            flex: 1 1 180px !important;
           }
           .hero-name-title {
-            font-size: clamp(1.35rem, 5vw, 1.65rem) !important;
+            font-size: 1.65rem !important;
             letter-spacing: 0.08em !important;
           }
           .hero-quote-txt {
-            font-size: 0.82rem !important;
-            line-height: 1.45 !important;
-            max-width: 260px !important;
+            font-size: 0.85rem !important;
+            line-height: 1.5 !important;
+            max-width: 230px !important;
           }
           .hero-role-wrap {
-            gap: 0.5rem !important;
-            flex-wrap: wrap !important;
+            gap: 0.6rem !important;
           }
           .hero-role-box {
-            height: auto !important;
-            min-height: 2rem !important;
+            height: 2.2rem !important;
           }
           .hero-role-txt {
-            font-size: clamp(0.95rem, 3.5vw, 1.15rem) !important;
+            font-size: 1.15rem !important;
           }
           .hero-cta-group {
-            gap: 0.75rem !important;
-            flex-wrap: wrap !important;
+            gap: 0.85rem !important;
           }
           .hero-cta-btn {
-            font-size: 0.88rem !important;
-            padding: 10px 20px !important;
-            flex: 1 1 auto !important;
-            justify-content: center !important;
+            font-size: 0.92rem !important;
+            padding: 12px 24px !important;
           }
           #hero-social-links {
             order: 3 !important;
             width: 100% !important;
-            align-items: center !important;
-            justify-content: center !important;
-            flex-direction: row !important;
-            flex-wrap: wrap !important;
-            gap: 1rem !important;
-            padding: 0.5rem 0 !important;
-            margin-top: 0.5rem !important;
+            align-items: flex-end !important;
+            gap: 0.65rem !important;
+            padding-right: 0.5rem !important;
+            margin-top: 0.6rem !important;
           }
           .hero-social-item {
-            gap: 0.5rem !important;
+            gap: 0.65rem !important;
           }
           .hero-social-icon-box {
             width: 32px !important;
             height: 32px !important;
           }
           .hero-social-icon-box svg {
-            width: 15px !important;
-            height: 15px !important;
+            width: 16px !important;
+            height: 16px !important;
           }
           .hero-social-txt {
-            font-size: 0.8rem !important;
+            font-size: 0.84rem !important;
           }
           .hero-scroll-wrapper {
             padding-bottom: 1.25rem !important;
           }
           #scroll-down-btn {
-            width: 60px !important;
-            height: 60px !important;
-            font-size: 0.6rem !important;
-            gap: 3px !important;
+            width: 64px !important;
+            height: 64px !important;
+            font-size: 0.62rem !important;
+            gap: 4px !important;
           }
           #scroll-down-btn svg {
-            width: 14px !important;
-            height: 14px !important;
+            width: 15px !important;
+            height: 15px !important;
           }
         }
 
-        @media (max-width: 480px) {
-          .hero-giant-title-line {
-            margin-left: 0 !important;
-            font-size: clamp(2.4rem, 11vw, 3.6rem) !important;
-            text-align: center !important;
+        @media(max-width:440px){
+          #hero-grid {
+            padding: 0.75rem 1rem 1rem !important;
+            gap: 1.15rem !important;
           }
           .hero-photo-row {
-            flex-direction: column !important;
-            text-align: center !important;
+            gap: 0.85rem !important;
           }
-          .hero-name-quote-col {
-            align-items: center !important;
-            text-align: center !important;
+          .hero-photo-box {
+            width: 135px !important;
+            height: 175px !important;
+            border-radius: 18px !important;
+          }
+          .hero-name-title {
+            font-size: 1.35rem !important;
           }
           .hero-quote-txt {
-            max-width: 100% !important;
+            font-size: 0.75rem !important;
+            max-width: 150px !important;
+            line-height: 1.4 !important;
           }
-          .hero-role-wrap {
+          .hero-giant-title-line {
+            font-size: clamp(2.2rem, 9.5vw, 3.2rem) !important;
+          }
+          .hero-cta-btn {
+            font-size: 0.85rem !important;
+            padding: 10px 18px !important;
+            width: 100% !important;
             justify-content: center !important;
           }
           .hero-cta-group {
-            flex-direction: column !important;
             width: 100% !important;
           }
-          .hero-cta-btn {
-            width: 100% !important;
+        }
+
+        @media (min-width: 901px) and (max-width: 1150px) {
+          #hero-grid {
+            gap: 2rem !important;
+            padding: 0 1.5rem !important;
           }
-          #hero-social-links {
-            flex-direction: column !important;
-            align-items: center !important;
-            gap: 0.5rem !important;
+          .hero-giant-title-line {
+            font-size: clamp(2.6rem, 5.2vw, 4.2rem) !important;
+          }
+          .hero-photo-box {
+            width: 180px !important;
+            height: 230px !important;
           }
         }
       `}</style>

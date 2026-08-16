@@ -1,13 +1,6 @@
-import type { Metadata, Viewport } from 'next';
+import type { Metadata } from 'next';
 import './globals.css';
 import { LanguageProvider } from '@/lib/LanguageContext';
-
-export const viewport: Viewport = {
-  width: 'device-width',
-  initialScale: 1,
-  maximumScale: 5,
-  themeColor: '#140A02',
-};
 
 export const metadata: Metadata = {
   title: 'NZENANG TCHOUANTCHEU MARC DELON — Portfolio Full-Stack Developer',

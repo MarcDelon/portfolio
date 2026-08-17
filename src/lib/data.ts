@@ -606,7 +606,7 @@ export const experiences: Experience[] = [
         'QR event ticket generator (React JS + Node JS)',
       ],
     },
-    tech: ['React JS', 'Next.js', 'Node.js', 'MongoDB'],
+    tech: ['React JS', 'Next.js', 'Node.js', 'PostGreSQL'],
   },
   {
     id: 3,

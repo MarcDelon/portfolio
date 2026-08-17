@@ -1,27 +1,29 @@
 import { NextResponse } from 'next/server';
 
 const SYSTEM_CONTEXT = `
-Tu es NoVa, l'assistant virtuel et guide IA interactif du portfolio de Marc Delon (Nzenang Tchouantcheu Marc Delon).
-Ton ton est professionnel, concis, élégant, courtois et technologique.
-Ne JAMAIS utiliser d'emojis dans tes réponses.
+Tu es NoVa, l'assistant virtuel et intelligence artificielle interactive du portfolio de Marc Delon (Nzenang Tchouantcheu Marc Delon).
 
-Informations sur Marc Delon :
+RÈGLES FONDAMENTALES :
+1. LANGUE : Tu dois TOUJOURS répondre dans la même langue que celle utilisée par l'utilisateur dans son message.
+   - Si le message est en anglais, réponds en anglais naturel et impeccable.
+   - Si le message est en français, réponds en français.
+   - Si le message est dans une autre langue (espagnol, allemand, etc.), réponds dans cette même langue.
+2. ÉTENDUE DES CONNAISSANCES : Tu as accès à l'ensemble du savoir universel. Tu peux répondre avec précision et intelligence à TOUTES les questions : culture générale, sciences, programmation, informatique, architectures logicielles, histoire, logique, conseils techniques, salutations ou questions spécifiques sur Marc Delon.
+3. EMOJIS : N'utilise STRICTEMENT AUCUN emoji dans tes réponses.
+4. TON & FORMAT : Ton ton est professionnel, courtois, fluide, concis et technologique (2 à 4 phrases claires et bien structurées).
+
+Informations détaillées sur Marc Delon :
 - Nom complet : NZENANG TCHOUANTCHEU MARC DELON
-- Titre : Ingénieur Logiciel Full-Stack & Développeur Web / Mobile
+- Titre : Ingénieur Logiciel Full-Stack & Développeur Web / Mobile / 3D
 - Localisation : Douala, Cameroun
-- Contact : Email : marcnzenang@gmail.com | Téléphone & WhatsApp : +237 655 46 26 42 | GitHub : MarcDelon
+- Contact : Email : marcnzenang@gmail.com | Téléphone & WhatsApp : +237 655 46 26 42 | GitHub : MarcDelon | LinkedIn : /in/marc-delon-nzenang-tchouantcheu-57909b22a
 - Formations & Diplômes : Diplômé de l'IUT de Douala, certifié Cisco CCNA (Réseaux & Sécurité)
-- Compétences techniques : React, Next.js, Node.js, PHP, Java, SQL, MongoDB, Cisco CCNA, TailwindCSS, Three.js, TypeScript, Architecture Full-Stack
-- Sections du portfolio (Faces du Cube 3D) :
-  * Face 0 (Accueil & Vision) : Présentation, biographie et philosophie d'ingénierie logicielle.
-  * Face 1 (Formation & Compétences) : Diplômes universitaires, certifications réseaux et maîtrise technique.
-  * Face 2 (Salle des Projets) : Couloir immersif 3D présentant les projets complets avec études de cas et démonstrations interactives.
-  * Face 3 (Contact) : Formulaire de contact direct connecté par email et lien WhatsApp.
-
-Consignes de réponse :
-- Réponds toujours de manière concise et directe (2 à 4 phrases maximum).
-- N'utilise AUCUN emoji.
-- Si la question concerne une section précise, indique la face correspondante (ex: Face 0, Face 1, Face 2 ou Face 3).
+- Compétences techniques : React, Next.js, Node.js, PHP, Java, SQL, PostgreSQL, MongoDB, Cisco CCNA, TailwindCSS, Three.js, TypeScript, Architecture Full-Stack
+- Navigation du portfolio 3D (Faces du Cube) :
+  * Face 0 (Accueil / Home) : Présentation, biographie et philosophie d'ingénierie logicielle.
+  * Face 1 (À Propos / About & CV) : Diplômes universitaires, certifications réseaux, compétences et expériences.
+  * Face 2 (Projets 3D / Projects) : Couloir immersif 3D présentant les projets complets avec études de cas et démonstrations interactives.
+  * Face 3 (Contact) : Formulaire de contact direct par email et lien WhatsApp.
 `;
 
 export async function POST(req: Request) {
@@ -31,8 +33,6 @@ export async function POST(req: Request) {
     if (!message || typeof message !== 'string') {
       return NextResponse.json({ error: 'Message requis' }, { status: 400 });
     }
-
-    const geminiKey = process.env.GEMINI_API_KEY || process.env.GROQ_API_KEY;
 
     // 1. If a Gemini API key is configured, call Google Gemini Flash Lite (Ultra-fast <1s response)
     if (process.env.GEMINI_API_KEY) {
@@ -51,14 +51,14 @@ export async function POST(req: Request) {
                     role: 'user',
                     parts: [
                       {
-                        text: `${SYSTEM_CONTEXT}\n\nLangue de réponse : ${lang === 'fr' ? 'Français' : 'Anglais'}\n\nMessage de l'utilisateur : ${message}`,
+                        text: `${SYSTEM_CONTEXT}\n\nUser Message: "${message}"\n\nInstruction: Reply directly in the same language as the user's message with zero emojis.`,
                       },
                     ],
                   },
                 ],
                 generationConfig: {
                   temperature: 0.7,
-                  maxOutputTokens: 250,
+                  maxOutputTokens: 280,
                 },
               }),
             }
@@ -112,32 +112,33 @@ export async function POST(req: Request) {
 
     // 3. Fallback Built-in Knowledge Engine (Free, Offline, Instant & 100% Reliable)
     const lower = message.toLowerCase();
+    const isEn = lang === 'en' || /\b(who|what|where|how|tell|project|contact|skills|hello|hi|hey|good)\b/i.test(lower);
     let reply = '';
 
     if (lower.includes('qui') || lower.includes('who') || lower.includes('marc') || lower.includes('presentation') || lower.includes('présentation') || lower.includes('bio')) {
-      reply = lang === 'fr'
-        ? 'Marc Delon est un ingénieur logiciel full-stack et développeur web/mobile basé à Douala, Cameroun. Il conçoit des architectures logicielles modernes, des solutions web performantes et des interfaces 3D immersives.'
-        : 'Marc Delon is a full-stack software engineer and web/mobile developer based in Douala, Cameroon. He builds modern software architectures, high-performance web solutions, and immersive 3D interfaces.';
+      reply = isEn
+        ? 'Marc Delon is a full-stack software engineer and web/mobile developer based in Douala, Cameroon. He builds modern software architectures, high-performance web solutions, and immersive 3D interfaces.'
+        : 'Marc Delon est un ingénieur logiciel full-stack et développeur web/mobile basé à Douala, Cameroun. Il conçoit des architectures logicielles modernes, des solutions web performantes et des interfaces 3D immersives.';
     } else if (lower.includes('competence') || lower.includes('compétence') || lower.includes('skill') || lower.includes('formation') || lower.includes('diplome') || lower.includes('diplôme') || lower.includes('ccna') || lower.includes('stack')) {
-      reply = lang === 'fr'
-        ? 'Marc maîtrise les technologies React, Next.js, Node.js, PHP, Java, SQL et MongoDB. Il est diplômé de l\'IUT de Douala et détient la certification réseau Cisco CCNA.'
-        : 'Marc specializes in React, Next.js, Node.js, PHP, Java, SQL, and MongoDB. He is a graduate of IUT Douala and holds a Cisco CCNA networking certification.';
+      reply = isEn
+        ? 'Marc specializes in React, Next.js, Node.js, PHP, Java, SQL, PostgreSQL, and MongoDB. He is a graduate of IUT Douala and holds a Cisco CCNA networking certification.'
+        : 'Marc maîtrise les technologies React, Next.js, Node.js, PHP, Java, SQL, PostgreSQL et MongoDB. Il est diplômé de l\'IUT de Douala et détient la certification réseau Cisco CCNA.';
     } else if (lower.includes('projet') || lower.includes('project') || lower.includes('portfolio') || lower.includes('realisation') || lower.includes('réalisation')) {
-      reply = lang === 'fr'
-        ? 'La salle des projets 3D regroupe les réalisations de Marc, incluant des applications web complètes, des architectures backend et des interfaces interactives accompagnées d\'études de cas détaillées.'
-        : 'The 3D projects room showcases Marc\'s work, including complete web applications, backend architectures, and interactive interfaces with comprehensive case studies.';
-    } else if (lower.includes('contact') || lower.includes('email') || lower.includes('mail') || lower.includes('whatsapp') || lower.includes('telephone') || lower.includes('téléphone')) {
-      reply = lang === 'fr'
-        ? 'Vous pouvez contacter Marc par email à marcnzenang@gmail.com ou directement par WhatsApp et téléphone au +237 655 46 26 42.'
-        : 'You can contact Marc via email at marcnzenang@gmail.com or directly via WhatsApp and phone at +237 655 46 26 42.';
-    } else if (lower.includes('cube') || lower.includes('planete') || lower.includes('planète') || lower.includes('navig') || lower.includes('tourn')) {
-      reply = lang === 'fr'
-        ? 'Pour naviguer sur la Planète Delon, faites glisser le cube avec votre souris ou votre doigt pour explorer ses différentes faces, ou cliquez directement sur une face pour ouvrir la section correspondante.'
-        : 'To navigate Planet Delon, drag the cube with your mouse or finger to explore its faces, or click directly on any face to enter that section.';
+      reply = isEn
+        ? 'The 3D projects room showcases Marc\'s work, including complete web applications, backend architectures, and interactive interfaces with comprehensive case studies.'
+        : 'La salle des projets 3D regroupe les réalisations de Marc, incluant des applications web complètes, des architectures backend et des interfaces interactives accompagnées d\'études de cas détaillées.';
+    } else if (lower.includes('contact') || lower.includes('email') || lower.includes('mail') || lower.includes('whatsapp') || lower.includes('telephone') || lower.includes('téléphone') || lower.includes('reach')) {
+      reply = isEn
+        ? 'You can contact Marc via email at marcnzenang@gmail.com or directly via WhatsApp and phone at +237 655 46 26 42.'
+        : 'Vous pouvez contacter Marc par email à marcnzenang@gmail.com ou directement par WhatsApp et téléphone au +237 655 46 26 42.';
+    } else if (lower.includes('cube') || lower.includes('planete') || lower.includes('planète') || lower.includes('navig') || lower.includes('tourn') || lower.includes('orbit')) {
+      reply = isEn
+        ? 'To navigate Planet Delon, drag the cube with your mouse or finger to explore its faces, or click directly on any face or bottom tab to enter that section.'
+        : 'Pour naviguer sur la Planète Delon, faites glisser le cube avec votre souris ou votre doigt pour explorer ses différentes faces, ou cliquez directement sur une face pour ouvrir la section correspondante.';
     } else {
-      reply = lang === 'fr'
-        ? 'Je suis NoVa, l\'assistant virtuel de Marc Delon. Je peux vous renseigner sur son profil, ses compétences, ses projets ou ses coordonnées.'
-        : 'I am NoVa, Marc Delon\'s virtual assistant. I can help you learn about his profile, skills, projects, or contact information.';
+      reply = isEn
+        ? 'I am NoVa, Marc Delon\'s AI assistant. I can answer any question about his profile, skills, projects, or discuss any tech and general knowledge topic.'
+        : 'Je suis NoVa, l\'assistant virtuel de Marc Delon. Je peux vous renseigner sur son profil, ses compétences, ses projets ou répondre à toutes vos questions.';
     }
 
     return NextResponse.json({ reply });

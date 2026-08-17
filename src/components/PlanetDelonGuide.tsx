@@ -1,94 +1,215 @@
 'use client';
-import { useState } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { useLanguage } from '@/lib/LanguageContext';
 import { useCube } from '@/lib/CubeContext';
 import Image from 'next/image';
-import { Sparkles, Compass, X, ChevronRight, MessageSquare, Laptop, GraduationCap, User } from 'lucide-react';
+import { Send, Sparkles, X, Minimize2, Maximize2, RotateCcw, ExternalLink, Bot } from 'lucide-react';
+
+interface ChatMessage {
+  id: string;
+  sender: 'bot' | 'user';
+  text: string;
+  action?: {
+    label: string;
+    faceIndex: number;
+  };
+  suggestions?: string[];
+  timestamp: string;
+}
 
 export default function PlanetDelonGuide() {
   const { lang } = useLanguage();
   const { viewMode, openFace, isExploding, isZoomingOut } = useCube();
   const [isMinimized, setIsMinimized] = useState(false);
-  const [activeTab, setActiveTab] = useState<'welcome' | 'faces'>('welcome');
+  const [inputText, setInputText] = useState('');
+  const [isTyping, setIsTyping] = useState(false);
+  const messagesEndRef = useRef<HTMLDivElement>(null);
 
-  // Only show when in 3D Orbit view and not during transition
+  const initialMessages: ChatMessage[] = [
+    {
+      id: '1',
+      sender: 'bot',
+      text: lang === 'fr'
+        ? '👋 **Salut et bienvenue sur la Planète Delon !**\n\nJe suis l\'avatar virtuel de Marc. Vous êtes actuellement en orbite 3D autour de mon cube de compétences.'
+        : '👋 **Hi and welcome to Planet Delon!**\n\nI am Marc\'s virtual avatar. You are currently in 3D orbit around my skill cube.',
+      timestamp: '12:00',
+    },
+    {
+      id: '2',
+      sender: 'bot',
+      text: lang === 'fr'
+        ? 'Que souhaitez-vous explorer aujourd\'hui ? Vous pouvez me poser une question ou choisir une destination ci-dessous :'
+        : 'What would you like to explore today? Ask me anything or pick a destination below:',
+      suggestions: lang === 'fr'
+        ? ['👤 Qui est Marc ?', '🎓 Ses compétences & parcours', '💻 Voir ses projets 3D', '✉️ Comment le contacter ?', '🪐 Comment marche le cube ?']
+        : ['👤 Who is Marc?', '🎓 Skills & Education', '💻 View 3D Projects', '✉️ How to contact him?', '🪐 How does the cube work?'],
+      timestamp: '12:00',
+    },
+  ];
+
+  const [messages, setMessages] = useState<ChatMessage[]>(initialMessages);
+
+  // Auto scroll to bottom of chat
+  useEffect(() => {
+    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+  }, [messages, isTyping]);
+
+  // Reset or update greeting when language changes
+  useEffect(() => {
+    setMessages([
+      {
+        id: '1',
+        sender: 'bot',
+        text: lang === 'fr'
+          ? '👋 **Salut et bienvenue sur la Planète Delon !**\n\nJe suis l\'avatar virtuel de Marc. Vous êtes actuellement en orbite 3D autour de mon cube de compétences.'
+          : '👋 **Hi and welcome to Planet Delon!**\n\nI am Marc\'s virtual avatar. You are currently in 3D orbit around my skill cube.',
+        timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+      },
+      {
+        id: '2',
+        sender: 'bot',
+        text: lang === 'fr'
+          ? 'Que souhaitez-vous découvrir ? Posez-moi une question ou cliquez sur un sujet :'
+          : 'What would you like to discover? Ask me a question or tap a topic:',
+        suggestions: lang === 'fr'
+          ? ['👤 Qui est Marc ?', '🎓 Ses compétences & parcours', '💻 Voir ses projets 3D', '✉️ Comment le contacter ?', '🪐 Comment marche le cube ?']
+          : ['👤 Who is Marc?', '🎓 Skills & Education', '💻 View 3D Projects', '✉️ How to contact him?', '🪐 How does the cube work?'],
+        timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+      },
+    ]);
+  }, [lang]);
+
   if (viewMode !== 'cube' || isExploding || isZoomingOut) {
     return null;
   }
 
-  const facesInfo = [
-    {
-      id: 0,
-      icon: User,
-      title: lang === 'fr' ? '01 · Accueil & Vision' : '01 · Home & Vision',
-      desc: lang === 'fr' 
-        ? 'Qui je suis, mon profil d\'ingénieur logiciel et ma vision technologique.'
-        : 'Who I am, my software engineering profile and tech vision.',
-      badge: lang === 'fr' ? 'Présentation' : 'Profile',
-      color: '#e07b1f',
-    },
-    {
-      id: 1,
-      icon: GraduationCap,
-      title: lang === 'fr' ? '02 · Parcours & Compétences' : '02 · Education & Skills',
-      desc: lang === 'fr'
-        ? 'Mes formations, certifications (CCNA...), diplômes et technologies maîtresses.'
-        : 'My degrees, certifications (CCNA...), education and core tech stack.',
-      badge: lang === 'fr' ? 'Expertise' : 'Skills',
-      color: '#dfcbaf',
-    },
-    {
-      id: 2,
-      icon: Laptop,
-      title: lang === 'fr' ? '03 · Salle des Projets 3D' : '03 · 3D Projects Corridor',
-      desc: lang === 'fr'
-        ? 'Plongez dans le couloir 3D immersif de mes réalisations avec démos live.'
-        : 'Dive into the immersive 3D corridor of my work with live demos.',
-      badge: lang === 'fr' ? 'Réalisations' : 'Portfolio',
-      color: '#4A7C59',
-    },
-    {
-      id: 3,
-      icon: MessageSquare,
-      title: lang === 'fr' ? '04 · Contact & Échanges' : '04 · Contact & Connect',
-      desc: lang === 'fr'
-        ? 'Formulaire direct vers ma boîte mail et accès WhatsApp instantané.'
-        : 'Direct email form to my inbox and instant WhatsApp connection.',
-      badge: lang === 'fr' ? 'Disponible' : 'Available',
-      color: '#25D366',
-    },
-  ];
+  const handleSend = (textToSend?: string) => {
+    const query = (textToSend || inputText).trim();
+    if (!query) return;
+
+    const userMsg: ChatMessage = {
+      id: Date.now().toString(),
+      sender: 'user',
+      text: query,
+      timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+    };
+
+    setMessages((prev) => [...prev, userMsg]);
+    if (!textToSend) setInputText('');
+    setIsTyping(true);
+
+    setTimeout(() => {
+      const lower = query.toLowerCase();
+      let botResponse: { text: string; action?: { label: string; faceIndex: number }; suggestions?: string[] };
+
+      if (lower.includes('qui') || lower.includes('who') || lower.includes('marc') || lower.includes('présentation') || lower.includes('presentation') || lower.includes('bio') || lower.includes('profil')) {
+        botResponse = {
+          text: lang === 'fr'
+            ? '🚀 **Marc Delon NZENANG TCHOUANTCHEU** est un **Ingénieur Logiciel Full-Stack & Développeur Web/Mobile**. Passionné par les expériences immersives 3D, l\'architecture logicielle robuste et les interfaces ultra-soignées.'
+            : '🚀 **Marc Delon NZENANG TCHOUANTCHEU** is a **Full-Stack Software Engineer & Web/Mobile Developer**. Passionate about 3D immersive web experiences, robust architecture, and high-end interfaces.',
+          action: {
+            label: lang === 'fr' ? '👉 Plonger dans Accueil & Vision' : '👉 Jump to Home & Vision',
+            faceIndex: 0,
+          },
+          suggestions: lang === 'fr' ? ['🎓 Ses compétences', '💻 Ses projets 3D', '✉️ Le contacter'] : ['🎓 Skills & Degrees', '💻 3D Projects', '✉️ Contact'],
+        };
+      } else if (lower.includes('compétence') || lower.includes('skill') || lower.includes('formation') || lower.includes('etude') || lower.includes('étude') || lower.includes('diplôme') || lower.includes('ccna') || lower.includes('stack') || lower.includes('techno')) {
+        botResponse = {
+          text: lang === 'fr'
+            ? '🎓 **Formations & Stacks Maîtresses** :\n• **Développement** : React, Next.js, Node.js, PHP, Java, SQL, MongoDB\n• **Réseaux** : Cisco CCNA, administration systèmes\n• **Diplôme** : IUT de Douala'
+            : '🎓 **Education & Core Stack** :\n• **Dev** : React, Next.js, Node.js, PHP, Java, SQL, MongoDB\n• **Networking** : Cisco CCNA, Systems administration\n• **University** : IUT of Douala',
+          action: {
+            label: lang === 'fr' ? '👉 Voir Formation & Compétences' : '👉 View Education & Skills',
+            faceIndex: 1,
+          },
+          suggestions: lang === 'fr' ? ['💻 Voir ses projets', '✉️ Le contacter'] : ['💻 View projects', '✉️ Contact him'],
+        };
+      } else if (lower.includes('projet') || lower.includes('project') || lower.includes('realisation') || lower.includes('réalisation') || lower.includes('portfolio') || lower.includes('demo') || lower.includes('salle')) {
+        botResponse = {
+          text: lang === 'fr'
+            ? '💻 **La Salle des Projets 3D** contient mes réalisations immersives (applications web full-stack, solutions cloud, e-commerce, démos live et études de cas détaillées).'
+            : '💻 **The 3D Projects Corridor** showcases all my work (full-stack web apps, cloud systems, e-commerce, live demos, and in-depth case studies).',
+          action: {
+            label: lang === 'fr' ? '👉 Entrer dans la Salle des Projets' : '👉 Enter 3D Projects Corridor',
+            faceIndex: 2,
+          },
+          suggestions: lang === 'fr' ? ['✉️ Contacter Marc', '👤 Qui est Marc ?'] : ['✉️ Contact Marc', '👤 Who is Marc?'],
+        };
+      } else if (lower.includes('contact') || lower.includes('mail') || lower.includes('email') || lower.includes('whatsapp') || lower.includes('tel') || lower.includes('numéro') || lower.includes('ecrire') || lower.includes('écrire')) {
+        botResponse = {
+          text: lang === 'fr'
+            ? '📬 **Entrer en contact avec Marc** :\n• **Email direct** : marcnzenang@gmail.com\n• **WhatsApp / Téléphone** : +237 655 46 26 42\n• **Localisation** : Douala, Cameroun'
+            : '📬 **Connect with Marc** :\n• **Direct Email** : marcnzenang@gmail.com\n• **WhatsApp / Phone** : +237 655 46 26 42\n• **Location** : Douala, Cameroon',
+          action: {
+            label: lang === 'fr' ? '👉 Ouvrir la Page Contact' : '👉 Open Contact Page',
+            faceIndex: 3,
+          },
+          suggestions: lang === 'fr' ? ['💻 Voir ses projets', '👤 Qui est Marc ?'] : ['💻 View projects', '👤 Who is Marc?'],
+        };
+      } else if (lower.includes('cube') || lower.includes('planète') || lower.includes('planete') || lower.includes('marche') || lower.includes('tourner') || lower.includes('rotate') || lower.includes('guide')) {
+        botResponse = {
+          text: lang === 'fr'
+            ? '🪐 **Comment naviguer sur la Planète Delon ?**\n\n1. **Faites glisser** la souris ou votre doigt pour faire tourner le cube 3D sous tous les angles.\n2. **Cliquez sur n\'importe quelle face** pour vous y téléporter instantanément avec un zoom immersif !'
+            : '🪐 **How to navigate Planet Delon?**\n\n1. **Drag** with your mouse or finger to freely rotate the 3D cube.\n2. **Click on any face** to warp directly into that section with an immersive zoom!',
+          suggestions: lang === 'fr' ? ['👤 Face 01 Accueil', '🎓 Face 02 Compétences', '💻 Face 03 Projets', '✉️ Face 04 Contact'] : ['👤 Face 01 Home', '🎓 Face 02 Skills', '💻 Face 03 Projects', '✉️ Face 04 Contact'],
+        };
+      } else {
+        botResponse = {
+          text: lang === 'fr'
+            ? `Je peux vous orienter vers l'une des 4 sections du cube de Marc. Choisissez une destination ou cliquez sur l'un des boutons ci-dessous :`
+            : `I can guide you to any of the 4 sections of Marc's cube. Pick a destination or choose below:`,
+          suggestions: lang === 'fr'
+            ? ['👤 01 · Accueil', '🎓 02 · Compétences', '💻 03 · Projets', '✉️ 04 · Contact']
+            : ['👤 01 · Home', '🎓 02 · Skills', '💻 03 · Projects', '✉️ 04 · Contact'],
+        };
+      }
+
+      setMessages((prev) => [
+        ...prev,
+        {
+          id: (Date.now() + 1).toString(),
+          sender: 'bot',
+          text: botResponse.text,
+          action: botResponse.action,
+          suggestions: botResponse.suggestions,
+          timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+        },
+      ]);
+      setIsTyping(false);
+    }, 450);
+  };
 
   return (
     <aside
-      id="planet-delon-companion"
-      aria-label={lang === 'fr' ? 'Guide de la Planète Delon' : 'Planet Delon Guide'}
+      id="planet-delon-chatbot"
+      aria-label={lang === 'fr' ? 'Chatbot Guide de la Planète Delon' : 'Planet Delon Chatbot Guide'}
       style={{
         position: 'fixed',
-        bottom: 'clamp(18px, 3.5vw, 32px)',
-        left: 'clamp(16px, 3.5vw, 32px)',
+        bottom: 'clamp(16px, 3.5vw, 28px)',
+        left: 'clamp(16px, 3.5vw, 28px)',
         zIndex: 500,
-        maxWidth: 'min(400px, calc(100vw - 32px))',
+        maxWidth: 'min(380px, calc(100vw - 32px))',
+        width: '100%',
         pointerEvents: 'auto',
         fontFamily: 'var(--font-sans)',
-        animation: 'fadeInUp 0.6s cubic-bezier(0.16, 1, 0.3, 1)',
+        animation: 'fadeInUp 0.5s cubic-bezier(0.16, 1, 0.3, 1)',
       }}
     >
-      {/* ── Minimized Floating Avatar Trigger ── */}
+      {/* ── Minimized Floating Avatar Badge ── */}
       {isMinimized ? (
         <button
           onClick={() => setIsMinimized(false)}
-          className="planet-guide-pill-btn"
-          aria-label={lang === 'fr' ? 'Ouvrir le guide' : 'Open guide'}
+          className="chatbot-floating-trigger"
+          aria-label={lang === 'fr' ? 'Ouvrir le chat guide' : 'Open chat guide'}
           style={{
             display: 'flex',
             alignItems: 'center',
-            gap: '12px',
-            background: 'rgba(22, 11, 6, 0.94)',
+            gap: '10px',
+            background: 'linear-gradient(135deg, rgba(28, 14, 7, 0.96) 0%, rgba(16, 8, 4, 0.98) 100%)',
             border: '1.5px solid rgba(224, 123, 31, 0.45)',
             boxShadow: '0 12px 36px rgba(0, 0, 0, 0.65), 0 0 24px rgba(224, 123, 31, 0.25)',
             borderRadius: '9999px',
-            padding: '6px 18px 6px 6px',
+            padding: '6px 16px 6px 6px',
             cursor: 'pointer',
             backdropFilter: 'blur(16px)',
             WebkitBackdropFilter: 'blur(16px)',
@@ -98,336 +219,365 @@ export default function PlanetDelonGuide() {
           <div style={{ position: 'relative', width: 42, height: 42, borderRadius: '50%', overflow: 'hidden', border: '2px solid var(--amber)' }}>
             <Image
               src="/avatar.png"
-              alt="Marc Delon Avatar"
+              alt="Marc Delon 3D Avatar"
               fill
               sizes="42px"
               style={{ objectFit: 'cover' }}
               priority
             />
+            {/* Live green dot */}
+            <span style={{ position: 'absolute', bottom: 1, right: 1, width: 9, height: 9, borderRadius: '50%', background: '#25D366', border: '1.5px solid #1c0e05' }} />
           </div>
           <div style={{ display: 'flex', flexDirection: 'column', textAlign: 'left' }}>
-            <span style={{ fontSize: '0.84rem', fontWeight: 800, color: '#ffffff', display: 'flex', alignItems: 'center', gap: '6px' }}>
-              <span>Planète Delon</span>
-              <Sparkles size={13} color="var(--amber)" />
+            <span style={{ fontSize: '0.82rem', fontWeight: 800, color: '#ffffff', display: 'flex', alignItems: 'center', gap: '5px' }}>
+              <span>Chatbot Delon</span>
+              <Sparkles size={12} color="var(--amber)" />
             </span>
-            <span style={{ fontSize: '0.72rem', color: 'rgba(255, 255, 255, 0.65)' }}>
-              {lang === 'fr' ? 'Ouvrir le guide' : 'Open guide'}
+            <span style={{ fontSize: '0.7rem', color: 'var(--amber)' }}>
+              {lang === 'fr' ? '● En ligne • Poser une question' : '● Online • Ask a question'}
             </span>
           </div>
         </button>
       ) : (
-        /* ── Full Interactive Dialog Card ── */
+        /* ── Full Chatbot Window ── */
         <div
-          className="planet-guide-card"
+          className="chatbot-window-box"
           style={{
-            background: 'linear-gradient(145deg, rgba(28, 14, 7, 0.96) 0%, rgba(14, 7, 3, 0.98) 100%)',
+            background: 'linear-gradient(155deg, rgba(26, 13, 6, 0.98) 0%, rgba(12, 6, 3, 0.98) 100%)',
             border: '1.5px solid rgba(224, 123, 31, 0.35)',
             borderRadius: '22px',
-            boxShadow: '0 20px 50px rgba(0, 0, 0, 0.75), 0 0 35px rgba(224, 123, 31, 0.15)',
-            backdropFilter: 'blur(20px)',
-            WebkitBackdropFilter: 'blur(20px)',
-            padding: '1.15rem',
+            boxShadow: '0 24px 60px rgba(0, 0, 0, 0.8), 0 0 35px rgba(224, 123, 31, 0.18)',
+            backdropFilter: 'blur(24px)',
+            WebkitBackdropFilter: 'blur(24px)',
             color: '#ffffff',
+            display: 'flex',
+            flexDirection: 'column',
+            height: 'clamp(420px, 62vh, 500px)',
+            maxHeight: 'calc(100vh - 120px)',
             overflow: 'hidden',
             position: 'relative',
           }}
         >
-          {/* Top Decorative Ambient Glow */}
+          {/* ── Chat Header ── */}
           <div
             style={{
-              position: 'absolute',
-              top: '-40px',
-              right: '-40px',
-              width: '120px',
-              height: '120px',
-              borderRadius: '50%',
-              background: 'radial-gradient(circle, rgba(224, 123, 31, 0.35) 0%, transparent 70%)',
-              pointerEvents: 'none',
+              padding: '10px 14px',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'space-between',
+              background: 'rgba(0, 0, 0, 0.4)',
+              borderBottom: '1px solid rgba(223, 203, 175, 0.12)',
             }}
-          />
-
-          {/* Header Row: Avatar + Greeting + Minimize/Close */}
-          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '12px', marginBottom: '0.85rem', paddingBottom: '0.75rem', borderBottom: '1px solid rgba(223, 203, 175, 0.12)' }}>
+          >
             <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-              {/* Glowing Avatar Portrait */}
+              {/* Avatar Frame */}
               <div
                 style={{
                   position: 'relative',
-                  width: 48,
-                  height: 48,
+                  width: 38,
+                  height: 38,
                   borderRadius: '50%',
-                  padding: '2px',
+                  padding: '1.5px',
                   background: 'linear-gradient(135deg, var(--amber) 0%, #b4570d 100%)',
-                  boxShadow: '0 0 16px rgba(224, 123, 31, 0.4)',
+                  boxShadow: '0 0 12px rgba(224, 123, 31, 0.35)',
                   flexShrink: 0,
                 }}
               >
                 <div style={{ position: 'relative', width: '100%', height: '100%', borderRadius: '50%', overflow: 'hidden' }}>
                   <Image
                     src="/avatar.png"
-                    alt="Marc Delon 3D Avatar"
+                    alt="Marc Delon Chatbot Avatar"
                     fill
-                    sizes="48px"
+                    sizes="38px"
                     style={{ objectFit: 'cover' }}
                     priority
                   />
                 </div>
-                {/* Online pulse indicator */}
-                <div
+                {/* Live dot */}
+                <span
                   style={{
                     position: 'absolute',
                     bottom: 0,
                     right: 0,
-                    width: 11,
-                    height: 11,
+                    width: 10,
+                    height: 10,
                     borderRadius: '50%',
                     background: '#25D366',
-                    border: '2px solid #1c0e05',
-                    boxShadow: '0 0 8px #25D366',
+                    border: '1.5px solid #1c0e05',
                   }}
                 />
               </div>
 
               <div>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-                  <span style={{ fontSize: '0.68rem', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.08em', color: 'var(--amber)' }}>
-                    {lang === 'fr' ? 'Guide Virtuel' : 'Virtual Guide'}
+                  <h4 style={{ margin: 0, fontSize: '0.92rem', fontWeight: 800, color: '#ffffff', letterSpacing: '-0.01em' }}>
+                    Marc Delon
+                  </h4>
+                  <span style={{ fontSize: '0.62rem', fontWeight: 700, padding: '1px 5px', borderRadius: '4px', background: 'rgba(224, 123, 31, 0.2)', color: 'var(--amber)' }}>
+                    IA Guide
                   </span>
-                  <Sparkles size={11} color="var(--amber)" />
                 </div>
-                <h4 style={{ margin: 0, fontSize: '1rem', fontWeight: 900, color: '#ffffff', fontFamily: 'var(--font-serif)', letterSpacing: '-0.01em' }}>
-                  Marc Delon
-                </h4>
+                <p style={{ margin: 0, fontSize: '0.68rem', color: '#25D366', fontWeight: 600 }}>
+                  {lang === 'fr' ? '● En direct de la Planète Delon' : '● Live from Planet Delon'}
+                </p>
               </div>
             </div>
 
-            {/* Minimize button */}
-            <button
-              onClick={() => setIsMinimized(true)}
-              aria-label={lang === 'fr' ? 'Réduire le guide' : 'Minimize guide'}
+            {/* Header Actions */}
+            <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
+              <button
+                onClick={() => setIsMinimized(true)}
+                aria-label={lang === 'fr' ? 'Réduire' : 'Minimize'}
+                style={{
+                  background: 'rgba(255, 255, 255, 0.06)',
+                  border: '1px solid rgba(255, 255, 255, 0.1)',
+                  borderRadius: '50%',
+                  width: '26px',
+                  height: '26px',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  color: 'rgba(255, 255, 255, 0.7)',
+                  cursor: 'pointer',
+                  transition: 'all 0.2s',
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.color = '#fff';
+                  e.currentTarget.style.background = 'rgba(224, 123, 31, 0.2)';
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.color = 'rgba(255, 255, 255, 0.7)';
+                  e.currentTarget.style.background = 'rgba(255, 255, 255, 0.06)';
+                }}
+              >
+                <Minimize2 size={13} />
+              </button>
+            </div>
+          </div>
+
+          {/* ── Messages Feed ── */}
+          <div
+            style={{
+              flex: 1,
+              overflowY: 'auto',
+              padding: '12px',
+              display: 'flex',
+              flexDirection: 'column',
+              gap: '10px',
+            }}
+          >
+            {messages.map((msg) => (
+              <div
+                key={msg.id}
+                style={{
+                  display: 'flex',
+                  gap: '8px',
+                  alignItems: 'flex-start',
+                  justifyContent: msg.sender === 'user' ? 'flex-end' : 'flex-start',
+                }}
+              >
+                {/* Bot Avatar Icon in message stream */}
+                {msg.sender === 'bot' && (
+                  <div
+                    style={{
+                      width: 26,
+                      height: 26,
+                      borderRadius: '50%',
+                      overflow: 'hidden',
+                      position: 'relative',
+                      flexShrink: 0,
+                      border: '1px solid var(--amber)',
+                      marginTop: '2px',
+                    }}
+                  >
+                    <Image src="/avatar.png" alt="Bot" fill sizes="26px" style={{ objectFit: 'cover' }} />
+                  </div>
+                )}
+
+                {/* Speech Bubble */}
+                <div
+                  style={{
+                    maxWidth: '84%',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    alignItems: msg.sender === 'user' ? 'flex-end' : 'flex-start',
+                  }}
+                >
+                  <div
+                    style={{
+                      background: msg.sender === 'user'
+                        ? 'linear-gradient(135deg, #e07b1f 0%, #b4570d 100%)'
+                        : 'rgba(255, 255, 255, 0.06)',
+                      border: msg.sender === 'user'
+                        ? '1px solid rgba(255, 255, 255, 0.2)'
+                        : '1px solid rgba(223, 203, 175, 0.14)',
+                      borderRadius: msg.sender === 'user' ? '14px 14px 2px 14px' : '14px 14px 14px 2px',
+                      padding: '8px 12px',
+                      color: '#ffffff',
+                      fontSize: '0.8125rem',
+                      lineHeight: 1.55,
+                      whiteSpace: 'pre-line',
+                      boxShadow: msg.sender === 'user'
+                        ? '0 4px 14px rgba(224, 123, 31, 0.3)'
+                        : '0 2px 8px rgba(0, 0, 0, 0.3)',
+                    }}
+                  >
+                    {msg.text}
+
+                    {/* Direct Action Warp Button */}
+                    {msg.action && (
+                      <button
+                        onClick={() => openFace(msg.action!.faceIndex)}
+                        style={{
+                          marginTop: '8px',
+                          display: 'flex',
+                          alignItems: 'center',
+                          gap: '6px',
+                          background: 'rgba(224, 123, 31, 0.25)',
+                          border: '1px solid var(--amber)',
+                          borderRadius: '8px',
+                          color: '#ffffff',
+                          padding: '6px 10px',
+                          fontSize: '0.78rem',
+                          fontWeight: 700,
+                          cursor: 'pointer',
+                          width: '100%',
+                          justifyContent: 'center',
+                          transition: 'all 0.2s',
+                        }}
+                        onMouseEnter={(e) => {
+                          e.currentTarget.style.background = 'var(--amber)';
+                        }}
+                        onMouseLeave={(e) => {
+                          e.currentTarget.style.background = 'rgba(224, 123, 31, 0.25)';
+                        }}
+                      >
+                        <span>{msg.action.label}</span>
+                        <ExternalLink size={12} />
+                      </button>
+                    )}
+                  </div>
+
+                  {/* Suggestion Chips */}
+                  {msg.suggestions && msg.suggestions.length > 0 && (
+                    <div style={{ display: 'flex', flexWrap: 'wrap', gap: '5px', marginTop: '6px' }}>
+                      {msg.suggestions.map((chip, idx) => (
+                        <button
+                          key={idx}
+                          onClick={() => handleSend(chip)}
+                          style={{
+                            background: 'rgba(224, 123, 31, 0.12)',
+                            border: '1px solid rgba(224, 123, 31, 0.3)',
+                            borderRadius: '9999px',
+                            color: 'var(--amber)',
+                            padding: '3px 8px',
+                            fontSize: '0.7rem',
+                            fontWeight: 600,
+                            cursor: 'pointer',
+                            transition: 'all 0.2s',
+                          }}
+                          onMouseEnter={(e) => {
+                            e.currentTarget.style.background = 'rgba(224, 123, 31, 0.25)';
+                            e.currentTarget.style.borderColor = 'var(--amber)';
+                            e.currentTarget.style.transform = 'translateY(-1px)';
+                          }}
+                          onMouseLeave={(e) => {
+                            e.currentTarget.style.background = 'rgba(224, 123, 31, 0.12)';
+                            e.currentTarget.style.borderColor = 'rgba(224, 123, 31, 0.3)';
+                            e.currentTarget.style.transform = 'translateY(0)';
+                          }}
+                        >
+                          {chip}
+                        </button>
+                      ))}
+                    </div>
+                  )}
+
+                  <span style={{ fontSize: '0.62rem', color: 'rgba(255,255,255,0.35)', marginTop: '2px', alignSelf: msg.sender === 'user' ? 'flex-end' : 'flex-start' }}>
+                    {msg.timestamp}
+                  </span>
+                </div>
+              </div>
+            ))}
+
+            {/* Typing Indicator */}
+            {isTyping && (
+              <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
+                <div style={{ width: 24, height: 24, borderRadius: '50%', overflow: 'hidden', position: 'relative', border: '1px solid var(--amber)' }}>
+                  <Image src="/avatar.png" alt="Bot" fill sizes="24px" style={{ objectFit: 'cover' }} />
+                </div>
+                <div style={{ background: 'rgba(255, 255, 255, 0.06)', borderRadius: '12px', padding: '6px 12px', display: 'flex', gap: '4px', alignItems: 'center' }}>
+                  <span style={{ width: 5, height: 5, borderRadius: '50%', background: 'var(--amber)', animation: 'pulse 1s infinite 0ms' }} />
+                  <span style={{ width: 5, height: 5, borderRadius: '50%', background: 'var(--amber)', animation: 'pulse 1s infinite 200ms' }} />
+                  <span style={{ width: 5, height: 5, borderRadius: '50%', background: 'var(--amber)', animation: 'pulse 1s infinite 400ms' }} />
+                </div>
+              </div>
+            )}
+
+            <div ref={messagesEndRef} />
+          </div>
+
+          {/* ── Input Bar ── */}
+          <form
+            onSubmit={(e) => {
+              e.preventDefault();
+              handleSend();
+            }}
+            style={{
+              padding: '8px 10px',
+              background: 'rgba(0, 0, 0, 0.45)',
+              borderTop: '1px solid rgba(223, 203, 175, 0.12)',
+              display: 'flex',
+              alignItems: 'center',
+              gap: '6px',
+            }}
+          >
+            <input
+              type="text"
+              value={inputText}
+              onChange={(e) => setInputText(e.target.value)}
+              placeholder={lang === 'fr' ? 'Posez une question sur Marc ou le cube...' : 'Ask a question about Marc or the cube...'}
               style={{
-                background: 'rgba(255, 255, 255, 0.06)',
-                border: '1px solid rgba(255, 255, 255, 0.1)',
-                borderRadius: '50%',
-                width: '28px',
-                height: '28px',
+                flex: 1,
+                background: 'rgba(255, 255, 255, 0.05)',
+                border: '1px solid rgba(223, 203, 175, 0.18)',
+                borderRadius: '12px',
+                padding: '7px 12px',
+                color: '#ffffff',
+                fontSize: '0.78rem',
+                outline: 'none',
+                fontFamily: 'var(--font-sans)',
+              }}
+              onFocus={(e) => {
+                e.currentTarget.style.borderColor = 'var(--amber)';
+              }}
+              onBlur={(e) => {
+                e.currentTarget.style.borderColor = 'rgba(223, 203, 175, 0.18)';
+              }}
+            />
+
+            <button
+              type="submit"
+              disabled={!inputText.trim()}
+              aria-label={lang === 'fr' ? 'Envoyer' : 'Send'}
+              style={{
+                width: 32,
+                height: 32,
+                borderRadius: '10px',
+                background: inputText.trim() ? 'var(--amber)' : 'rgba(255, 255, 255, 0.1)',
+                color: '#ffffff',
+                border: 'none',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
-                color: 'rgba(255, 255, 255, 0.7)',
-                cursor: 'pointer',
+                cursor: inputText.trim() ? 'pointer' : 'default',
                 transition: 'all 0.2s',
-              }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.color = '#fff';
-                e.currentTarget.style.background = 'rgba(224, 123, 31, 0.2)';
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.color = 'rgba(255, 255, 255, 0.7)';
-                e.currentTarget.style.background = 'rgba(255, 255, 255, 0.06)';
+                flexShrink: 0,
               }}
             >
-              <X size={14} />
+              <Send size={14} />
             </button>
-          </div>
-
-          {/* Navigation Sub-Tabs */}
-          <div style={{ display: 'flex', gap: '6px', marginBottom: '0.85rem', background: 'rgba(0,0,0,0.3)', padding: '3px', borderRadius: '10px' }}>
-            <button
-              onClick={() => setActiveTab('welcome')}
-              style={{
-                flex: 1,
-                padding: '5px 8px',
-                borderRadius: '8px',
-                fontSize: '0.76rem',
-                fontWeight: 700,
-                border: 'none',
-                cursor: 'pointer',
-                background: activeTab === 'welcome' ? 'rgba(224, 123, 31, 0.25)' : 'transparent',
-                color: activeTab === 'welcome' ? 'var(--amber)' : 'rgba(255,255,255,0.6)',
-                transition: 'all 0.2s ease',
-              }}
-            >
-              {lang === 'fr' ? '👋 Bienvenue' : '👋 Welcome'}
-            </button>
-            <button
-              onClick={() => setActiveTab('faces')}
-              style={{
-                flex: 1,
-                padding: '5px 8px',
-                borderRadius: '8px',
-                fontSize: '0.76rem',
-                fontWeight: 700,
-                border: 'none',
-                cursor: 'pointer',
-                background: activeTab === 'faces' ? 'rgba(224, 123, 31, 0.25)' : 'transparent',
-                color: activeTab === 'faces' ? 'var(--amber)' : 'rgba(255,255,255,0.6)',
-                transition: 'all 0.2s ease',
-              }}
-            >
-              {lang === 'fr' ? '🪐 Les 4 Faces' : '🪐 The 4 Faces'}
-            </button>
-          </div>
-
-          {/* Tab 1: Welcome Speech Bubble */}
-          {activeTab === 'welcome' && (
-            <div style={{ animation: 'fadeIn 0.3s ease' }}>
-              <div
-                style={{
-                  background: 'rgba(255, 255, 255, 0.03)',
-                  border: '1px solid rgba(223, 203, 175, 0.15)',
-                  borderRadius: '14px',
-                  padding: '0.75rem 0.9rem',
-                  fontSize: '0.82rem',
-                  lineHeight: 1.55,
-                  color: 'rgba(255, 255, 255, 0.88)',
-                  marginBottom: '0.75rem',
-                }}
-              >
-                <p style={{ margin: '0 0 0.4rem 0', fontWeight: 800, color: '#ffffff', fontSize: '0.88rem' }}>
-                  {lang === 'fr'
-                    ? '« Bienvenue sur la Planète Delon ! »'
-                    : '"Welcome to Planet Delon!"'}
-                </p>
-                <p style={{ margin: '0 0 0.4rem 0' }}>
-                  {lang === 'fr'
-                    ? 'Vous êtes en orbite 3D autour de mon cube de compétences. Chaque face représente un chapitre de mon parcours.'
-                    : 'You are in 3D orbit around my skill cube. Each face represents a chapter of my journey.'}
-                </p>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '6px', color: 'var(--amber)', fontSize: '0.76rem', fontWeight: 700 }}>
-                  <Compass size={13} />
-                  <span>
-                    {lang === 'fr'
-                      ? 'Faites glisser pour tourner • Cliquez pour explorer'
-                      : 'Drag to rotate • Click to explore'}
-                  </span>
-                </div>
-              </div>
-
-              {/* Action Buttons */}
-              <div style={{ display: 'flex', gap: '8px' }}>
-                <button
-                  onClick={() => setActiveTab('faces')}
-                  style={{
-                    flex: 1,
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    gap: '6px',
-                    background: 'var(--amber)',
-                    color: '#ffffff',
-                    padding: '8px 12px',
-                    borderRadius: '10px',
-                    fontSize: '0.8rem',
-                    fontWeight: 700,
-                    border: 'none',
-                    cursor: 'pointer',
-                    boxShadow: '0 4px 16px rgba(224, 123, 31, 0.35)',
-                    transition: 'all 0.2s',
-                  }}
-                  onMouseEnter={(e) => {
-                    e.currentTarget.style.background = 'var(--amber-light)';
-                    e.currentTarget.style.transform = 'translateY(-1px)';
-                  }}
-                  onMouseLeave={(e) => {
-                    e.currentTarget.style.background = 'var(--amber)';
-                    e.currentTarget.style.transform = 'translateY(0)';
-                  }}
-                >
-                  <span>{lang === 'fr' ? 'Découvrir les 4 pages' : 'Explore the 4 pages'}</span>
-                  <ChevronRight size={14} />
-                </button>
-                <button
-                  onClick={() => openFace(0)}
-                  style={{
-                    background: 'rgba(255, 255, 255, 0.06)',
-                    border: '1px solid rgba(255, 255, 255, 0.15)',
-                    color: '#ffffff',
-                    padding: '8px 12px',
-                    borderRadius: '10px',
-                    fontSize: '0.8rem',
-                    fontWeight: 600,
-                    cursor: 'pointer',
-                  }}
-                >
-                  {lang === 'fr' ? 'Entrer' : 'Enter'}
-                </button>
-              </div>
-            </div>
-          )}
-
-          {/* Tab 2: The 4 Faces Quick Guide & Instant Warp Jump */}
-          {activeTab === 'faces' && (
-            <div style={{ animation: 'fadeIn 0.3s ease', display: 'flex', flexDirection: 'column', gap: '6px', maxHeight: '220px', overflowY: 'auto', paddingRight: '2px' }}>
-              {facesInfo.map((face) => {
-                const IconComponent = face.icon;
-                return (
-                  <button
-                    key={face.id}
-                    onClick={() => openFace(face.id)}
-                    className="planet-guide-face-item"
-                    style={{
-                      display: 'flex',
-                      alignItems: 'center',
-                      gap: '8px',
-                      padding: '7px 9px',
-                      borderRadius: '10px',
-                      background: 'rgba(255, 255, 255, 0.04)',
-                      border: '1px solid rgba(255, 255, 255, 0.08)',
-                      color: '#ffffff',
-                      textAlign: 'left',
-                      cursor: 'pointer',
-                      transition: 'all 0.22s ease',
-                      width: '100%',
-                    }}
-                    onMouseEnter={(e) => {
-                      e.currentTarget.style.background = 'rgba(224, 123, 31, 0.15)';
-                      e.currentTarget.style.borderColor = 'rgba(224, 123, 31, 0.4)';
-                      e.currentTarget.style.transform = 'translateX(3px)';
-                    }}
-                    onMouseLeave={(e) => {
-                      e.currentTarget.style.background = 'rgba(255, 255, 255, 0.04)';
-                      e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.08)';
-                      e.currentTarget.style.transform = 'translateX(0)';
-                    }}
-                  >
-                    <div
-                      style={{
-                        width: 28,
-                        height: 28,
-                        borderRadius: '7px',
-                        background: 'rgba(224, 123, 31, 0.15)',
-                        border: '1px solid rgba(224, 123, 31, 0.3)',
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        color: face.color,
-                        flexShrink: 0,
-                      }}
-                    >
-                      <IconComponent size={14} />
-                    </div>
-
-                    <div style={{ flex: 1, minWidth: 0 }}>
-                      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '4px' }}>
-                        <span style={{ fontSize: '0.78rem', fontWeight: 800, color: '#ffffff' }}>
-                          {face.title}
-                        </span>
-                        <span style={{ fontSize: '0.6rem', fontWeight: 700, padding: '1px 5px', borderRadius: '4px', background: 'rgba(255,255,255,0.08)', color: face.color }}>
-                          {face.badge}
-                        </span>
-                      </div>
-                      <p style={{ margin: '1px 0 0 0', fontSize: '0.68rem', color: 'rgba(255, 255, 255, 0.6)', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
-                        {face.desc}
-                      </p>
-                    </div>
-
-                    <ChevronRight size={13} color="rgba(255, 255, 255, 0.4)" style={{ flexShrink: 0 }} />
-                  </button>
-                );
-              })}
-            </div>
-          )}
+          </form>
         </div>
       )}
     </aside>

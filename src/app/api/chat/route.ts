@@ -17,11 +17,11 @@ Informations détaillées sur Marc Delon :
 - Titre : Ingénieur Logiciel Full-Stack & Développeur Web / Mobile / 3D
 - Localisation : Douala, Cameroun
 - Contact : Email : marcnzenang@gmail.com | Téléphone & WhatsApp : +237 655 46 26 42 | GitHub : MarcDelon | LinkedIn : /in/marc-delon-nzenang-tchouantcheu-57909b22a
-- Formations & Diplômes : Diplômé de l'IUT de Douala, certifié Cisco CCNA (Réseaux & Sécurité)
+- Formations & Diplômes : Étudiant à KEYCE Informatique & Intelligence Artificielle Douala (Bachelor en Informatique & Génie Logiciel), Classe Préparatoire Scientifique Maths-Physique (Esprit Prépa, admis dans 13 grandes écoles d'ingénieurs), certifié Cisco CCNA (Réseaux & Sécurité)
 - Compétences techniques : React, Next.js, Node.js, PHP, Java, SQL, PostgreSQL, MongoDB, Cisco CCNA, TailwindCSS, Three.js, TypeScript, Architecture Full-Stack
 - Navigation du portfolio 3D (Faces du Cube) :
   * Face 0 (Accueil / Home) : Présentation, biographie et philosophie d'ingénierie logicielle.
-  * Face 1 (À Propos / About & CV) : Diplômes universitaires, certifications réseaux, compétences et expériences.
+  * Face 1 (À Propos / About & CV) : Diplômes et cursus à KEYCE Informatique, certifications réseaux Cisco CCNA, compétences et expériences.
   * Face 2 (Projets 3D / Projects) : Couloir immersif 3D présentant les projets complets avec études de cas et démonstrations interactives.
   * Face 3 (Contact) : Formulaire de contact direct par email et lien WhatsApp.
 `;
@@ -119,10 +119,10 @@ export async function POST(req: Request) {
       reply = isEn
         ? 'Marc Delon is a full-stack software engineer and web/mobile developer based in Douala, Cameroon. He builds modern software architectures, high-performance web solutions, and immersive 3D interfaces.'
         : 'Marc Delon est un ingénieur logiciel full-stack et développeur web/mobile basé à Douala, Cameroun. Il conçoit des architectures logicielles modernes, des solutions web performantes et des interfaces 3D immersives.';
-    } else if (lower.includes('competence') || lower.includes('compétence') || lower.includes('skill') || lower.includes('formation') || lower.includes('diplome') || lower.includes('diplôme') || lower.includes('ccna') || lower.includes('stack')) {
+    } else if (lower.includes('competence') || lower.includes('compétence') || lower.includes('skill') || lower.includes('formation') || lower.includes('diplome') || lower.includes('diplôme') || lower.includes('ccna') || lower.includes('stack') || lower.includes('ecole') || lower.includes('école') || lower.includes('keyce')) {
       reply = isEn
-        ? 'Marc specializes in React, Next.js, Node.js, PHP, Java, SQL, PostgreSQL, and MongoDB. He is a graduate of IUT Douala and holds a Cisco CCNA networking certification.'
-        : 'Marc maîtrise les technologies React, Next.js, Node.js, PHP, Java, SQL, PostgreSQL et MongoDB. Il est diplômé de l\'IUT de Douala et détient la certification réseau Cisco CCNA.';
+        ? 'Marc studies Software Engineering at KEYCE Informatique & AI Douala, has completed intensive preparatory classes in Math-Physics, and holds a Cisco CCNA networking certification. He specializes in React, Next.js, Node.js, PHP, Java, SQL, PostgreSQL, and MongoDB.'
+        : 'Marc est étudiant en Génie Logiciel à KEYCE Informatique & Intelligence Artificielle Douala, issu de classe préparatoire Maths-Physique et certifié réseau Cisco CCNA. Il maîtrise React, Next.js, Node.js, PHP, Java, SQL, PostgreSQL et MongoDB.';
     } else if (lower.includes('projet') || lower.includes('project') || lower.includes('portfolio') || lower.includes('realisation') || lower.includes('réalisation')) {
       reply = isEn
         ? 'The 3D projects room showcases Marc\'s work, including complete web applications, backend architectures, and interactive interfaces with comprehensive case studies.'

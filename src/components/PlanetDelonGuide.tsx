@@ -201,10 +201,10 @@ export default function PlanetDelonGuide() {
         fallbackText = lang === 'fr'
           ? 'Marc Delon est un ingénieur logiciel full-stack et développeur web/mobile passionné par les architectures modernes et la 3D.'
           : 'Marc Delon is a full-stack software engineer and web/mobile developer passionate about modern architecture and 3D.';
-      } else if (lower.includes('competence') || lower.includes('compétence') || lower.includes('formation')) {
+      } else if (lower.includes('competence') || lower.includes('compétence') || lower.includes('formation') || lower.includes('ecole') || lower.includes('école') || lower.includes('keyce')) {
         fallbackText = lang === 'fr'
-          ? 'Marc maîtrise React, Next.js, Node.js, PHP, Java, SQL et MongoDB. Il est certifié Cisco CCNA et diplômé de l\'IUT de Douala.'
-          : 'Marc specializes in React, Next.js, Node.js, PHP, Java, SQL, and MongoDB. He is CCNA certified and holds a degree from IUT Douala.';
+          ? 'Marc est étudiant en Génie Logiciel à KEYCE Informatique & Intelligence Artificielle Douala, issu de classe préparatoire Maths-Physique et certifié réseau Cisco CCNA.'
+          : 'Marc studies Software Engineering at KEYCE Informatique & AI Douala, completed Math-Physics preparatory classes, and holds a Cisco CCNA certification.';
       } else if (lower.includes('projet')) {
         fallbackText = lang === 'fr'
           ? 'La salle des projets 3D regroupe les applications complètes et études de cas développées par Marc.'

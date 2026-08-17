@@ -239,6 +239,13 @@ export default function Navbar() {
             onClick: () => handleNavClick(2),
           },
           {
+            id: 3,
+            label: lang === 'fr' ? 'Contact' : 'Contact',
+            icon: Send,
+            isActive: viewMode === 'expanded' && current === 3,
+            onClick: () => handleNavClick(3),
+          },
+          {
             id: 'orbit',
             label: lang === 'fr' ? 'Orbite 3D' : '3D Orbit',
             icon: Box,
@@ -250,13 +257,6 @@ export default function Navbar() {
                 closeToCube();
               }
             },
-          },
-          {
-            id: 3,
-            label: lang === 'fr' ? 'Contact' : 'Contact',
-            icon: Send,
-            isActive: viewMode === 'expanded' && current === 3,
-            onClick: () => handleNavClick(3),
           },
         ].map((tab) => {
           const IconComp = tab.icon;

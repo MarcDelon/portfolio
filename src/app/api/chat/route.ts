@@ -36,7 +36,7 @@ export async function POST(req: Request) {
 
     // 1. If a Gemini API key is configured, call Google Gemini API (gemini-3.6-flash / 2.5 / 1.5)
     if (process.env.GEMINI_API_KEY) {
-      const models = ['gemini-3.6-flash', 'gemini-2.5-flash', 'gemini-1.5-flash'];
+      const models = ['gemini-3.6-flash', 'gemini-2.5-flash'];
       for (const model of models) {
         try {
           const response = await fetch(
@@ -44,6 +44,7 @@ export async function POST(req: Request) {
             {
               method: 'POST',
               headers: { 'Content-Type': 'application/json' },
+              signal: AbortSignal.timeout(3500),
               body: JSON.stringify({
                 contents: [
                   {
@@ -57,7 +58,7 @@ export async function POST(req: Request) {
                 ],
                 generationConfig: {
                   temperature: 0.7,
-                  maxOutputTokens: 300,
+                  maxOutputTokens: 250,
                 },
               }),
             }
@@ -72,7 +73,7 @@ export async function POST(req: Request) {
             }
           }
         } catch {
-          // try next model
+          // try next model or fallback
         }
       }
     }

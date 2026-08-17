@@ -111,6 +111,47 @@ export default function PlanetDelonGuide() {
     return undefined;
   };
 
+  const streamBotResponse = (fullText: string, action?: { label: string; faceIndex: number }, suggestions?: string[]) => {
+    setIsTyping(false);
+    const msgId = (Date.now() + 1).toString();
+    const timestamp = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+
+    // Add empty message placeholder
+    setMessages((prev) => [
+      ...prev,
+      {
+        id: msgId,
+        sender: 'bot',
+        text: '',
+        timestamp,
+      },
+    ]);
+
+    let charIndex = 0;
+    const step = fullText.length > 200 ? 3 : (fullText.length > 100 ? 2 : 1);
+    const timer = setInterval(() => {
+      charIndex += step;
+      if (charIndex >= fullText.length) {
+        charIndex = fullText.length;
+        clearInterval(timer);
+      }
+      const partial = fullText.slice(0, charIndex);
+
+      setMessages((prev) =>
+        prev.map((m) =>
+          m.id === msgId
+            ? {
+                ...m,
+                text: partial,
+                action: charIndex >= fullText.length ? action : undefined,
+                suggestions: charIndex >= fullText.length ? suggestions : undefined,
+              }
+            : m
+        )
+      );
+    }, 16);
+  };
+
   const handleSend = async (textToSend?: string) => {
     const query = (textToSend || inputText).trim();
     if (!query) return;
@@ -138,19 +179,13 @@ export default function PlanetDelonGuide() {
         const cleanReply = (data.reply || '').replace(/[\p{Emoji_Presentation}\p{Extended_Pictographic}]/gu, '').trim();
         const action = detectAction(cleanReply, query.toLowerCase());
 
-        setMessages((prev) => [
-          ...prev,
-          {
-            id: (Date.now() + 1).toString(),
-            sender: 'bot',
-            text: cleanReply || (lang === 'fr' ? 'Je suis à votre disposition.' : 'I am at your service.'),
-            action,
-            suggestions: lang === 'fr'
-              ? ['Compétences & formations', 'Projets 3D', 'Contacter Marc']
-              : ['Skills & education', '3D Projects', 'Contact Marc'],
-            timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
-          },
-        ]);
+        streamBotResponse(
+          cleanReply || (lang === 'fr' ? 'Je suis à votre disposition.' : 'I am at your service.'),
+          action,
+          lang === 'fr'
+            ? ['Compétences & formations', 'Projets 3D', 'Contacter Marc']
+            : ['Skills & education', '3D Projects', 'Contact Marc']
+        );
       } else {
         throw new Error('API Error');
       }
@@ -180,21 +215,13 @@ export default function PlanetDelonGuide() {
           : 'You can reach Marc at marcnzenang@gmail.com or via WhatsApp at +237 655 46 26 42.';
       }
 
-      setMessages((prev) => [
-        ...prev,
-        {
-          id: (Date.now() + 1).toString(),
-          sender: 'bot',
-          text: fallbackText,
-          action,
-          suggestions: lang === 'fr'
-            ? ['Compétences & formations', 'Projets 3D', 'Contacter Marc']
-            : ['Skills & education', '3D Projects', 'Contact Marc'],
-          timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
-        },
-      ]);
-    } finally {
-      setIsTyping(false);
+      streamBotResponse(
+        fallbackText,
+        action,
+        lang === 'fr'
+          ? ['Compétences & formations', 'Projets 3D', 'Contacter Marc']
+          : ['Skills & education', '3D Projects', 'Contact Marc']
+      );
     }
   };
 

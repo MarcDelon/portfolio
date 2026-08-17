@@ -1,5 +1,5 @@
 'use client';
-import { useEffect, useRef, useState, type ReactNode } from 'react';
+import { useEffect, useRef, useState, useCallback, type ReactNode } from 'react';
 import { useCube, TOTAL_FACES } from '@/lib/CubeContext';
 import { useLanguage } from '@/lib/LanguageContext';
 import CubeFacePreview from '@/components/CubeFacePreview';
@@ -84,7 +84,21 @@ export default function CubeContainer({ faces }: Props) {
     }
   }, [isExploding, viewMode]);
 
-  /* ── 60fps Physics & Inertia Engine in Cube Mode ── */
+  const cubeWrapperRef = useRef<HTMLDivElement>(null);
+
+  const updateCubeTransform = useCallback((rx: number, ry: number) => {
+    if (cubeWrapperRef.current && !isExploding) {
+      cubeWrapperRef.current.style.transform = `translate3d(0, 0, -100px) rotateX(${rx}deg) rotateY(${ry}deg)`;
+    }
+  }, [isExploding]);
+
+  useEffect(() => {
+    if (viewMode === 'cube') {
+      updateCubeTransform(rotXRef.current, rotYRef.current);
+    }
+  }, [viewMode, updateCubeTransform]);
+
+  /* ── 60fps / 120fps Native GPU Physics & Inertia Engine in Cube Mode ── */
   useEffect(() => {
     let prevTime = performance.now();
 
@@ -102,16 +116,15 @@ export default function CubeContainer({ faces }: Props) {
 
           rotXRef.current = Math.max(-45, Math.min(35, rotXRef.current));
 
-          // Auto-rotation only when idle and not exploding
+          // Continuous smooth auto-rotation
           if (
-            Date.now() - lastInteractionRef.current > 1800 &&
+            Date.now() - lastInteractionRef.current > 1000 &&
             Math.abs(velXRef.current) < 0.05
           ) {
             rotYRef.current -= 0.18 * (dt / 16);
           }
 
-          setRotY(rotYRef.current);
-          setRotX(rotXRef.current);
+          updateCubeTransform(rotXRef.current, rotYRef.current);
         }
       }
 
@@ -122,7 +135,7 @@ export default function CubeContainer({ faces }: Props) {
     return () => {
       if (animFrameRef.current) cancelAnimationFrame(animFrameRef.current);
     };
-  }, [viewMode, isExploding]);
+  }, [viewMode, isExploding, updateCubeTransform]);
 
   /* ── Mouse tracking for background parallax (active only in 3D Cube overview) ── */
   useEffect(() => {
@@ -174,8 +187,7 @@ export default function CubeContainer({ faces }: Props) {
     rotYRef.current += deltaX * 0.45;
     rotXRef.current = Math.max(-45, Math.min(35, rotXRef.current - deltaY * 0.3));
 
-    setRotY(rotYRef.current);
-    setRotX(rotXRef.current);
+    updateCubeTransform(rotXRef.current, rotYRef.current);
 
     velXRef.current = (deltaX / dt) * 11;
     velYRef.current = (-deltaY / dt) * 9;
@@ -264,12 +276,13 @@ export default function CubeContainer({ faces }: Props) {
         >
           <div
             id="cube-wrapper"
+            ref={cubeWrapperRef}
             className={`cube-object ${isExploding ? 'cube-shattered' : ''}`}
             style={{
-              transform: `translateZ(-100px) rotateX(${rotX + (!isExploding ? mousePos.y * 3 : 0)}deg) rotateY(${rotY + (!isExploding ? mousePos.x * 5 : 0)}deg)`,
+              transform: `translate3d(0, 0, -100px) rotateX(${rotXRef.current}deg) rotateY(${rotYRef.current}deg)`,
               transition: isDragging
                 ? 'none'
-                : 'transform 0.4s ease-out',
+                : 'transform 0.3s cubic-bezier(0.16, 1, 0.3, 1)',
             }}
           >
             {/* ── 4 Lateral Faces: Shatter and vanish into outer space on click ── */}

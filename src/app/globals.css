@@ -366,8 +366,11 @@ hr { border: none; border-top: 1px solid rgba(255,255,255,.08); }
 
 .scene-cube {
   perspective: 1400px;
+  -webkit-perspective: 1400px;
   cursor: grab;
   user-select: none;
+  touch-action: none;
+  will-change: transform;
 }
 
 .scene-cube:active {
@@ -376,14 +379,18 @@ hr { border: none; border-top: 1px solid rgba(255,255,255,.08); }
 
 .scene-expanded {
   perspective: 2500px;
+  -webkit-perspective: 2500px;
 }
 
 .cube-object {
   position: absolute;
   transform-style: preserve-3d;
+  -webkit-transform-style: preserve-3d;
   display: flex;
   align-items: center;
   justify-content: center;
+  will-change: transform;
+  transform: translate3d(0, 0, 0);
 }
 
 .scene-cube .cube-object {
@@ -401,8 +408,10 @@ hr { border: none; border-top: 1px solid rgba(255,255,255,.08); }
 .cube-solid-face {
   position: absolute;
   transform-style: preserve-3d;
+  -webkit-transform-style: preserve-3d;
   backface-visibility: hidden;
   -webkit-backface-visibility: hidden;
+  will-change: transform;
 }
 
 .scene-cube .cube-solid-face {

@@ -3,7 +3,7 @@ import { useState, useRef, useEffect } from 'react';
 import { useLanguage } from '@/lib/LanguageContext';
 import { useCube } from '@/lib/CubeContext';
 import Image from 'next/image';
-import { Send, Sparkles, X, Minimize2, Maximize2, RotateCcw, ExternalLink, Bot } from 'lucide-react';
+import { Send, Minimize2, ExternalLink, Bot } from 'lucide-react';
 
 interface ChatMessage {
   id: string;
@@ -30,19 +30,19 @@ export default function PlanetDelonGuide() {
       id: '1',
       sender: 'bot',
       text: lang === 'fr'
-        ? '👋 **Salut et bienvenue sur la Planète Delon !**\n\nJe suis l\'avatar virtuel de Marc. Vous êtes actuellement en orbite 3D autour de mon cube de compétences.'
-        : '👋 **Hi and welcome to Planet Delon!**\n\nI am Marc\'s virtual avatar. You are currently in 3D orbit around my skill cube.',
+        ? 'Bienvenue sur la Planète Delon. Je suis NoVa, l\'assistant virtuel de Marc Delon.'
+        : 'Welcome to Planet Delon. I am NoVa, Marc Delon\'s virtual assistant.',
       timestamp: '12:00',
     },
     {
       id: '2',
       sender: 'bot',
       text: lang === 'fr'
-        ? 'Que souhaitez-vous explorer aujourd\'hui ? Vous pouvez me poser une question ou choisir une destination ci-dessous :'
-        : 'What would you like to explore today? Ask me anything or pick a destination below:',
+        ? 'Vous pouvez faire pivoter le cube 3D ou me poser une question sur le parcours, les compétences et les projets de Marc :'
+        : 'You can rotate the 3D cube or ask me any question about Marc\'s background, skills, and projects:',
       suggestions: lang === 'fr'
-        ? ['👤 Qui est Marc ?', '🎓 Ses compétences & parcours', '💻 Voir ses projets 3D', '✉️ Comment le contacter ?', '🪐 Comment marche le cube ?']
-        : ['👤 Who is Marc?', '🎓 Skills & Education', '💻 View 3D Projects', '✉️ How to contact him?', '🪐 How does the cube work?'],
+        ? ['Qui est Marc ?', 'Compétences & formations', 'Projets 3D', 'Contacter Marc', 'Fonctionnement du cube']
+        : ['Who is Marc?', 'Skills & education', '3D Projects', 'Contact Marc', 'How the cube works'],
       timestamp: '12:00',
     },
   ];
@@ -54,26 +54,26 @@ export default function PlanetDelonGuide() {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages, isTyping]);
 
-  // Reset or update greeting when language changes
+  // Update greeting when language changes
   useEffect(() => {
     setMessages([
       {
         id: '1',
         sender: 'bot',
         text: lang === 'fr'
-          ? '👋 **Salut et bienvenue sur la Planète Delon !**\n\nJe suis l\'avatar virtuel de Marc. Vous êtes actuellement en orbite 3D autour de mon cube de compétences.'
-          : '👋 **Hi and welcome to Planet Delon!**\n\nI am Marc\'s virtual avatar. You are currently in 3D orbit around my skill cube.',
+          ? 'Bienvenue sur la Planète Delon. Je suis NoVa, l\'assistant virtuel de Marc Delon.'
+          : 'Welcome to Planet Delon. I am NoVa, Marc Delon\'s virtual assistant.',
         timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
       },
       {
         id: '2',
         sender: 'bot',
         text: lang === 'fr'
-          ? 'Que souhaitez-vous découvrir ? Posez-moi une question ou cliquez sur un sujet :'
-          : 'What would you like to discover? Ask me a question or tap a topic:',
+          ? 'Vous pouvez faire pivoter le cube 3D ou me poser une question sur le parcours, les compétences et les projets de Marc :'
+          : 'You can rotate the 3D cube or ask me any question about Marc\'s background, skills, and projects:',
         suggestions: lang === 'fr'
-          ? ['👤 Qui est Marc ?', '🎓 Ses compétences & parcours', '💻 Voir ses projets 3D', '✉️ Comment le contacter ?', '🪐 Comment marche le cube ?']
-          : ['👤 Who is Marc?', '🎓 Skills & Education', '💻 View 3D Projects', '✉️ How to contact him?', '🪐 How does the cube work?'],
+          ? ['Qui est Marc ?', 'Compétences & formations', 'Projets 3D', 'Contacter Marc', 'Fonctionnement du cube']
+          : ['Who is Marc?', 'Skills & education', '3D Projects', 'Contact Marc', 'How the cube works'],
         timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
       },
     ]);
@@ -83,7 +83,35 @@ export default function PlanetDelonGuide() {
     return null;
   }
 
-  const handleSend = (textToSend?: string) => {
+  const detectAction = (text: string, lower: string) => {
+    if (lower.includes('qui') || lower.includes('who') || lower.includes('marc') || lower.includes('presentation') || lower.includes('présentation') || lower.includes('bio') || lower.includes('face 0')) {
+      return {
+        label: lang === 'fr' ? 'Ouvrir Accueil & Vision' : 'Open Home & Vision',
+        faceIndex: 0,
+      };
+    }
+    if (lower.includes('competence') || lower.includes('compétence') || lower.includes('skill') || lower.includes('formation') || lower.includes('diplome') || lower.includes('diplôme') || lower.includes('ccna') || lower.includes('face 1')) {
+      return {
+        label: lang === 'fr' ? 'Voir Formations & Compétences' : 'View Education & Skills',
+        faceIndex: 1,
+      };
+    }
+    if (lower.includes('projet') || lower.includes('project') || lower.includes('realisation') || lower.includes('réalisation') || lower.includes('salle') || lower.includes('face 2')) {
+      return {
+        label: lang === 'fr' ? 'Entrer dans la Salle des Projets' : 'Enter 3D Projects Corridor',
+        faceIndex: 2,
+      };
+    }
+    if (lower.includes('contact') || lower.includes('mail') || lower.includes('email') || lower.includes('whatsapp') || lower.includes('telephone') || lower.includes('téléphone') || lower.includes('face 3')) {
+      return {
+        label: lang === 'fr' ? 'Ouvrir la Page Contact' : 'Open Contact Page',
+        faceIndex: 3,
+      };
+    }
+    return undefined;
+  };
+
+  const handleSend = async (textToSend?: string) => {
     const query = (textToSend || inputText).trim();
     if (!query) return;
 
@@ -98,70 +126,58 @@ export default function PlanetDelonGuide() {
     if (!textToSend) setInputText('');
     setIsTyping(true);
 
-    setTimeout(() => {
-      const lower = query.toLowerCase();
-      let botResponse: { text: string; action?: { label: string; faceIndex: number }; suggestions?: string[] };
+    try {
+      const res = await fetch('/api/chat', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ message: query, lang }),
+      });
 
-      if (lower.includes('qui') || lower.includes('who') || lower.includes('marc') || lower.includes('présentation') || lower.includes('presentation') || lower.includes('bio') || lower.includes('profil')) {
-        botResponse = {
-          text: lang === 'fr'
-            ? '🚀 **Marc Delon NZENANG TCHOUANTCHEU** est un **Ingénieur Logiciel Full-Stack & Développeur Web/Mobile**. Passionné par les expériences immersives 3D, l\'architecture logicielle robuste et les interfaces ultra-soignées.'
-            : '🚀 **Marc Delon NZENANG TCHOUANTCHEU** is a **Full-Stack Software Engineer & Web/Mobile Developer**. Passionate about 3D immersive web experiences, robust architecture, and high-end interfaces.',
-          action: {
-            label: lang === 'fr' ? '👉 Plonger dans Accueil & Vision' : '👉 Jump to Home & Vision',
-            faceIndex: 0,
+      if (res.ok) {
+        const data = await res.json();
+        const cleanReply = (data.reply || '').replace(/[\p{Emoji_Presentation}\p{Extended_Pictographic}]/gu, '').trim();
+        const action = detectAction(cleanReply, query.toLowerCase());
+
+        setMessages((prev) => [
+          ...prev,
+          {
+            id: (Date.now() + 1).toString(),
+            sender: 'bot',
+            text: cleanReply || (lang === 'fr' ? 'Je suis à votre disposition.' : 'I am at your service.'),
+            action,
+            suggestions: lang === 'fr'
+              ? ['Compétences & formations', 'Projets 3D', 'Contacter Marc']
+              : ['Skills & education', '3D Projects', 'Contact Marc'],
+            timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
           },
-          suggestions: lang === 'fr' ? ['🎓 Ses compétences', '💻 Ses projets 3D', '✉️ Le contacter'] : ['🎓 Skills & Degrees', '💻 3D Projects', '✉️ Contact'],
-        };
-      } else if (lower.includes('compétence') || lower.includes('skill') || lower.includes('formation') || lower.includes('etude') || lower.includes('étude') || lower.includes('diplôme') || lower.includes('ccna') || lower.includes('stack') || lower.includes('techno')) {
-        botResponse = {
-          text: lang === 'fr'
-            ? '🎓 **Formations & Stacks Maîtresses** :\n• **Développement** : React, Next.js, Node.js, PHP, Java, SQL, MongoDB\n• **Réseaux** : Cisco CCNA, administration systèmes\n• **Diplôme** : IUT de Douala'
-            : '🎓 **Education & Core Stack** :\n• **Dev** : React, Next.js, Node.js, PHP, Java, SQL, MongoDB\n• **Networking** : Cisco CCNA, Systems administration\n• **University** : IUT of Douala',
-          action: {
-            label: lang === 'fr' ? '👉 Voir Formation & Compétences' : '👉 View Education & Skills',
-            faceIndex: 1,
-          },
-          suggestions: lang === 'fr' ? ['💻 Voir ses projets', '✉️ Le contacter'] : ['💻 View projects', '✉️ Contact him'],
-        };
-      } else if (lower.includes('projet') || lower.includes('project') || lower.includes('realisation') || lower.includes('réalisation') || lower.includes('portfolio') || lower.includes('demo') || lower.includes('salle')) {
-        botResponse = {
-          text: lang === 'fr'
-            ? '💻 **La Salle des Projets 3D** contient mes réalisations immersives (applications web full-stack, solutions cloud, e-commerce, démos live et études de cas détaillées).'
-            : '💻 **The 3D Projects Corridor** showcases all my work (full-stack web apps, cloud systems, e-commerce, live demos, and in-depth case studies).',
-          action: {
-            label: lang === 'fr' ? '👉 Entrer dans la Salle des Projets' : '👉 Enter 3D Projects Corridor',
-            faceIndex: 2,
-          },
-          suggestions: lang === 'fr' ? ['✉️ Contacter Marc', '👤 Qui est Marc ?'] : ['✉️ Contact Marc', '👤 Who is Marc?'],
-        };
-      } else if (lower.includes('contact') || lower.includes('mail') || lower.includes('email') || lower.includes('whatsapp') || lower.includes('tel') || lower.includes('numéro') || lower.includes('ecrire') || lower.includes('écrire')) {
-        botResponse = {
-          text: lang === 'fr'
-            ? '📬 **Entrer en contact avec Marc** :\n• **Email direct** : marcnzenang@gmail.com\n• **WhatsApp / Téléphone** : +237 655 46 26 42\n• **Localisation** : Douala, Cameroun'
-            : '📬 **Connect with Marc** :\n• **Direct Email** : marcnzenang@gmail.com\n• **WhatsApp / Phone** : +237 655 46 26 42\n• **Location** : Douala, Cameroon',
-          action: {
-            label: lang === 'fr' ? '👉 Ouvrir la Page Contact' : '👉 Open Contact Page',
-            faceIndex: 3,
-          },
-          suggestions: lang === 'fr' ? ['💻 Voir ses projets', '👤 Qui est Marc ?'] : ['💻 View projects', '👤 Who is Marc?'],
-        };
-      } else if (lower.includes('cube') || lower.includes('planète') || lower.includes('planete') || lower.includes('marche') || lower.includes('tourner') || lower.includes('rotate') || lower.includes('guide')) {
-        botResponse = {
-          text: lang === 'fr'
-            ? '🪐 **Comment naviguer sur la Planète Delon ?**\n\n1. **Faites glisser** la souris ou votre doigt pour faire tourner le cube 3D sous tous les angles.\n2. **Cliquez sur n\'importe quelle face** pour vous y téléporter instantanément avec un zoom immersif !'
-            : '🪐 **How to navigate Planet Delon?**\n\n1. **Drag** with your mouse or finger to freely rotate the 3D cube.\n2. **Click on any face** to warp directly into that section with an immersive zoom!',
-          suggestions: lang === 'fr' ? ['👤 Face 01 Accueil', '🎓 Face 02 Compétences', '💻 Face 03 Projets', '✉️ Face 04 Contact'] : ['👤 Face 01 Home', '🎓 Face 02 Skills', '💻 Face 03 Projects', '✉️ Face 04 Contact'],
-        };
+        ]);
       } else {
-        botResponse = {
-          text: lang === 'fr'
-            ? `Je peux vous orienter vers l'une des 4 sections du cube de Marc. Choisissez une destination ou cliquez sur l'un des boutons ci-dessous :`
-            : `I can guide you to any of the 4 sections of Marc's cube. Pick a destination or choose below:`,
-          suggestions: lang === 'fr'
-            ? ['👤 01 · Accueil', '🎓 02 · Compétences', '💻 03 · Projets', '✉️ 04 · Contact']
-            : ['👤 01 · Home', '🎓 02 · Skills', '💻 03 · Projects', '✉️ 04 · Contact'],
-        };
+        throw new Error('API Error');
+      }
+    } catch {
+      // Fallback
+      const lower = query.toLowerCase();
+      let fallbackText = lang === 'fr'
+        ? 'Je suis NoVa. Je peux vous guider vers les compétences, les projets ou les coordonnées de Marc.'
+        : 'I am NoVa. I can guide you through Marc\'s skills, projects, or contact info.';
+      const action = detectAction(fallbackText, lower);
+
+      if (lower.includes('qui') || lower.includes('who') || lower.includes('marc')) {
+        fallbackText = lang === 'fr'
+          ? 'Marc Delon est un ingénieur logiciel full-stack et développeur web/mobile passionné par les architectures modernes et la 3D.'
+          : 'Marc Delon is a full-stack software engineer and web/mobile developer passionate about modern architecture and 3D.';
+      } else if (lower.includes('competence') || lower.includes('compétence') || lower.includes('formation')) {
+        fallbackText = lang === 'fr'
+          ? 'Marc maîtrise React, Next.js, Node.js, PHP, Java, SQL et MongoDB. Il est certifié Cisco CCNA et diplômé de l\'IUT de Douala.'
+          : 'Marc specializes in React, Next.js, Node.js, PHP, Java, SQL, and MongoDB. He is CCNA certified and holds a degree from IUT Douala.';
+      } else if (lower.includes('projet')) {
+        fallbackText = lang === 'fr'
+          ? 'La salle des projets 3D regroupe les applications complètes et études de cas développées par Marc.'
+          : 'The 3D projects room showcases full applications and case studies built by Marc.';
+      } else if (lower.includes('contact')) {
+        fallbackText = lang === 'fr'
+          ? 'Vous pouvez joindre Marc à marcnzenang@gmail.com ou par WhatsApp au +237 655 46 26 42.'
+          : 'You can reach Marc at marcnzenang@gmail.com or via WhatsApp at +237 655 46 26 42.';
       }
 
       setMessages((prev) => [
@@ -169,20 +185,23 @@ export default function PlanetDelonGuide() {
         {
           id: (Date.now() + 1).toString(),
           sender: 'bot',
-          text: botResponse.text,
-          action: botResponse.action,
-          suggestions: botResponse.suggestions,
+          text: fallbackText,
+          action,
+          suggestions: lang === 'fr'
+            ? ['Compétences & formations', 'Projets 3D', 'Contacter Marc']
+            : ['Skills & education', '3D Projects', 'Contact Marc'],
           timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
         },
       ]);
+    } finally {
       setIsTyping(false);
-    }, 450);
+    }
   };
 
   return (
     <aside
       id="planet-delon-chatbot"
-      aria-label={lang === 'fr' ? 'Chatbot Guide de la Planète Delon' : 'Planet Delon Chatbot Guide'}
+      aria-label="Chatbot NoVa"
       style={{
         position: 'fixed',
         bottom: 'clamp(16px, 3.5vw, 28px)',
@@ -200,7 +219,7 @@ export default function PlanetDelonGuide() {
         <button
           onClick={() => setIsMinimized(false)}
           className="chatbot-floating-trigger"
-          aria-label={lang === 'fr' ? 'Ouvrir le chat guide' : 'Open chat guide'}
+          aria-label={lang === 'fr' ? 'Ouvrir NoVa' : 'Open NoVa'}
           style={{
             display: 'flex',
             alignItems: 'center',
@@ -219,7 +238,7 @@ export default function PlanetDelonGuide() {
           <div style={{ position: 'relative', width: 42, height: 42, borderRadius: '50%', overflow: 'hidden', border: '2px solid var(--amber)' }}>
             <Image
               src="/avatar.png"
-              alt="Marc Delon 3D Avatar"
+              alt="NoVa Avatar"
               fill
               sizes="42px"
               style={{ objectFit: 'cover' }}
@@ -229,12 +248,11 @@ export default function PlanetDelonGuide() {
             <span style={{ position: 'absolute', bottom: 1, right: 1, width: 9, height: 9, borderRadius: '50%', background: '#25D366', border: '1.5px solid #1c0e05' }} />
           </div>
           <div style={{ display: 'flex', flexDirection: 'column', textAlign: 'left' }}>
-            <span style={{ fontSize: '0.82rem', fontWeight: 800, color: '#ffffff', display: 'flex', alignItems: 'center', gap: '5px' }}>
-              <span>Chatbot Delon</span>
-              <Sparkles size={12} color="var(--amber)" />
+            <span style={{ fontSize: '0.84rem', fontWeight: 800, color: '#ffffff' }}>
+              NoVa
             </span>
             <span style={{ fontSize: '0.7rem', color: 'var(--amber)' }}>
-              {lang === 'fr' ? '● En ligne • Poser une question' : '● Online • Ask a question'}
+              {lang === 'fr' ? 'En ligne • Poser une question' : 'Online • Ask a question'}
             </span>
           </div>
         </button>
@@ -252,7 +270,7 @@ export default function PlanetDelonGuide() {
             color: '#ffffff',
             display: 'flex',
             flexDirection: 'column',
-            height: 'clamp(420px, 62vh, 500px)',
+            height: 'clamp(400px, 60vh, 480px)',
             maxHeight: 'calc(100vh - 120px)',
             overflow: 'hidden',
             position: 'relative',
@@ -286,7 +304,7 @@ export default function PlanetDelonGuide() {
                 <div style={{ position: 'relative', width: '100%', height: '100%', borderRadius: '50%', overflow: 'hidden' }}>
                   <Image
                     src="/avatar.png"
-                    alt="Marc Delon Chatbot Avatar"
+                    alt="NoVa Avatar"
                     fill
                     sizes="38px"
                     style={{ objectFit: 'cover' }}
@@ -310,15 +328,15 @@ export default function PlanetDelonGuide() {
 
               <div>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-                  <h4 style={{ margin: 0, fontSize: '0.92rem', fontWeight: 800, color: '#ffffff', letterSpacing: '-0.01em' }}>
-                    Marc Delon
+                  <h4 style={{ margin: 0, fontSize: '0.94rem', fontWeight: 800, color: '#ffffff', letterSpacing: '-0.01em' }}>
+                    NoVa
                   </h4>
                   <span style={{ fontSize: '0.62rem', fontWeight: 700, padding: '1px 5px', borderRadius: '4px', background: 'rgba(224, 123, 31, 0.2)', color: 'var(--amber)' }}>
-                    IA Guide
+                    Assistant IA
                   </span>
                 </div>
                 <p style={{ margin: 0, fontSize: '0.68rem', color: '#25D366', fontWeight: 600 }}>
-                  {lang === 'fr' ? '● En direct de la Planète Delon' : '● Live from Planet Delon'}
+                  {lang === 'fr' ? 'En direct de la Planète Delon' : 'Live from Planet Delon'}
                 </p>
               </div>
             </div>
@@ -390,7 +408,7 @@ export default function PlanetDelonGuide() {
                       marginTop: '2px',
                     }}
                   >
-                    <Image src="/avatar.png" alt="Bot" fill sizes="26px" style={{ objectFit: 'cover' }} />
+                    <Image src="/avatar.png" alt="NoVa" fill sizes="26px" style={{ objectFit: 'cover' }} />
                   </div>
                 )}
 
@@ -458,7 +476,7 @@ export default function PlanetDelonGuide() {
                     )}
                   </div>
 
-                  {/* Suggestion Chips */}
+                  {/* Suggestion Chips (Clean, without emojis) */}
                   {msg.suggestions && msg.suggestions.length > 0 && (
                     <div style={{ display: 'flex', flexWrap: 'wrap', gap: '5px', marginTop: '6px' }}>
                       {msg.suggestions.map((chip, idx) => (
@@ -470,7 +488,7 @@ export default function PlanetDelonGuide() {
                             border: '1px solid rgba(224, 123, 31, 0.3)',
                             borderRadius: '9999px',
                             color: 'var(--amber)',
-                            padding: '3px 8px',
+                            padding: '3px 9px',
                             fontSize: '0.7rem',
                             fontWeight: 600,
                             cursor: 'pointer',
@@ -504,7 +522,7 @@ export default function PlanetDelonGuide() {
             {isTyping && (
               <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
                 <div style={{ width: 24, height: 24, borderRadius: '50%', overflow: 'hidden', position: 'relative', border: '1px solid var(--amber)' }}>
-                  <Image src="/avatar.png" alt="Bot" fill sizes="24px" style={{ objectFit: 'cover' }} />
+                  <Image src="/avatar.png" alt="NoVa" fill sizes="24px" style={{ objectFit: 'cover' }} />
                 </div>
                 <div style={{ background: 'rgba(255, 255, 255, 0.06)', borderRadius: '12px', padding: '6px 12px', display: 'flex', gap: '4px', alignItems: 'center' }}>
                   <span style={{ width: 5, height: 5, borderRadius: '50%', background: 'var(--amber)', animation: 'pulse 1s infinite 0ms' }} />
@@ -536,7 +554,7 @@ export default function PlanetDelonGuide() {
               type="text"
               value={inputText}
               onChange={(e) => setInputText(e.target.value)}
-              placeholder={lang === 'fr' ? 'Posez une question sur Marc ou le cube...' : 'Ask a question about Marc or the cube...'}
+              placeholder={lang === 'fr' ? 'Posez une question à NoVa...' : 'Ask NoVa a question...'}
               style={{
                 flex: 1,
                 background: 'rgba(255, 255, 255, 0.05)',
@@ -558,19 +576,19 @@ export default function PlanetDelonGuide() {
 
             <button
               type="submit"
-              disabled={!inputText.trim()}
+              disabled={!inputText.trim() || isTyping}
               aria-label={lang === 'fr' ? 'Envoyer' : 'Send'}
               style={{
                 width: 32,
                 height: 32,
                 borderRadius: '10px',
-                background: inputText.trim() ? 'var(--amber)' : 'rgba(255, 255, 255, 0.1)',
+                background: inputText.trim() && !isTyping ? 'var(--amber)' : 'rgba(255, 255, 255, 0.1)',
                 color: '#ffffff',
                 border: 'none',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
-                cursor: inputText.trim() ? 'pointer' : 'default',
+                cursor: inputText.trim() && !isTyping ? 'pointer' : 'default',
                 transition: 'all 0.2s',
                 flexShrink: 0,
               }}

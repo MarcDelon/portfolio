@@ -278,7 +278,7 @@ export default function Navbar() {
         </div>
       </nav>
 
-      {/* ── Mobile Vertical Slide-in Drawer ── */}
+      {/* ── Mobile Luxury Vertical Slide-in Drawer ── */}
       {mobileOpen && (
         <div
           className="mobile-drawer-backdrop"
@@ -287,20 +287,25 @@ export default function Navbar() {
       )}
 
       <div className={`mobile-vertical-drawer ${mobileOpen ? 'open' : ''}`}>
-        {/* Drawer Header */}
+        {/* Drawer Header with Designer Brand */}
         <div className="drawer-header">
-          <div className="drawer-brand">
-            <span style={{ color: 'var(--amber)', fontSize: '1.1rem' }}>◆</span>
-            <span>Marc Delon</span>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '3px' }}>
+            <div className="drawer-brand">
+              <span style={{ color: 'var(--amber)', fontSize: '1rem' }}>◆</span>
+              <span>Marc Delon</span>
+            </div>
+            <span style={{ fontSize: '0.65rem', letterSpacing: '0.12em', textTransform: 'uppercase', color: 'rgba(223, 203, 175, 0.65)', fontFamily: 'var(--font-sans)', fontWeight: 600 }}>
+              {lang === 'fr' ? 'Ingénieur Logiciel & 3D' : 'Software & 3D Engineer'}
+            </span>
           </div>
-          {/* Space reserved for the animated morphing hamburger/X button above */}
+          {/* Morphing hamburger close button space */}
           <div style={{ width: 36, height: 36 }} />
         </div>
 
-        {/* 3D Overview Card */}
+        {/* 3D Orbit Space Portal Card */}
         <button
           type="button"
-          className="drawer-3d-card"
+          className={`drawer-3d-card ${viewMode === 'cube' ? 'is-active-orbit' : ''}`}
           onClick={() => {
             closeToCube();
             setMobileOpen(false);
@@ -310,43 +315,123 @@ export default function Navbar() {
             <Box size={18} />
           </div>
           <div className="drawer-3d-text">
-            <span className="drawer-3d-title">Orbite MD</span>
-            <span className="drawer-3d-sub">{lang === 'fr' ? 'Vue 3D interactive' : 'Interactive 3D view'}</span>
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+              <span className="drawer-3d-title">Orbite MD</span>
+              <span className="drawer-3d-badge">{viewMode === 'cube' ? (lang === 'fr' ? 'Actif' : 'Active') : '3D'}</span>
+            </div>
+            <span className="drawer-3d-sub">{lang === 'fr' ? 'Explorer la Planète Delon en 3D' : 'Explore Planet Delon in 3D'}</span>
           </div>
         </button>
 
-        {/* Vertical Navigation Links */}
+        {/* Editorial Navigation List */}
         <div className="drawer-nav-list">
-          {links.map((i) => (
-            <button
-              key={i}
-              onClick={() => handleNavClick(i)}
-              className={`drawer-nav-link ${current === i && viewMode === 'expanded' ? 'active' : ''}`}
-            >
-              <span className="drawer-link-num">0{i + 1}</span>
-              <span className="drawer-link-label">{labels[i]}</span>
-              {current === i && viewMode === 'expanded' && <span className="drawer-active-dot" />}
-            </button>
-          ))}
+          <div className="drawer-section-label">
+            {lang === 'fr' ? 'Navigation' : 'Navigation'}
+          </div>
+
+          {[
+            {
+              id: 0,
+              num: '01',
+              title: lang === 'fr' ? 'Accueil' : 'Home',
+              subtitle: lang === 'fr' ? 'Vision, Bio & Philosophie' : 'Vision, Bio & Philosophy',
+            },
+            {
+              id: 1,
+              num: '02',
+              title: lang === 'fr' ? 'À Propos & CV' : 'About & CV',
+              subtitle: lang === 'fr' ? 'Formation, CCNA & Stacks' : 'Education, CCNA & Stacks',
+            },
+            {
+              id: 2,
+              num: '03',
+              title: lang === 'fr' ? 'Projets 3D' : '3D Projects',
+              subtitle: lang === 'fr' ? 'Réalisations & Démos live' : 'Creations & Live Demos',
+            },
+            {
+              id: 3,
+              num: '04',
+              title: lang === 'fr' ? 'Contact' : 'Contact',
+              subtitle: lang === 'fr' ? 'Messagerie directe & WhatsApp' : 'Direct Email & WhatsApp',
+            },
+          ].map((item) => {
+            const isActive = current === item.id && viewMode === 'expanded';
+            return (
+              <button
+                key={item.id}
+                onClick={() => handleNavClick(item.id)}
+                className={`drawer-nav-link ${isActive ? 'active' : ''}`}
+              >
+                <span className="drawer-link-num">{item.num}</span>
+                <div className="drawer-link-text-col">
+                  <span className="drawer-link-title">{item.title}</span>
+                  <span className="drawer-link-subtitle">{item.subtitle}</span>
+                </div>
+                {isActive && <div className="drawer-active-indicator" />}
+              </button>
+            );
+          })}
+        </div>
+
+        {/* Social Quick Connect */}
+        <div className="drawer-social-row">
+          <a
+            href="https://github.com/MarcDelon"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="drawer-social-btn"
+            title="GitHub"
+          >
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.403 5.403 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65-.17.6-.22 1.23-.15 1.85v4"/><path d="M9 18c-4.51 2-5-2-7-2"/></svg>
+            <span>GitHub</span>
+          </a>
+          <a
+            href="https://www.linkedin.com/in/marc-delon-nzenang-tchouantcheu-57909b22a"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="drawer-social-btn"
+            title="LinkedIn"
+          >
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect width="4" height="12" x="2" y="9"/><circle cx="4" cy="4" r="2"/></svg>
+            <span>LinkedIn</span>
+          </a>
         </div>
 
         {/* Drawer Footer Actions */}
         <div className="drawer-footer">
-          <button
-            className="drawer-lang-btn"
-            onClick={toggleLang}
-          >
-            <span>Langue :</span>
-            <strong>{lang === 'fr' ? 'FRANÇAIS (FR)' : 'ENGLISH (EN)'}</strong>
-          </button>
+          {/* Language Switcher Segment */}
+          <div className="drawer-lang-segment">
+            <span style={{ fontSize: '0.72rem', color: 'rgba(255,255,255,0.5)', fontWeight: 600 }}>Langue :</span>
+            <div style={{ display: 'flex', gap: '4px' }}>
+              <button
+                onClick={() => { if (lang !== 'fr') toggleLang(); }}
+                className={`drawer-lang-choice ${lang === 'fr' ? 'active' : ''}`}
+              >
+                FR
+              </button>
+              <button
+                onClick={() => { if (lang !== 'en') toggleLang(); }}
+                className={`drawer-lang-choice ${lang === 'en' ? 'active' : ''}`}
+              >
+                EN
+              </button>
+            </div>
+          </div>
 
           <button
             className="btn btn-amber drawer-contact-btn"
             onClick={() => handleNavClick(3)}
           >
-            <Send size={16} />
-            <span>{lang === 'fr' ? 'Me contacter' : 'Contact me'}</span>
+            <Send size={15} />
+            <span>{lang === 'fr' ? 'Démarrer un projet' : 'Start a project'}</span>
           </button>
+
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '6px', paddingTop: '4px' }}>
+            <span style={{ width: 6, height: 6, borderRadius: '50%', background: '#25D366', boxShadow: '0 0 8px #25D366' }} />
+            <span style={{ fontSize: '0.68rem', color: 'rgba(255,255,255,0.5)', fontWeight: 500 }}>
+              {lang === 'fr' ? 'Disponible pour opportunités' : 'Available for opportunities'}
+            </span>
+          </div>
         </div>
       </div>
 
@@ -370,15 +455,15 @@ export default function Navbar() {
           box-shadow: 0 0 12px rgba(224, 123, 31, 0.3);
         }
 
-        /* ── Mobile Vertical Drawer Styles ── */
+        /* ── Luxury Mobile Vertical Drawer Styles ── */
         .mobile-drawer-backdrop {
           position: fixed;
           inset: 0;
-          background: rgba(10, 5, 2, 0.75);
-          backdrop-filter: blur(8px);
-          -webkit-backdrop-filter: blur(8px);
+          background: rgba(8, 4, 2, 0.78);
+          backdrop-filter: blur(12px);
+          -webkit-backdrop-filter: blur(12px);
           z-index: 998;
-          animation: fadeIn 0.45s ease-out;
+          animation: fadeIn 0.4s ease-out;
         }
         @keyframes fadeIn {
           from { opacity: 0; }
@@ -390,19 +475,22 @@ export default function Navbar() {
           top: 0;
           right: 0;
           bottom: 0;
-          width: min(320px, 85vw);
+          width: min(340px, 86vw);
           height: 100vh;
-          background: linear-gradient(180deg, #1a0d07 0%, #0d0603 100%);
-          border-left: 1px solid rgba(224, 123, 31, 0.25);
-          box-shadow: -15px 0 50px rgba(0, 0, 0, 0.85);
+          height: 100dvh;
+          background: linear-gradient(175deg, rgba(24, 12, 6, 0.98) 0%, rgba(12, 6, 3, 0.99) 100%);
+          border-left: 1px solid rgba(224, 123, 31, 0.3);
+          box-shadow: -20px 0 60px rgba(0, 0, 0, 0.9), inset 1px 0 0 rgba(255, 255, 255, 0.05);
           z-index: 999;
           display: flex;
           flex-direction: column;
-          padding: 1.5rem 1.25rem;
-          gap: 1.25rem;
+          padding: 1.5rem 1.25rem 1.25rem;
+          gap: 1.15rem;
           transform: translateX(100%);
-          transition: transform 0.55s cubic-bezier(0.22, 1, 0.36, 1);
+          transition: transform 0.45s cubic-bezier(0.16, 1, 0.3, 1);
           overflow-y: auto;
+          backdrop-filter: blur(24px);
+          -webkit-backdrop-filter: blur(24px);
         }
         .mobile-vertical-drawer.open {
           transform: translateX(0);
@@ -411,141 +499,222 @@ export default function Navbar() {
           display: flex;
           align-items: center;
           justify-content: space-between;
-          padding-bottom: 0.85rem;
-          border-bottom: 1px solid rgba(223, 203, 175, 0.15);
+          padding-bottom: 1rem;
+          border-bottom: 1px solid rgba(223, 203, 175, 0.12);
         }
         .drawer-brand {
           display: flex;
           align-items: center;
           gap: 8px;
           font-family: var(--font-serif);
-          font-size: 1.2rem;
+          font-size: 1.25rem;
           font-weight: 900;
           color: #ffffff;
+          letter-spacing: -0.02em;
         }
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          cursor: pointer;
-          transition: all 0.2s ease;
-        }
-        .drawer-close-btn:hover {
-          background: var(--amber);
-          color: #ffffff;
-        }
+
+        /* 3D Orbit Portal Card */
         .drawer-3d-card {
           display: flex;
           align-items: center;
           gap: 12px;
-          padding: 12px 16px;
-          border-radius: 14px;
-          background: rgba(224, 123, 31, 0.12);
-          border: 1px solid rgba(224, 123, 31, 0.3);
+          padding: 12px 14px;
+          border-radius: 16px;
+          background: linear-gradient(135deg, rgba(224, 123, 31, 0.16) 0%, rgba(180, 87, 13, 0.08) 100%);
+          border: 1px solid rgba(224, 123, 31, 0.35);
           color: var(--amber);
           text-align: left;
           cursor: pointer;
-          transition: all 0.2s ease;
+          transition: all 0.25s ease;
+          box-shadow: 0 4px 18px rgba(0, 0, 0, 0.3);
         }
-        .drawer-3d-card:hover {
-          background: rgba(224, 123, 31, 0.22);
-          box-shadow: 0 4px 18px rgba(224, 123, 31, 0.25);
+        .drawer-3d-card:hover, .drawer-3d-card.is-active-orbit {
+          background: linear-gradient(135deg, rgba(224, 123, 31, 0.28) 0%, rgba(180, 87, 13, 0.18) 100%);
+          border-color: var(--amber);
+          transform: translateY(-1px);
+          box-shadow: 0 8px 24px rgba(224, 123, 31, 0.25);
         }
         .drawer-3d-icon-wrap {
-          width: 36px;
-          height: 36px;
-          border-radius: 10px;
-          background: var(--amber);
+          width: 38px;
+          height: 38px;
+          border-radius: 12px;
+          background: linear-gradient(135deg, var(--amber) 0%, #b4570d 100%);
           color: #ffffff;
           display: flex;
           align-items: center;
           justify-content: center;
+          box-shadow: 0 0 14px rgba(224, 123, 31, 0.4);
+          flex-shrink: 0;
         }
         .drawer-3d-text {
           display: flex;
           flex-direction: column;
+          gap: 2px;
+          flex: 1;
         }
         .drawer-3d-title {
-          font-size: 0.92rem;
+          font-size: 0.94rem;
           font-weight: 800;
+          color: #ffffff;
+        }
+        .drawer-3d-badge {
+          font-size: 0.62rem;
+          font-weight: 800;
+          padding: 2px 7px;
+          border-radius: 6px;
+          background: rgba(224, 123, 31, 0.25);
+          border: 1px solid var(--amber);
+          color: var(--amber);
+          letter-spacing: 0.05em;
+          text-transform: uppercase;
         }
         .drawer-3d-sub {
           font-size: 0.72rem;
-          opacity: 0.75;
+          color: rgba(223, 203, 175, 0.75);
         }
+
+        /* Editorial Navigation List */
         .drawer-nav-list {
           display: flex;
           flex-direction: column;
-          gap: 0.5rem;
+          gap: 0.45rem;
           flex: 1;
+        }
+        .drawer-section-label {
+          font-size: 0.68rem;
+          font-weight: 700;
+          letter-spacing: 0.14em;
+          text-transform: uppercase;
+          color: rgba(223, 203, 175, 0.4);
+          padding-left: 6px;
+          margin-bottom: 2px;
         }
         .drawer-nav-link {
           display: flex;
           align-items: center;
-          gap: 14px;
-          padding: 13px 16px;
+          gap: 12px;
+          padding: 10px 14px;
           border-radius: 14px;
-          border: 1px solid transparent;
+          border: 1px solid rgba(255, 255, 255, 0.04);
           background: rgba(255, 255, 255, 0.03);
           color: rgba(255, 255, 255, 0.85);
-          font-size: 0.95rem;
-          font-weight: 600;
           text-align: left;
           cursor: pointer;
           transition: all 0.22s ease;
+          position: relative;
         }
         .drawer-nav-link:hover {
-          background: rgba(224, 123, 31, 0.1);
+          background: rgba(224, 123, 31, 0.12);
+          border-color: rgba(224, 123, 31, 0.25);
           color: #ffffff;
-          border-color: rgba(224, 123, 31, 0.2);
-          transform: translateX(4px);
+          transform: translateX(3px);
         }
         .drawer-nav-link.active {
-          background: linear-gradient(135deg, rgba(224, 123, 31, 0.2) 0%, rgba(180, 87, 13, 0.15) 100%);
-          border-color: rgba(224, 123, 31, 0.4);
-          color: var(--amber);
-          font-weight: 800;
+          background: linear-gradient(135deg, rgba(224, 123, 31, 0.22) 0%, rgba(180, 87, 13, 0.14) 100%);
+          border-color: rgba(224, 123, 31, 0.45);
+          color: #ffffff;
+          box-shadow: 0 4px 16px rgba(0, 0, 0, 0.35);
         }
         .drawer-link-num {
           font-family: monospace;
           font-size: 0.76rem;
+          font-weight: 700;
           color: var(--amber);
-          opacity: 0.8;
+          opacity: 0.9;
         }
-        .drawer-link-label {
+        .drawer-link-text-col {
+          display: flex;
+          flex-direction: column;
+          gap: 1px;
           flex: 1;
         }
-        .drawer-active-dot {
-          width: 7px;
-          height: 7px;
+        .drawer-link-title {
+          font-size: 0.9rem;
+          font-weight: 700;
+          color: #ffffff;
+        }
+        .drawer-link-subtitle {
+          font-size: 0.68rem;
+          color: rgba(223, 203, 175, 0.6);
+        }
+        .drawer-active-indicator {
+          width: 6px;
+          height: 6px;
           border-radius: 50%;
           background: var(--amber);
-          box-shadow: 0 0 8px var(--amber);
+          box-shadow: 0 0 10px var(--amber);
         }
+
+        /* Social Quick Links */
+        .drawer-social-row {
+          display: flex;
+          gap: 8px;
+          padding: 4px 0;
+        }
+        .drawer-social-btn {
+          flex: 1;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          gap: 8px;
+          padding: 8px 12px;
+          border-radius: 12px;
+          background: rgba(255, 255, 255, 0.04);
+          border: 1px solid rgba(223, 203, 175, 0.14);
+          color: rgba(255, 255, 255, 0.8);
+          font-size: 0.78rem;
+          font-weight: 600;
+          text-decoration: none;
+          transition: all 0.2s ease;
+        }
+        .drawer-social-btn:hover {
+          background: rgba(224, 123, 31, 0.18);
+          border-color: var(--amber);
+          color: #ffffff;
+          transform: translateY(-1px);
+        }
+
+        /* Drawer Footer */
         .drawer-footer {
           display: flex;
           flex-direction: column;
           gap: 0.75rem;
           padding-top: 1rem;
-          border-top: 1px solid rgba(223, 203, 175, 0.15);
+          border-top: 1px solid rgba(223, 203, 175, 0.12);
         }
-        .drawer-lang-btn {
+        .drawer-lang-segment {
           display: flex;
           align-items: center;
           justify-content: space-between;
-          padding: 10px 14px;
+          padding: 6px 12px;
           border-radius: 12px;
-          background: rgba(255, 255, 255, 0.04);
-          border: 1px solid rgba(223, 203, 175, 0.15);
-          color: #dfcbaf;
-          font-size: 0.8rem;
+          background: rgba(0, 0, 0, 0.35);
+          border: 1px solid rgba(223, 203, 175, 0.12);
+        }
+        .drawer-lang-choice {
+          padding: 4px 12px;
+          border-radius: 8px;
+          border: none;
+          font-size: 0.74rem;
+          font-weight: 700;
           cursor: pointer;
+          background: transparent;
+          color: rgba(255, 255, 255, 0.5);
+          transition: all 0.2s ease;
+        }
+        .drawer-lang-choice.active {
+          background: var(--amber);
+          color: #ffffff;
+          box-shadow: 0 2px 8px rgba(224, 123, 31, 0.4);
         }
         .drawer-contact-btn {
           width: 100%;
           justify-content: center;
-          padding: 12px;
-          font-size: 0.9rem;
+          padding: 11px;
+          font-size: 0.88rem;
+          font-weight: 700;
           border-radius: 14px;
+          box-shadow: 0 6px 20px rgba(224, 123, 31, 0.35);
         }
 
         .nav-3d-toggle {

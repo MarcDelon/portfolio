@@ -4,6 +4,7 @@ import { useCube, TOTAL_FACES } from '@/lib/CubeContext';
 import { useLanguage } from '@/lib/LanguageContext';
 import CubeFacePreview from '@/components/CubeFacePreview';
 import Starfield from '@/components/Starfield';
+import PlanetDelonGuide from '@/components/PlanetDelonGuide';
 import { Box, ChevronLeft, ChevronRight } from 'lucide-react';
 
 interface Props {
@@ -445,6 +446,9 @@ export default function CubeContainer({ faces }: Props) {
           {faces[current]}
         </div>
       )}
+
+      {/* ── Planet Delon Interactive Virtual Guide (Avatar Companion) ── */}
+      <PlanetDelonGuide />
     </div>
   );
 }

@@ -34,9 +34,9 @@ export async function POST(req: Request) {
 
     const geminiKey = process.env.GEMINI_API_KEY || process.env.GROQ_API_KEY;
 
-    // 1. If a Gemini API key is configured, call Google Gemini API (gemini-3.6-flash / 2.5 / 1.5)
+    // 1. If a Gemini API key is configured, call Google Gemini Flash Lite (Ultra-fast <1s response)
     if (process.env.GEMINI_API_KEY) {
-      const models = ['gemini-3.6-flash', 'gemini-2.5-flash'];
+      const models = ['gemini-3.5-flash-lite', 'gemini-flash-lite-latest', 'gemini-3.1-flash-lite', 'gemini-3.6-flash'];
       for (const model of models) {
         try {
           const response = await fetch(
@@ -44,7 +44,7 @@ export async function POST(req: Request) {
             {
               method: 'POST',
               headers: { 'Content-Type': 'application/json' },
-              signal: AbortSignal.timeout(3500),
+              signal: AbortSignal.timeout(5000),
               body: JSON.stringify({
                 contents: [
                   {

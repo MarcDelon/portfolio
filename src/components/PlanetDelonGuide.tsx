@@ -625,6 +625,17 @@ export default function PlanetDelonGuide() {
           </form>
         </div>
       )}
+
+      <style>{`
+        #planet-delon-chatbot {
+          bottom: clamp(16px, 3.5vw, 28px);
+        }
+        @media (max-width: 960px) {
+          #planet-delon-chatbot {
+            bottom: calc(74px + env(safe-area-inset-bottom, 8px)) !important;
+          }
+        }
+      `}</style>
     </aside>
   );
 }

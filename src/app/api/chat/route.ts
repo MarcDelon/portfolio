@@ -34,42 +34,46 @@ export async function POST(req: Request) {
 
     const geminiKey = process.env.GEMINI_API_KEY || process.env.GROQ_API_KEY;
 
-    // 1. If a free Gemini API key is configured, call Google Gemini 1.5/2.0 Flash
+    // 1. If a Gemini API key is configured, call Google Gemini API (gemini-3.6-flash / 2.5 / 1.5)
     if (process.env.GEMINI_API_KEY) {
-      try {
-        const response = await fetch(
-          `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${process.env.GEMINI_API_KEY}`,
-          {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-              contents: [
-                {
-                  role: 'user',
-                  parts: [
-                    {
-                      text: `${SYSTEM_CONTEXT}\n\nLangue de réponse : ${lang === 'fr' ? 'Français' : 'Anglais'}\n\nMessage de l'utilisateur : ${message}`,
-                    },
-                  ],
+      const models = ['gemini-3.6-flash', 'gemini-2.5-flash', 'gemini-1.5-flash'];
+      for (const model of models) {
+        try {
+          const response = await fetch(
+            `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${process.env.GEMINI_API_KEY}`,
+            {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({
+                contents: [
+                  {
+                    role: 'user',
+                    parts: [
+                      {
+                        text: `${SYSTEM_CONTEXT}\n\nLangue de réponse : ${lang === 'fr' ? 'Français' : 'Anglais'}\n\nMessage de l'utilisateur : ${message}`,
+                      },
+                    ],
+                  },
+                ],
+                generationConfig: {
+                  temperature: 0.7,
+                  maxOutputTokens: 300,
                 },
-              ],
-              generationConfig: {
-                temperature: 0.7,
-                maxOutputTokens: 300,
-              },
-            }),
-          }
-        );
+              }),
+            }
+          );
 
-        if (response.ok) {
-          const data = await response.json();
-          const replyText = data.candidates?.[0]?.content?.parts?.[0]?.text?.replace(/[\p{Emoji_Presentation}\p{Extended_Pictographic}]/gu, '')?.trim();
-          if (replyText) {
-            return NextResponse.json({ reply: replyText });
+          if (response.ok) {
+            const data = await response.json();
+            const rawText = data.candidates?.[0]?.content?.parts?.[0]?.text;
+            if (rawText) {
+              const replyText = rawText.replace(/[\p{Emoji_Presentation}\p{Extended_Pictographic}]/gu, '').trim();
+              return NextResponse.json({ reply: replyText });
+            }
           }
+        } catch {
+          // try next model
         }
-      } catch {
-        // Fallback to internal knowledge engine
       }
     }
 

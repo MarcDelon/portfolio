@@ -12,21 +12,38 @@ const FACE_LABELS = {
 export default function Navbar() {
   const { lang, toggleLang } = useLanguage();
   const { current, goto, openFace, closeToCube, viewMode, isAnimating } = useCube();
-  const [scrolled, setScrolled] = useState(false);
+  const [showMobileNav, setShowMobileNav] = useState(true);
+  const [isScrolled, setIsScrolled] = useState(false);
 
   useEffect(() => {
-    if (viewMode !== 'expanded') {
-      setScrolled(false);
+    let lastScrollTop = 0;
+    
+    const handleScroll = () => {
+      const scrollTop = window.scrollY || document.documentElement.scrollTop;
+      
+      if (scrollTop > 50) {
+        setIsScrolled(true);
+      } else {
+        setIsScrolled(false);
+      }
+
+      if (scrollTop > lastScrollTop + 10) {
+        setShowMobileNav(false);
+      } else if (scrollTop < lastScrollTop - 10) {
+        setShowMobileNav(true);
+      }
+      lastScrollTop = scrollTop;
+    };
+    
+    if (viewMode !== 'expanded' || isAnimating) {
+      setShowMobileNav(true);
+      setIsScrolled(false);
       return;
     }
-    const onScroll = () => {
-      const face = document.getElementById(`cube-face-${current}`);
-      setScrolled((face?.scrollTop ?? 0) > 40);
-    };
-    const face = document.getElementById(`cube-face-${current}`);
-    face?.addEventListener('scroll', onScroll, { passive: true });
-    return () => face?.removeEventListener('scroll', onScroll);
-  }, [current, viewMode]);
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, [viewMode, isAnimating]);
 
   const labels = FACE_LABELS[lang];
   const links = [0, 1, 2, 3];
@@ -44,22 +61,7 @@ export default function Navbar() {
       {/* ── Top Header Bar ── */}
       <nav
         id="main-site-header"
-        style={{
-          position: 'fixed',
-          top: 0,
-          left: 0,
-          right: 0,
-          zIndex: 600,
-          height: 'var(--navbar-h)',
-          display: 'flex',
-          alignItems: 'center',
-          transition: 'background 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease',
-          background: 'rgba(22, 11, 6, 0.96)',
-          backdropFilter: 'blur(20px)',
-          WebkitBackdropFilter: 'blur(20px)',
-          borderBottom: '1px solid rgba(223, 203, 175, 0.16)',
-          boxShadow: '0 4px 24px rgba(0, 0, 0, 0.55)',
-        }}
+        className={isScrolled ? 'header-scrolled' : ''}
       >
         <div
           className="container"
@@ -162,7 +164,7 @@ export default function Navbar() {
                   color:
                     current === i && viewMode === 'expanded'
                       ? '#ffffff'
-                      : 'var(--cream-dim)',
+                      : 'rgba(255, 255, 255, 0.85)',
                   boxShadow:
                     current === i && viewMode === 'expanded'
                       ? '0 2px 10px rgba(224, 123, 31, 0.4)'
@@ -215,7 +217,7 @@ export default function Navbar() {
       </nav>
 
       {/* ── Mobile Bottom Tab Navigation Bar ── */}
-      <nav className="mobile-bottom-bar" aria-label="Navigation mobile">
+      <nav className={`mobile-bottom-bar ${!showMobileNav ? 'hidden-on-scroll' : ''}`} aria-label="Navigation mobile">
         {[
           {
             id: 0,
@@ -277,6 +279,62 @@ export default function Navbar() {
       </nav>
 
       <style>{`
+        #main-site-header {
+          position: fixed;
+          top: 0;
+          left: 0;
+          right: 0;
+          margin: 0 auto;
+          z-index: 600;
+          height: var(--navbar-h, 70px);
+          display: flex;
+          align-items: center;
+          transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+          background: rgba(22, 11, 6, 0.96);
+          backdrop-filter: blur(20px);
+          -webkit-backdrop-filter: blur(20px);
+          border-bottom: 1px solid rgba(223, 203, 175, 0.16);
+          box-shadow: 0 4px 24px rgba(0, 0, 0, 0.55);
+          width: 100%;
+          max-width: 100%;
+          border-radius: 0;
+        }
+
+        #main-site-header.header-scrolled {
+          top: 12px;
+          max-width: 1000px;
+          width: calc(100% - 32px);
+          height: calc(var(--navbar-h, 70px) * 0.85);
+          border-radius: 50px;
+          border: 1px solid rgba(223, 203, 175, 0.25);
+          box-shadow: 0 10px 40px rgba(0, 0, 0, 0.8);
+          background: rgba(22, 11, 6, 0.98);
+        }
+
+        #main-site-header #nav-logo {
+          transition: font-size 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        #main-site-header.header-scrolled #nav-logo {
+          font-size: clamp(0.85rem, 3vw, 1rem) !important;
+        }
+
+        #main-site-header.header-scrolled .nav-3d-toggle {
+          padding: 4px 10px !important;
+          font-size: 0.68rem !important;
+        }
+
+        #main-site-header.header-scrolled .nav-3d-toggle svg {
+          width: 12px;
+          height: 12px;
+          transition: all 0.3s ease;
+        }
+
+        #main-site-header.header-scrolled #lang-toggle {
+          padding: 4px 10px !important;
+          font-size: 0.68rem !important;
+        }
+
         .nav-3d-toggle {
           display: inline-flex;
           align-items: center;
@@ -324,6 +382,13 @@ export default function Navbar() {
           align-items: stretch;
           user-select: none;
           touch-action: manipulation;
+          transition: transform 0.4s cubic-bezier(0.33, 1, 0.68, 1), opacity 0.4s cubic-bezier(0.33, 1, 0.68, 1);
+        }
+
+        .mobile-bottom-bar.hidden-on-scroll {
+          transform: translateY(120%);
+          opacity: 0;
+          pointer-events: none;
         }
 
         .mobile-tab-btn {

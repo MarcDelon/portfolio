@@ -5,6 +5,7 @@ import { useLanguage } from '@/lib/LanguageContext';
 import CubeFacePreview from '@/components/CubeFacePreview';
 import Starfield from '@/components/Starfield';
 import PlanetDelonGuide from '@/components/PlanetDelonGuide';
+import HologramCone3D from '@/components/HologramCone3D';
 import { Box, ChevronLeft, ChevronRight } from 'lucide-react';
 
 interface Props {
@@ -27,6 +28,14 @@ export default function CubeContainer({ faces }: Props) {
     closeToCube,
   } = useCube();
   const { lang } = useLanguage();
+
+  const isStaticExpanded = viewMode === 'expanded' && !isAnimating && !isExploding && !isZoomingOut;
+
+  useEffect(() => {
+    if (!isStaticExpanded) {
+      window.scrollTo(0, 0);
+    }
+  }, [isStaticExpanded]);
 
   /* ── 3D Cube Physics State (Inertia & Smooth Damping) ── */
   const [rotY, setRotY] = useState(-32);
@@ -225,7 +234,7 @@ export default function CubeContainer({ faces }: Props) {
   }, [viewMode, isAnimating, goNext, goPrev]);
 
   return (
-    <div className={`cube-root-viewport mode-${viewMode} ${isExploding ? 'is-exploding' : ''}`}>
+    <div className={`cube-root-viewport mode-${viewMode} ${isExploding ? 'is-exploding' : ''} ${isStaticExpanded ? 'is-static-expanded' : ''}`}>
       {/* ── Dynamic Parallax Galaxy & Background Texture with Warp Zoom ── */}
       <div className={`cube-ambient-bg ${isExploding ? 'galaxy-warp-zoom' : ''}`}>
         {/* Animated Galaxy Starfield with Hyperdrive Warp Flight */}
@@ -275,97 +284,117 @@ export default function CubeContainer({ faces }: Props) {
           onPointerUp={handlePointerUp}
           onPointerCancel={handlePointerUp}
         >
-          <div
-            id="cube-wrapper"
-            ref={cubeWrapperRef}
-            className={`cube-object ${isExploding ? 'cube-shattered' : ''}`}
-            style={{
-              transform: `translate3d(0, 0, -100px) rotateX(${rotXRef.current}deg) rotateY(${rotYRef.current}deg)`,
-              transition: isDragging
-                ? 'none'
-                : 'transform 0.3s cubic-bezier(0.16, 1, 0.3, 1)',
-            }}
-          >
-            {/* ── 4 Lateral Faces: Shatter and vanish into outer space on click ── */}
-            {faces.map((_, i) => {
-              const isHovered = hoveredFace === i;
-
-              // Physical dispersal vectors
-              const shatterVectors = [
-                'rotateY(0deg) translateZ(1100px) translateY(-180px) rotateZ(-30deg) scale(0.15)',
-                'rotateY(90deg) translateZ(1100px) translateX(450px) rotateZ(35deg) scale(0.15)',
-                'rotateY(180deg) translateZ(1200px) translateY(180px) rotateX(40deg) scale(0.15)',
-                'rotateY(270deg) translateZ(1100px) translateX(-450px) rotateZ(-35deg) scale(0.15)',
-              ];
-
-              return (
-                <div
-                  key={i}
-                  id={`cube-face-wrapper-${i}`}
-                  className={`cube-solid-face lateral-face face-idx-${i} ${
-                    isHovered && !isExploding ? 'hovered-face' : ''
-                  }`}
-                  style={{
-                    transform: isExploding
-                      ? shatterVectors[i]
-                      : `rotateY(${i * 90}deg) translateZ(var(--cube-half, 180px))`,
-                    opacity: isExploding ? 0 : 1,
-                    transition: isDragging
-                      ? 'none'
-                      : 'transform 1s cubic-bezier(0.16, 1, 0.25, 1), opacity 0.75s ease',
-                  }}
-                  onMouseEnter={() => setHoveredFace(i)}
-                  onMouseLeave={() => setHoveredFace(null)}
-                >
-                  <div className="cube-face-preview-container">
-                    <CubeFacePreview faceIndex={i} />
-                  </div>
-                </div>
-              );
-            })}
-
-            {/* ── Top Cap (Shatters upward into cosmos) ── */}
-            <div
-              className="cube-solid-face cube-top-face"
-              style={{
-                transform: isExploding
-                  ? 'rotateX(90deg) translateZ(1100px) rotateZ(60deg) scale(0.15)'
-                  : 'rotateX(90deg) translateZ(var(--cube-half, 180px))',
-                opacity: isExploding ? 0 : 1,
-                transition: 'transform 1s cubic-bezier(0.16, 1, 0.25, 1), opacity 0.75s ease',
-              }}
-            >
-              <div className="top-face-decor">
-                <div className="top-face-grid" />
-                <div className="top-face-logo">
-                  <span className="logo-gem">◆</span>
-                  <span className="logo-initials">MD</span>
-                </div>
-                <span className="top-face-label">MARC DELON · PORTFOLIO</span>
-              </div>
-            </div>
-
-            {/* ── Bottom Cap (Shatters downward) ── */}
-            <div
-              className="cube-solid-face cube-bottom-face"
-              style={{
-                transform: isExploding
-                  ? 'rotateX(-90deg) translateZ(1100px) rotateZ(-60deg) scale(0.15)'
-                  : 'rotateX(-90deg) translateZ(var(--cube-half, 180px))',
-                opacity: isExploding ? 0 : 1,
-                transition: 'transform 1s cubic-bezier(0.16, 1, 0.25, 1), opacity 0.75s ease',
-              }}
-            />
-
-            {/* ── 3D Ground Shadow ── */}
+          {/* ── 3D Stage positioning container (anchored to the right) ── */}
+          <div className="cube-3d-stage">
+            {/* ── Static Projector Base (stays flat on the ground) ── */}
             <div
               className="cube-ground-shadow"
               style={{
-                transform: isExploding ? 'translateY(500px) scale(3)' : 'translateY(250px) rotateX(90deg)',
+                transform: isExploding ? 'translateZ(-100px) translateY(500px) scale(3)' : 'translateZ(-100px) translateY(260px) rotateX(90deg)',
                 opacity: isExploding ? 0 : 1,
                 transition: 'opacity 0.5s ease, transform 0.8s ease',
               }}
             />
+            <div
+              className="hologram-projector"
+              style={{
+                transform: isExploding ? 'translateZ(-100px) translateY(800px) rotateX(90deg) scale(0.1)' : 'translateZ(-100px) translateY(260px) rotateX(90deg)',
+                opacity: isExploding ? 0 : 1,
+                transition: 'opacity 0.6s ease, transform 0.8s ease',
+              }}
+            />
+
+            {/* ── Real-Time 3D Volumetric Hologram Cone (Hardware Additive Blending & 3D Perspective) ── */}
+            <HologramCone3D
+              rotXRef={rotXRef}
+              rotYRef={rotYRef}
+              isExploding={isExploding}
+            />
+
+            <div
+              id="cube-wrapper"
+              ref={cubeWrapperRef}
+              className={`cube-object ${isExploding ? 'cube-shattered' : ''}`}
+              style={{
+                transform: `translate3d(0, 0, -100px) rotateX(${rotXRef.current}deg) rotateY(${rotYRef.current}deg)`,
+                transition: isDragging
+                  ? 'none'
+                  : 'transform 0.3s cubic-bezier(0.16, 1, 0.3, 1)',
+              }}
+            >
+
+              {/* ── 4 Lateral Faces: Shatter and vanish into outer space on click ── */}
+              {faces.map((_, i) => {
+                const isHovered = hoveredFace === i;
+
+                // Physical dispersal vectors
+                const shatterVectors = [
+                  'rotateY(0deg) translateZ(1100px) translateY(-180px) rotateZ(-30deg) scale(0.15)',
+                  'rotateY(90deg) translateZ(1100px) translateX(450px) rotateZ(35deg) scale(0.15)',
+                  'rotateY(180deg) translateZ(1200px) translateY(180px) rotateX(40deg) scale(0.15)',
+                  'rotateY(270deg) translateZ(1100px) translateX(-450px) rotateZ(-35deg) scale(0.15)',
+                ];
+
+                return (
+                  <div
+                    key={i}
+                    id={`cube-face-wrapper-${i}`}
+                    className={`cube-solid-face lateral-face face-idx-${i} ${
+                      isHovered && !isExploding ? 'hovered-face' : ''
+                    }`}
+                    style={{
+                      transform: isExploding
+                        ? shatterVectors[i]
+                        : `rotateY(${i * 90}deg) translateZ(var(--cube-half, 180px))`,
+                      opacity: isExploding ? 0 : 1,
+                      transition: isDragging
+                        ? 'none'
+                        : 'transform 1s cubic-bezier(0.16, 1, 0.25, 1), opacity 0.75s ease',
+                    }}
+                    onMouseEnter={() => setHoveredFace(i)}
+                    onMouseLeave={() => setHoveredFace(null)}
+                  >
+                    <div className="cube-face-preview-container">
+                      <CubeFacePreview faceIndex={i} />
+                    </div>
+                  </div>
+                );
+              })}
+
+              {/* ── Top Cap (Shatters upward into cosmos) ── */}
+              <div
+                className="cube-solid-face cube-top-face"
+                style={{
+                  transform: isExploding
+                    ? 'rotateX(90deg) translateZ(1100px) rotateZ(60deg) scale(0.15)'
+                    : 'rotateX(90deg) translateZ(var(--cube-half, 180px))',
+                  opacity: isExploding ? 0 : 1,
+                  transition: 'transform 1s cubic-bezier(0.16, 1, 0.25, 1), opacity 0.75s ease',
+                }}
+              >
+                <div className="top-face-decor">
+                  <div className="top-face-grid" />
+                  <div className="top-face-logo">
+                    <span className="logo-gem">◆</span>
+                    <span className="logo-initials">MD</span>
+                  </div>
+                  <span className="top-face-label">MARC DELON · PORTFOLIO</span>
+                </div>
+              </div>
+
+              {/* ── Bottom Cap (Shatters downward) ── */}
+              <div
+                className="cube-solid-face cube-bottom-face"
+                style={{
+                  transform: isExploding
+                    ? 'rotateX(-90deg) translateZ(1100px) rotateZ(-60deg) scale(0.15)'
+                    : 'rotateX(-90deg) translateZ(var(--cube-half, 180px))',
+                  opacity: isExploding ? 0 : 1,
+                  transition: 'transform 1s cubic-bezier(0.16, 1, 0.25, 1), opacity 0.75s ease',
+                }}
+              />
+
+            </div>
           </div>
         </div>
       )}
@@ -424,23 +453,18 @@ export default function CubeContainer({ faces }: Props) {
       )}
 
       {/* ── Native 2D Full-Screen Active Document When Static (100% Native Scroll & Clicks) ── */}
-      {viewMode === 'expanded' && !isAnimating && !isExploding && !isZoomingOut && (
+      {isStaticExpanded && (
         <div
           id={`cube-face-${current}`}
           className={`expanded-active-document face-panel-${current}`}
           style={{
-            position: 'fixed',
-            inset: 0,
+            position: 'relative',
             zIndex: 100,
-            width: '100vw',
-            height: '100dvh',
+            width: '100%',
             minHeight: '100dvh',
-            overflowY: 'auto',
             overflowX: 'hidden',
-            WebkitOverflowScrolling: 'touch',
             pointerEvents: 'auto',
-            overscrollBehavior: 'none',
-            paddingBottom: 'env(safe-area-inset-bottom, 0px)',
+            paddingBottom: 'calc(85px + env(safe-area-inset-bottom, 0px))',
           }}
         >
           {faces[current]}

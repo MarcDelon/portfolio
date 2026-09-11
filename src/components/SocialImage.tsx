@@ -58,8 +58,7 @@ export default function SocialImage({
     <div
       className={`social-img-wrapper ${wrapperClassName}`}
       style={{
-        position: fill ? 'absolute' : 'relative',
-        inset: fill ? 0 : undefined,
+        position: 'relative',
         width: fill ? '100%' : (width ? `${width}px` : '100%'),
         height: fill ? '100%' : (height ? `${height}px` : '100%'),
         overflow: 'hidden',

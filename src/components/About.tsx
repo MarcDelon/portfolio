@@ -102,7 +102,7 @@ export default function About() {
                 linkedin.com/in/marc-delon
               </a>
               <a 
-                href="/cv.pdf" 
+                href="/CV%20-%20NZENANG%20TCHOUANTCHEU%20MARC%20DELON.pdf" 
                 download="CV - NZENANG TCHOUANTCHEU MARC DELON.pdf" 
                 target="_blank" 
                 rel="noopener noreferrer" 

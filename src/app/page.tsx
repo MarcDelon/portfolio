@@ -67,7 +67,7 @@ function ProjectsFace() {
 ══════════════════════════════════════════════════════════════════ */
 function ContactFace() {
   return (
-    <div style={{ minHeight: '100vh' }}>
+    <div style={{ minHeight: '100vh', background: 'var(--dark)' }}>
       <div style={{ paddingTop: 'var(--navbar-h)' }}>
         <Contact />
         <Footer />

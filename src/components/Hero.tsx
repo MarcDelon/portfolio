@@ -1,5 +1,6 @@
 'use client';
 import { useState, useEffect } from 'react';
+import SocialImage from '@/components/SocialImage';
 import { useLanguage } from '@/lib/LanguageContext';
 import { useCube } from '@/lib/CubeContext';
 import { translations } from '@/lib/data';
@@ -144,13 +145,14 @@ export default function Hero() {
               }} />
 
               {/* Background Layer */}
-              <img 
-                src="/photo.png" 
+              <SocialImage 
+                src="/photo.webp" 
                 alt="" 
+                fill
+                preload={true}
+                sizes="250px"
+                shimmerColor="amber"
                 style={{ 
-                  position: 'absolute',
-                  top: '50%', left: '50%',
-                  width: '115%', height: '115%',
                   objectFit: 'cover',
                   objectPosition: 'center top',
                   transform: `translate(calc(-50% + ${-tilt.y * 0.4}px), calc(-50% + ${tilt.x * 0.4}px)) rotateX(${tilt.x * 0.5}deg) rotateY(${tilt.y * 0.5}deg)`,
@@ -159,17 +161,27 @@ export default function Hero() {
                   willChange: 'transform',
                   pointerEvents: 'none',
                   filter: 'blur(6px) brightness(0.75)',
-                }} 
+                }}
+                wrapperStyle={{
+                  position: 'absolute',
+                  top: '50%',
+                  left: '50%',
+                  width: '115%',
+                  height: '115%',
+                  transform: 'translate(-50%, -50%)',
+                  pointerEvents: 'none',
+                }}
               />
               
               {/* Foreground Layer */}
-              <img 
-                src="/photo-front.png" 
+              <SocialImage 
+                src="/photo-front.webp" 
                 alt="Marc Delon" 
+                fill
+                preload={true}
+                sizes="250px"
+                shimmerColor="amber"
                 style={{ 
-                  position: 'absolute',
-                  top: '50%', left: '50%',
-                  width: '115%', height: '115%',
                   objectFit: 'cover',
                   objectPosition: 'center top',
                   transform: `translate(calc(-50% + ${-tilt.y * 1.5}px), calc(-50% + ${tilt.x * 1.5}px)) rotateX(${tilt.x * 1.2}deg) rotateY(${tilt.y * 1.2}deg) scale(1.05)`,
@@ -177,9 +189,18 @@ export default function Hero() {
                   transformOrigin: 'center center',
                   willChange: 'transform',
                   pointerEvents: 'none',
-                  zIndex: 2,
                   filter: isHovered ? 'drop-shadow(0px 15px 15px rgba(0,0,0,0.5))' : 'drop-shadow(0px 0px 0px rgba(0,0,0,0))',
-                }} 
+                }}
+                wrapperStyle={{
+                  position: 'absolute',
+                  top: '50%',
+                  left: '50%',
+                  width: '115%',
+                  height: '115%',
+                  transform: 'translate(-50%, -50%)',
+                  pointerEvents: 'none',
+                  zIndex: 2,
+                }}
               />
 
               {/* Glare reflection */}

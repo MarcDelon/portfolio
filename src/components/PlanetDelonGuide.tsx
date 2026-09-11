@@ -548,13 +548,66 @@ export default function PlanetDelonGuide() {
             {/* Typing Indicator */}
             {isTyping && (
               <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
-                <div style={{ width: 24, height: 24, borderRadius: '50%', overflow: 'hidden', position: 'relative', border: '1px solid var(--amber)' }}>
+                <div style={{
+                  width: 24,
+                  height: 24,
+                  borderRadius: '50%',
+                  overflow: 'hidden',
+                  position: 'relative',
+                  border: '1px solid var(--amber)',
+                  animation: 'novaAvatarPulse 2s infinite ease-in-out',
+                }}>
                   <Image src="/avatar.png" alt="NoVa" fill sizes="24px" style={{ objectFit: 'cover' }} />
                 </div>
-                <div style={{ background: 'rgba(255, 255, 255, 0.06)', borderRadius: '12px', padding: '6px 12px', display: 'flex', gap: '4px', alignItems: 'center' }}>
-                  <span style={{ width: 5, height: 5, borderRadius: '50%', background: 'var(--amber)', animation: 'pulse 1s infinite 0ms' }} />
-                  <span style={{ width: 5, height: 5, borderRadius: '50%', background: 'var(--amber)', animation: 'pulse 1s infinite 200ms' }} />
-                  <span style={{ width: 5, height: 5, borderRadius: '50%', background: 'var(--amber)', animation: 'pulse 1s infinite 400ms' }} />
+                <div
+                  style={{
+                    background: 'rgba(255, 255, 255, 0.08)',
+                    backdropFilter: 'blur(10px)',
+                    border: '1px solid rgba(224, 123, 31, 0.25)',
+                    borderRadius: '14px',
+                    padding: '8px 14px',
+                    display: 'flex',
+                    gap: '5px',
+                    alignItems: 'center',
+                    boxShadow: '0 4px 14px rgba(0, 0, 0, 0.3), 0 0 12px rgba(224, 123, 31, 0.12)',
+                  }}
+                >
+                  <span
+                    className="nova-typing-dot"
+                    style={{
+                      width: 6,
+                      height: 6,
+                      borderRadius: '50%',
+                      background: 'var(--amber)',
+                      display: 'inline-block',
+                      animation: 'novaTypingDot 1.25s infinite ease-in-out',
+                      animationDelay: '0ms',
+                    }}
+                  />
+                  <span
+                    className="nova-typing-dot"
+                    style={{
+                      width: 6,
+                      height: 6,
+                      borderRadius: '50%',
+                      background: 'var(--amber)',
+                      display: 'inline-block',
+                      animation: 'novaTypingDot 1.25s infinite ease-in-out',
+                      animationDelay: '180ms',
+                    }}
+                  />
+                  <span
+                    className="nova-typing-dot"
+                    style={{
+                      width: 6,
+                      height: 6,
+                      borderRadius: '50%',
+                      background: 'var(--amber)',
+                      display: 'inline-block',
+                      animation: 'novaTypingDot 1.25s infinite ease-in-out',
+                      animationDelay: '360ms',
+                    }}
+                  />
                 </div>
               </div>
             )}
@@ -579,6 +632,7 @@ export default function PlanetDelonGuide() {
           >
             <input
               type="text"
+              className="nova-chat-input"
               value={inputText}
               onChange={(e) => setInputText(e.target.value)}
               placeholder={lang === 'fr' ? 'Posez une question à NoVa...' : 'Ask NoVa a question...'}
@@ -587,9 +641,8 @@ export default function PlanetDelonGuide() {
                 background: 'rgba(255, 255, 255, 0.05)',
                 border: '1px solid rgba(223, 203, 175, 0.18)',
                 borderRadius: '12px',
-                padding: '7px 12px',
+                padding: '8px 12px',
                 color: '#ffffff',
-                fontSize: '0.78rem',
                 outline: 'none',
                 fontFamily: 'var(--font-sans)',
               }}
@@ -630,9 +683,36 @@ export default function PlanetDelonGuide() {
         #planet-delon-chatbot {
           bottom: clamp(16px, 3.5vw, 28px);
         }
+        .nova-chat-input {
+          font-size: 0.85rem;
+        }
         @media (max-width: 960px) {
           #planet-delon-chatbot {
             bottom: calc(74px + env(safe-area-inset-bottom, 8px)) !important;
+          }
+          .nova-chat-input {
+            /* 16px prevents iOS Safari and mobile Chrome from zooming when the keyboard opens */
+            font-size: 16px !important;
+          }
+        }
+        @keyframes novaTypingDot {
+          0%, 60%, 100% {
+            transform: translateY(0) scale(0.85);
+            opacity: 0.35;
+            box-shadow: 0 0 0 rgba(224, 123, 31, 0);
+          }
+          30% {
+            transform: translateY(-5px) scale(1.18);
+            opacity: 1;
+            box-shadow: 0 0 8px rgba(224, 123, 31, 0.85);
+          }
+        }
+        @keyframes novaAvatarPulse {
+          0%, 100% {
+            box-shadow: 0 0 0 0 rgba(224, 123, 31, 0.35);
+          }
+          50% {
+            box-shadow: 0 0 10px 2px rgba(224, 123, 31, 0.7);
           }
         }
       `}</style>

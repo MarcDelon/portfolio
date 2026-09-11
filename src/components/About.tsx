@@ -1,5 +1,6 @@
 'use client';
 import { useEffect, useRef } from 'react';
+import SocialImage from '@/components/SocialImage';
 import { useLanguage } from '@/lib/LanguageContext';
 import { translations } from '@/lib/data';
 
@@ -152,7 +153,14 @@ export default function About() {
                   border: '3px solid var(--amber)',
                   position: 'relative'
                 }}>
-                  <img src="/photo.png" alt="Marc Delon" style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'center top' }} />
+                  <SocialImage
+                    src="/photo.webp"
+                    alt="Marc Delon"
+                    fill
+                    sizes="200px"
+                    style={{ objectFit: 'cover', objectPosition: 'center top' }}
+                    shimmerColor="cream"
+                  />
                 </div>
                 {/* Amber badge */}
                 <div style={{

@@ -1,5 +1,6 @@
 'use client';
 import Image from 'next/image';
+import SocialImage from '@/components/SocialImage';
 import { useLanguage } from '@/lib/LanguageContext';
 import { useCube } from '@/lib/CubeContext';
 import { 
@@ -165,8 +166,13 @@ export default function CubeFacePreview({ faceIndex }: FacePreviewProps) {
                   display: 'flex', alignItems: 'center', justifyContent: 'center',
                   padding: '3px', flexShrink: 0,
                 }}>
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img src="/image projet/legacy/logo.png" alt="Legacy Groupe" style={{ maxWidth: '100%', maxHeight: '100%', objectFit: 'contain' }} />
+                  <SocialImage
+                    src="/image projet/legacy/logo.webp"
+                    alt="Legacy Groupe"
+                    width={26}
+                    height={26}
+                    style={{ objectFit: 'contain' }}
+                  />
                 </div>
                 <div>
                   <div style={{ fontSize: '0.76rem', fontWeight: 700, color: '#ffffff' }}>Legacy Groupe</div>
@@ -191,8 +197,13 @@ export default function CubeFacePreview({ faceIndex }: FacePreviewProps) {
                   display: 'flex', alignItems: 'center', justifyContent: 'center',
                   padding: '3px', flexShrink: 0,
                 }}>
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img src="/image projet/job day/logo.jpg" alt="Égalité pour Tous" style={{ maxWidth: '100%', maxHeight: '100%', objectFit: 'contain' }} />
+                  <SocialImage
+                    src="/image projet/job day/logo.webp"
+                    alt="Égalité pour Tous"
+                    width={26}
+                    height={26}
+                    style={{ objectFit: 'contain' }}
+                  />
                 </div>
                 <div>
                   <div style={{ fontSize: '0.76rem', fontWeight: 700, color: '#ffffff' }}>Égalité pour Tous</div>

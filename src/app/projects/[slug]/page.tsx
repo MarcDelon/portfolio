@@ -5,6 +5,7 @@ import { notFound } from 'next/navigation';
 import { useLanguage } from '@/lib/LanguageContext';
 import { projects } from '@/lib/data';
 import Starfield from '@/components/Starfield';
+import SocialImage from '@/components/SocialImage';
 import { 
   ArrowLeft, 
   ArrowRight, 
@@ -110,11 +111,15 @@ export default function ProjectDetailsPage({ params }: PageProps) {
                   className={`detail-logo-wrap ${project.slug === 'vano-chat' ? 'is-dark-logo' : ''}`}
                   style={project.slug === 'vano-chat' ? { background: '#000000', borderColor: 'rgba(255, 255, 255, 0.15)' } : undefined}
                 >
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img
+                  <SocialImage
                     src={project.logo}
                     alt={`${project.title} Logo`}
+                    fill
+                    sizes="90px"
+                    style={{ objectFit: 'contain' }}
                     className="detail-card-logo-img"
+                    preload={true}
+                    shimmerColor="amber"
                   />
                 </div>
                 <div className="detail-card-badge">
@@ -190,12 +195,14 @@ export default function ProjectDetailsPage({ params }: PageProps) {
                       onClick={() => setActiveImage(imgSrc)}
                       title={lang === 'fr' ? 'Cliquez pour agrandir' : 'Click to enlarge'}
                     >
-                      {/* eslint-disable-next-line @next/next/no-img-element */}
-                      <img
+                      <SocialImage
                         src={imgSrc}
                         alt={`${project.title} screenshot ${imgIdx + 1}`}
+                        fill
+                        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 450px"
                         className="gallery-screenshot"
-                        loading="lazy"
+                        style={{ objectFit: 'cover', objectPosition: 'top center' }}
+                        shimmerColor="dark"
                       />
                       <div className="gallery-hover-overlay">
                         <span className="gallery-zoom-badge">
@@ -342,11 +349,15 @@ export default function ProjectDetailsPage({ params }: PageProps) {
             >
               <X size={24} />
             </button>
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
+            <SocialImage
               src={activeImage}
               alt="Zoomed project view"
+              width={1400}
+              height={850}
+              sizes="95vw"
               className="lightbox-zoomed-img"
+              style={{ maxWidth: '95vw', maxHeight: '90vh', objectFit: 'contain', width: 'auto', height: 'auto' }}
+              shimmerColor="dark"
             />
           </div>
         </div>

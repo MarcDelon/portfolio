@@ -464,7 +464,7 @@ export default function CubeContainer({ faces }: Props) {
             minHeight: '100dvh',
             overflowX: 'hidden',
             pointerEvents: 'auto',
-            paddingBottom: 'calc(85px + env(safe-area-inset-bottom, 0px))',
+            background: current === 1 ? 'var(--cream)' : 'var(--dark)',
           }}
         >
           {faces[current]}

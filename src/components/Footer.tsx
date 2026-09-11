@@ -85,6 +85,11 @@ export default function Footer() {
 
       <style>{`
         @keyframes pulse-green{0%,100%{box-shadow:0 0 0 0 rgba(74,124,89,0.5)}60%{box-shadow:0 0 0 8px rgba(74,124,89,0)}}
+        @media(max-width: 960px) {
+          footer {
+            padding-bottom: calc(2rem + 75px + env(safe-area-inset-bottom, 8px)) !important;
+          }
+        }
       `}</style>
     </footer>
   );

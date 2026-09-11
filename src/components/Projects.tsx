@@ -1,5 +1,6 @@
 'use client';
 import Link from 'next/link';
+import SocialImage from '@/components/SocialImage';
 import { useLanguage } from '@/lib/LanguageContext';
 import { projects, type Project } from '@/lib/data';
 import { ArrowUpRight } from 'lucide-react';
@@ -77,11 +78,14 @@ function AstroTunnelRoom({
               className={`card-logo-container ${project.slug === 'vano-chat' ? 'is-dark-logo' : ''}`}
               style={project.slug === 'vano-chat' ? { background: '#000000', borderColor: 'rgba(255, 255, 255, 0.15)' } : undefined}
             >
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img
+              <SocialImage
                 src={project.logo}
                 alt={project.title}
+                fill
+                sizes="(max-width: 768px) 70px, 90px"
+                style={{ objectFit: 'contain' }}
                 className="card-logo-img"
+                shimmerColor="amber"
               />
             </div>
             <div className="card-preview-strip">

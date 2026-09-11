@@ -101,7 +101,7 @@ export default function Preloader() {
         style={{
           position: 'absolute',
           inset: 0,
-          backgroundImage: 'url(/bamileke.png)',
+          backgroundImage: 'url(/bamileke.webp)',
           backgroundSize: 'cover',
           backgroundPosition: 'center',
           opacity: 0.38,

@@ -23,10 +23,6 @@ export default function WhatsAppButton() {
     <div
       id="global-whatsapp-floating-btn"
       style={{
-        position: 'fixed',
-        bottom: 'clamp(16px, 3.5vw, 28px)',
-        right: 'clamp(16px, 3.5vw, 28px)',
-        zIndex: 9999,
         display: 'flex',
         alignItems: 'center',
         gap: '10px',
@@ -36,6 +32,7 @@ export default function WhatsAppButton() {
     >
       {/* Floating Tooltip Bubble */}
       <div
+        className="whatsapp-tooltip"
         style={{
           background: 'rgba(22, 11, 6, 0.95)',
           color: '#ffffff',
@@ -109,6 +106,25 @@ export default function WhatsAppButton() {
           <path d="M12.04 2c-5.46 0-9.91 4.45-9.91 9.91 0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38c1.45.79 3.08 1.21 4.74 1.21 5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01A9.816 9.816 0 0 0 12.04 2zm.01 1.67c2.2 0 4.26.86 5.82 2.42a8.225 8.225 0 0 1 2.41 5.83c0 4.54-3.7 8.24-8.24 8.24-1.48 0-2.93-.4-4.2-1.15l-.3-.18-3.12.82.83-3.04-.2-.31a8.188 8.188 0 0 1-1.26-4.38c0-4.54 3.7-8.24 8.24-8.24zm4.8 11.64c-.26-.13-1.56-.77-1.8-.86-.24-.09-.42-.13-.6.13-.17.26-.68.86-.84 1.03-.15.17-.31.19-.58.06-.26-.13-1.12-.41-2.13-1.31-.79-.7-1.32-1.57-1.47-1.83-.16-.26-.02-.41.11-.54.12-.12.26-.31.39-.47.13-.15.17-.26.26-.43.09-.17.04-.32-.02-.45-.07-.13-.6-1.45-.82-1.99-.22-.53-.44-.45-.6-.46-.16-.01-.34-.01-.52-.01-.17 0-.46.07-.7.32-.24.26-.93.91-.93 2.22s.95 2.58 1.08 2.76c.13.17 1.88 2.87 4.55 4.02.64.27 1.13.44 1.52.56.64.2 1.22.17 1.68.1.51-.08 1.56-.64 1.78-1.25.22-.61.22-1.14.15-1.25-.06-.11-.23-.18-.49-.31z" />
         </svg>
       </a>
+
+      <style>{`
+        #global-whatsapp-floating-btn {
+          position: fixed;
+          bottom: clamp(20px, 3.5vw, 32px);
+          right: clamp(20px, 3.5vw, 32px);
+          z-index: 850;
+        }
+        @media (max-width: 960px) {
+          #global-whatsapp-floating-btn {
+            /* Positioned above the mobile bottom nav bar (min-height 64px) so it never covers Orbit 3D */
+            bottom: calc(78px + env(safe-area-inset-bottom, 8px)) !important;
+            right: clamp(14px, 3.5vw, 24px) !important;
+          }
+          #global-whatsapp-floating-btn .whatsapp-tooltip {
+            display: none !important;
+          }
+        }
+      `}</style>
     </div>
   );
 }

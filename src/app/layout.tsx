@@ -1,6 +1,13 @@
-import type { Metadata } from 'next';
+import type { Metadata, Viewport } from 'next';
 import './globals.css';
 import { LanguageProvider } from '@/lib/LanguageContext';
+
+export const viewport: Viewport = {
+  width: 'device-width',
+  initialScale: 1,
+  maximumScale: 1,
+  userScalable: false,
+};
 
 export const metadata: Metadata = {
   title: 'NZENANG TCHOUANTCHEU MARC DELON — Portfolio Full-Stack Developer',
@@ -30,6 +37,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <link rel="apple-touch-icon" href="/MD.jpg" />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        {/* Preload critical entrance images for instantaneous above-the-fold render */}
+        <link rel="preload" as="image" href="/bamileke.webp" type="image/webp" />
+        <link rel="preload" as="image" href="/photo.webp" type="image/webp" />
+        <link rel="preload" as="image" href="/photo-front.webp" type="image/webp" />
       </head>
       <body>
         <LanguageProvider>

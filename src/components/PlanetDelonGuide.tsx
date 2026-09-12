@@ -203,8 +203,8 @@ export default function PlanetDelonGuide() {
           : 'Marc Delon is a full-stack software engineer and web/mobile developer passionate about modern architecture and 3D.';
       } else if (lower.includes('competence') || lower.includes('compétence') || lower.includes('formation') || lower.includes('ecole') || lower.includes('école') || lower.includes('keyce')) {
         fallbackText = lang === 'fr'
-          ? 'Marc est étudiant en Génie Logiciel à KEYCE Informatique & Intelligence Artificielle Douala, issu de classe préparatoire Maths-Physique et certifié réseau Cisco CCNA.'
-          : 'Marc studies Software Engineering at KEYCE Informatique & AI Douala, completed Math-Physics preparatory classes, and holds a Cisco CCNA certification.';
+          ? 'Marc est actuellement étudiant en Bachelor 2 Informatique (Tronc Commun, 2025-2026) à KEYCE Informatique & Intelligence Artificielle Douala, avec une spécialisation en Génie Logiciel programmée en Bachelor 3 (2026-2027). Il est issu de classe préparatoire Maths-Physique et certifié Cisco CCNA.'
+          : 'Marc is currently a Bachelor 2 Computer Science student (Core Curriculum, 2025-2026) at KEYCE Informatique & AI Douala, preparing for his Software Engineering specialization in Bachelor 3 (2026-2027). He completed Math-Physics preparatory classes and holds a Cisco CCNA certification.';
       } else if (lower.includes('projet')) {
         fallbackText = lang === 'fr'
           ? 'La salle des projets 3D regroupe les applications complètes et études de cas développées par Marc.'

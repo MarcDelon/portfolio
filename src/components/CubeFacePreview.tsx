@@ -103,7 +103,7 @@ export default function CubeFacePreview({ faceIndex }: FacePreviewProps) {
                 <span className="stat-pill-tag">{lang === 'fr' ? 'Projets' : 'Projects'}</span>
               </div>
               <div className="stat-pill-box">
-                <span className="stat-pill-val">B3</span>
+                <span className="stat-pill-val">B2</span>
                 <span className="stat-pill-tag">KEYCE</span>
               </div>
               <div className="stat-pill-box">

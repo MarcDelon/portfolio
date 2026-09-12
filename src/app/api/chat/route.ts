@@ -17,7 +17,7 @@ Informations détaillées sur Marc Delon :
 - Titre : Ingénieur Logiciel Full-Stack & Développeur Web / Mobile / 3D
 - Localisation : Douala, Cameroun
 - Contact : Email : marcnzenang@gmail.com | Téléphone & WhatsApp : +237 655 46 26 42 | GitHub : MarcDelon | LinkedIn : /in/marc-delon-nzenang-tchouantcheu-57909b22a
-- Formations & Diplômes : Étudiant à KEYCE Informatique & Intelligence Artificielle Douala (Bachelor en Informatique & Génie Logiciel), Classe Préparatoire Scientifique Maths-Physique (Esprit Prépa, admis dans 13 grandes écoles d'ingénieurs), certifié Cisco CCNA (Réseaux & Sécurité)
+- Formations & Diplômes : Actuellement étudiant en Bachelor 2 Informatique (Tronc Commun, année 2025-2026) à KEYCE Informatique & Intelligence Artificielle Douala, avec une spécialisation en Génie Logiciel programmée en Bachelor 3 (2026-2027). Issu de Classe Préparatoire Scientifique Maths-Physique (Esprit Prépa, admis dans 13 grandes écoles d'ingénieurs), certifié Cisco CCNA (Réseaux & Sécurité)
 - Compétences techniques : React, Next.js, Node.js, PHP, Java, SQL, PostgreSQL, MongoDB, Cisco CCNA, TailwindCSS, Three.js, TypeScript, Architecture Full-Stack
 - Navigation du portfolio 3D (Faces du Cube) :
   * Face 0 (Accueil / Home) : Présentation, biographie et philosophie d'ingénierie logicielle.
@@ -121,8 +121,8 @@ export async function POST(req: Request) {
         : 'Marc Delon est un ingénieur logiciel full-stack et développeur web/mobile basé à Douala, Cameroun. Il conçoit des architectures logicielles modernes, des solutions web performantes et des interfaces 3D immersives.';
     } else if (lower.includes('competence') || lower.includes('compétence') || lower.includes('skill') || lower.includes('formation') || lower.includes('diplome') || lower.includes('diplôme') || lower.includes('ccna') || lower.includes('stack') || lower.includes('ecole') || lower.includes('école') || lower.includes('keyce')) {
       reply = isEn
-        ? 'Marc studies Software Engineering at KEYCE Informatique & AI Douala, has completed intensive preparatory classes in Math-Physics, and holds a Cisco CCNA networking certification. He specializes in React, Next.js, Node.js, PHP, Java, SQL, PostgreSQL, and MongoDB.'
-        : 'Marc est étudiant en Génie Logiciel à KEYCE Informatique & Intelligence Artificielle Douala, issu de classe préparatoire Maths-Physique et certifié réseau Cisco CCNA. Il maîtrise React, Next.js, Node.js, PHP, Java, SQL, PostgreSQL et MongoDB.';
+        ? 'Marc is currently a Bachelor 2 Computer Science student (Core Curriculum, 2025-2026) at KEYCE Informatique & AI Douala, preparing for his Software Engineering specialization in Bachelor 3 (2026-2027). He completed intensive preparatory classes in Math-Physics, holds a Cisco CCNA certification, and specializes in React, Next.js, Node.js, PHP, Java, SQL, PostgreSQL, and MongoDB.'
+        : 'Marc est actuellement étudiant en Bachelor 2 Informatique (Tronc Commun, 2025-2026) à KEYCE Informatique & Intelligence Artificielle Douala, avec une spécialisation en Génie Logiciel programmée en Bachelor 3 (2026-2027). Il est issu de classe préparatoire Maths-Physique et certifié réseau Cisco CCNA. Il maîtrise React, Next.js, Node.js, PHP, Java, SQL, PostgreSQL et MongoDB.';
     } else if (lower.includes('projet') || lower.includes('project') || lower.includes('portfolio') || lower.includes('realisation') || lower.includes('réalisation')) {
       reply = isEn
         ? 'The 3D projects room showcases Marc\'s work, including complete web applications, backend architectures, and interactive interfaces with comprehensive case studies.'

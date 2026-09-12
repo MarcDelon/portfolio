@@ -12,7 +12,7 @@ export const viewport: Viewport = {
 export const metadata: Metadata = {
   title: 'NZENANG TCHOUANTCHEU MARC DELON — Portfolio Full-Stack Developer',
   description:
-    'Portfolio de MARC DELON NZENANG TCHOUANTCHEU, étudiant en Bachelor 3 Génie Logiciel à KEYCE Cameroun. Développeur Full-Stack React JS, Node.js, Next.js.',
+    'Portfolio de MARC DELON NZENANG TCHOUANTCHEU, étudiant en Bachelor 2 Informatique (Tronc Commun 2025-2026, futur B3 Génie Logiciel 2026-2027) à KEYCE Cameroun. Développeur Full-Stack React JS, Node.js, Next.js.',
   keywords: ['portfolio', 'développeur', 'react', 'nodejs', 'nextjs', 'cameroun', 'marc delon', 'KEYCE', 'génie logiciel'],
   authors: [{ name: 'NZENANG TCHOUANTCHEU MARC DELON' }],
   icons: {

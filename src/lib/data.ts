@@ -16,7 +16,7 @@ export const translations = {
     hero: {
       greeting: 'Bonjour, je suis',
       role: 'Développeur Full-Stack',
-      subtitle: 'Étudiant passionné en Génie Logiciel · Bachelor 3 · KEYCE, Cameroun',
+      subtitle: 'Étudiant en Informatique (Tronc Commun) · Bachelor 2 (2025-2026) · KEYCE, Cameroun',
       description:
         'Je conçois des expériences web modernes, performantes et élégantes avec React, Node.js et Next.js.',
       cta1: 'Voir mes projets',
@@ -27,7 +27,7 @@ export const translations = {
       label: 'À Propos',
       title: 'Passionné par le code\net l\'innovation',
       description:
-        'Je suis NZENANG TCHOUANTCHEU MARC DELON, étudiant en Bachelor 3 Génie Logiciel à KEYCE Informatique, Cameroun. Passionné par l\'écosystème web & mobile full-stack, je conçois des solutions modernes alliant haute performance et design soigné. Mon parcours s\'enrichit de stages professionnels formateurs, de projets de toutes envergures, de collaborations fructueuses avec plus de 3 entreprises qui m\'ont fait confiance, ainsi que du lancement de ma startup de développement web & mobile Nova Dev.',
+        'Je suis NZENANG TCHOUANTCHEU MARC DELON, étudiant en Bachelor 2 Informatique (Tronc Commun) pour l\'année 2025-2026 à KEYCE Informatique, Cameroun, avec une spécialisation en Génie Logiciel programmée pour le Bachelor 3 (2026-2027). Passionné par l\'écosystème web & mobile full-stack, je conçois des solutions modernes alliant haute performance et design soigné. Mon parcours s\'enrichit de stages professionnels formateurs, de projets de toutes envergures, de collaborations fructueuses avec plus de 3 entreprises qui m\'ont fait confiance, ainsi que du lancement de ma startup de développement web & mobile Nova Dev.',
       stats: [
         { value: '8+', label: 'Projets Réalisés' },
         { value: '3', label: 'Mois de Stage' },
@@ -117,7 +117,7 @@ export const translations = {
     hero: {
       greeting: "Hello, I'm",
       role: 'Full-Stack Developer',
-      subtitle: 'Passionate Software Engineering Student · Bachelor 3 · KEYCE, Cameroon',
+      subtitle: 'Computer Science Student (Core Curriculum) · Bachelor 2 (2025-2026) · KEYCE, Cameroon',
       description:
         'I design modern, high-performance and elegant web experiences with React, Node.js and Next.js.',
       cta1: 'View my projects',
@@ -128,7 +128,7 @@ export const translations = {
       label: 'About',
       title: 'Passionate about code\nand innovation',
       description:
-        'I am NZENANG TCHOUANTCHEU MARC DELON, a Bachelor 3 Software Engineering student at KEYCE Informatique, Cameroon. Passionate about full-stack web & mobile development, I create modern applications combining high performance and sleek aesthetics. My journey includes valuable professional internships, multi-scale projects, fruitful collaborations with more than 3 companies that trusted my expertise, and the founding of my web & mobile development startup Nova Dev.',
+        'I am NZENANG TCHOUANTCHEU MARC DELON, a Bachelor 2 Computer Science student (Common Core) for the 2025-2026 academic year at KEYCE Informatique, Cameroon, with a planned specialization in Software Engineering in Bachelor 3 (2026-2027). Passionate about full-stack web & mobile development, I create modern applications combining high performance and sleek aesthetics. My journey includes valuable professional internships, multi-scale projects, fruitful collaborations with more than 3 companies that trusted my expertise, and the founding of my web & mobile development startup Nova Dev.',
       stats: [
         { value: '8+', label: 'Projects Completed' },
         { value: '3', label: 'Months Internship' },
@@ -644,13 +644,13 @@ export interface Education {
 export const educationList: Education[] = [
   {
     id: 1,
-    degree: { fr: 'Bachelor 2 Informatique — Génie Logiciel', en: 'Bachelor 2 Computer Science — Software Engineering' },
+    degree: { fr: 'Bachelor 2 Informatique — Tronc Commun (2025-2026)', en: 'Bachelor 2 Computer Science — Core Curriculum (2025-2026)' },
     school: 'KEYCE Informatique',
-    period: '2025 – Présent',
+    period: '2025 – 2026 (En cours)',
     current: true,
     description: {
-      fr: 'Formation avancée en développement logiciel, architecture des systèmes, technologies web modernes et méthodes agiles.',
-      en: 'Advanced training in software development, systems architecture, modern web technologies and agile methods.',
+      fr: 'Formation en tronc commun informatique : algorithmique avancée, programmation orientée objet, technologies web & mobile et bases de données. Spécialisation en Génie Logiciel programmée en Bachelor 3 (2026-2027).',
+      en: 'Core curriculum in computer science: advanced algorithms, object-oriented programming, web & mobile technologies, and databases. Planned specialization in Software Engineering in Bachelor 3 (2026-2027).',
     },
   },
   {

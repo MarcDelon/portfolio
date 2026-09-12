@@ -171,7 +171,7 @@ export default function About() {
                   boxShadow: '0 4px 16px rgba(224,123,31,0.4)',
                   whiteSpace: 'nowrap',
                 }}>
-                  Bachelor 3 · 2026
+                  Bachelor 2 · 2025-2026
                 </div>
               </div>
 

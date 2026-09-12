@@ -175,7 +175,6 @@ export default function SocialImage({
 
         :global(.social-core-img.is-ready) {
           opacity: 1 !important;
-          filter: blur(0px) scale(1) !important;
         }
 
         .social-img-fallback {

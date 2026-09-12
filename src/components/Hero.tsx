@@ -155,7 +155,7 @@ export default function Hero() {
                 style={{ 
                   objectFit: 'cover',
                   objectPosition: 'center top',
-                  transform: `translate(calc(-50% + ${-tilt.y * 0.4}px), calc(-50% + ${tilt.x * 0.4}px)) rotateX(${tilt.x * 0.5}deg) rotateY(${tilt.y * 0.5}deg)`,
+                  transform: `translate3d(${-tilt.y * 0.4}px, ${tilt.x * 0.4}px, 0) rotateX(${tilt.x * 0.5}deg) rotateY(${tilt.y * 0.5}deg)`,
                   transition: isHovered ? 'transform 0.1s ease-out' : 'transform 0.6s cubic-bezier(0.23, 1, 0.32, 1)',
                   transformOrigin: 'center center',
                   willChange: 'transform',
@@ -184,7 +184,7 @@ export default function Hero() {
                 style={{ 
                   objectFit: 'cover',
                   objectPosition: 'center top',
-                  transform: `translate(calc(-50% + ${-tilt.y * 1.5}px), calc(-50% + ${tilt.x * 1.5}px)) rotateX(${tilt.x * 1.2}deg) rotateY(${tilt.y * 1.2}deg) scale(1.05)`,
+                  transform: `translate3d(${-tilt.y * 1.5}px, ${tilt.x * 1.5}px, 0) rotateX(${tilt.x * 1.2}deg) rotateY(${tilt.y * 1.2}deg) scale(1.05)`,
                   transition: isHovered ? 'transform 0.1s ease-out' : 'transform 0.6s cubic-bezier(0.23, 1, 0.32, 1)',
                   transformOrigin: 'center center',
                   willChange: 'transform',

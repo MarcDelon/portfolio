@@ -112,9 +112,9 @@ export default function CubeFacePreview({ faceIndex }: FacePreviewProps) {
               </div>
             </div>
 
-            <div className="cube-skills-grid" style={{ maxWidth: '95%', gap: '4px' }}>
-              {['Java', 'SpringBoot', 'PHP', 'Laravel', 'C', 'C++', 'C#', 'React', 'Next.js', 'Node.js'].map((s) => (
-                <span key={s} className="skill-mini-tag" style={{ fontSize: '0.62rem', padding: '2px 6px' }}>{s}</span>
+            <div className="cube-skills-grid">
+              {['Java', 'SpringBoot', 'Next.js', 'React', 'PHP', 'Laravel', 'C++', 'Node.js'].map((s) => (
+                <span key={s} className="skill-mini-tag">{s}</span>
               ))}
             </div>
           </div>

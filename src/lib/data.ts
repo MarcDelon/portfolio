@@ -16,18 +16,18 @@ export const translations = {
     hero: {
       greeting: 'Bonjour, je suis',
       role: 'Développeur Full-Stack',
-      subtitle: 'Étudiant en Informatique (Tronc Commun) · Bachelor 2 (2025-2026) · KEYCE, Cameroun',
+      subtitle: 'Étudiant en Bachelor 3 Informatique · Filière IA & BD (2026-2027) · KEYCE, Cameroun',
       description:
         'Je conçois des expériences web modernes, performantes et élégantes avec React, Node.js et Next.js.',
       cta1: 'Voir mes projets',
       cta2: 'Me contacter',
-      roles: ['Développeur React JS', 'Développeur Node.js', 'Développeur Next.js', 'Génie Logiciel'],
+      roles: ['Développeur React JS', 'Développeur Node.js', 'Développeur Next.js', 'IA & BD'],
     },
     about: {
       label: 'À Propos',
       title: 'Passionné par le code\net l\'innovation',
       description:
-        'Je suis NZENANG TCHOUANTCHEU MARC DELON, étudiant en Bachelor 2 Informatique (Tronc Commun) pour l\'année 2025-2026 à KEYCE Informatique, Cameroun, avec une spécialisation en Génie Logiciel programmée pour le Bachelor 3 (2026-2027). Passionné par l\'écosystème web & mobile full-stack, je conçois des solutions modernes alliant haute performance et design soigné. Mon parcours s\'enrichit de stages professionnels formateurs, de projets de toutes envergures, de collaborations fructueuses avec plus de 3 entreprises qui m\'ont fait confiance, ainsi que du lancement de ma startup de développement web & mobile Nova Dev.',
+        'Je suis NZENANG TCHOUANTCHEU MARC DELON, étudiant en Bachelor 3 Informatique, filière IA & BD (2026-2027) à KEYCE, au Cameroun et Développeur Junior à KARBURA SA. Passionné par l\'écosystème web & mobile full-stack et l\'intelligence artificielle, je conçois des solutions logicielles modernes, performantes et élégantes. Mon parcours s\'enrichit de mon rôle chez KARBURA SA, de stages professionnels formateurs, de projets d\'envergure et de la création de ma startup Nova Dev.',
       stats: [
         { value: '8+', label: 'Projets Réalisés' },
         { value: '3', label: 'Mois de Stage' },
@@ -117,7 +117,7 @@ export const translations = {
     hero: {
       greeting: "Hello, I'm",
       role: 'Full-Stack Developer',
-      subtitle: 'Computer Science Student (Core Curriculum) · Bachelor 2 (2025-2026) · KEYCE, Cameroon',
+      subtitle: 'Bachelor 3 Computer Science Student · AI & BD Track (2026-2027) · KEYCE, Cameroon',
       description:
         'I design modern, high-performance and elegant web experiences with React, Node.js and Next.js.',
       cta1: 'View my projects',
@@ -128,7 +128,7 @@ export const translations = {
       label: 'About',
       title: 'Passionate about code\nand innovation',
       description:
-        'I am NZENANG TCHOUANTCHEU MARC DELON, a Bachelor 2 Computer Science student (Common Core) for the 2025-2026 academic year at KEYCE Informatique, Cameroon, with a planned specialization in Software Engineering in Bachelor 3 (2026-2027). Passionate about full-stack web & mobile development, I create modern applications combining high performance and sleek aesthetics. My journey includes valuable professional internships, multi-scale projects, fruitful collaborations with more than 3 companies that trusted my expertise, and the founding of my web & mobile development startup Nova Dev.',
+        'I am NZENANG TCHOUANTCHEU MARC DELON, a Bachelor 3 Computer Science student, AI & BD track (2026-2027), at KEYCE, Cameroon, and Junior Developer at KARBURA SA. Passionate about full-stack web & mobile engineering and artificial intelligence, I build scalable modern solutions combining high performance and sleek aesthetics. My experience includes my role at KARBURA SA, professional internships, multi-scale projects, and founding my startup Nova Dev.',
       stats: [
         { value: '8+', label: 'Projects Completed' },
         { value: '3', label: 'Months Internship' },
@@ -560,37 +560,81 @@ export interface Experience {
   role: { fr: string; en: string };
   company: string;
   period: string;
-  type: 'stage' | 'projet';
+  type: 'poste' | 'stage' | 'projet';
   description: { fr: string[]; en: string[] };
   tech: string[];
 }
 
 export const experiences: Experience[] = [
   {
-    id: 1,
-    role: { fr: 'Stage Développeur Web', en: 'Web Developer Internship' },
-    company: 'Egalité pour Tous',
-    period: '2025 · 3 mois',
-    type: 'stage',
+    id: 0,
+    role: { fr: 'Fondateur & Lead Développeur', en: 'Founder & Lead Developer' },
+    company: 'Nova Dev',
+    period: '2025 - Présent',
+    type: 'poste',
     description: {
       fr: [
-        'Réalisation du site web de l\'événement « Journée de l\'emploi »',
-        'Couverture médiatique nationale à la télévision et radio Balafon',
-        'Développement complet frontend & backend de l\'application',
+        'Fondation et direction technique d\'une équipe de développeurs talentueux',
+        'Conception et développement d\'architectures web, mobiles et 3D sur-mesure',
+        'Intégration de modèles d\'intelligence artificielle et d\'expériences immersives',
+        'Gestion de projet agile, pilotage technique et livraison de solutions d\'entreprise',
       ],
       en: [
-        'Built the website for the "Job Day" event',
-        'National media coverage on Balafon TV and radio',
-        'Complete frontend & backend development of the application',
+        'Founding and technical leadership of an elite developer team',
+        'Engineering custom web, mobile, and 3D software architectures',
+        'Integration of cutting-edge artificial intelligence models and immersive interfaces',
+        'Agile project management, technical leadership, and enterprise client delivery',
       ],
     },
-    tech: ['HTML', 'CSS', 'JavaScript', 'PHP'],
+    tech: ['React', 'Next.js', 'Node.js', 'TypeScript', 'Three.js', 'PostgreSQL', 'IA'],
+  },
+  {
+    id: 1,
+    role: { fr: 'Développeur Junior', en: 'Junior Developer' },
+    company: 'KARBURA SA',
+    period: '2026 - 2027 · Bachelor 3',
+    type: 'poste',
+    description: {
+      fr: [
+        'Poste occupé en parallèle de mon Bachelor 3 (filière IA & BD) à KEYCE Informatique',
+        'Développement et maintenance d\'applications web et mobiles d\'entreprise',
+        'Conception de composants modulaires et architectures logicielles évolutives',
+        'Intégration d\'APIs RESTful et optimisation des flux de données',
+        'Participation active aux cycles agiles et collaboration d\'équipe',
+      ],
+      en: [
+        'Held alongside my Bachelor 3 (AI & BD track) at KEYCE Informatique',
+        'Development and maintenance of enterprise web & mobile applications',
+        'Design of modular components and scalable software architectures',
+        'RESTful API integration and data flow optimization',
+        'Active participation in agile cycles and technical collaboration',
+      ],
+    },
+    tech: ['React JS', 'Node.js', 'Next.js', 'TypeScript', 'PostgreSQL', 'Git'],
   },
   {
     id: 2,
+    role: { fr: 'Stage Développeur Web', en: 'Web Developer Internship' },
+    company: 'CCN Technologie & Nje Lih Fa',
+    period: '2025 - 2026 · Bachelor 2',
+    type: 'stage',
+    description: {
+      fr: [
+        'Réalisation de Mentora, une plateforme LMS de formations en ligne',
+        'Stage effectué dans le cadre de mon Bachelor 2 à KEYCE Informatique',
+      ],
+      en: [
+        'Built Mentora, an LMS platform for online training courses',
+        'Internship completed as part of my Bachelor 2 at KEYCE Informatique',
+      ],
+    },
+    tech: ['React JS', 'Next.js', 'Node.js'],
+  },
+  {
+    id: 3,
     role: { fr: 'Projets Bachelor 2', en: 'Bachelor 2 Projects' },
     company: 'KEYCE Informatique',
-    period: '2025 · Présent',
+    period: '2025 - 2026',
     type: 'projet',
     description: {
       fr: [
@@ -609,10 +653,30 @@ export const experiences: Experience[] = [
     tech: ['React JS', 'Next.js', 'Node.js', 'PostGreSQL'],
   },
   {
-    id: 3,
+    id: 4,
+    role: { fr: 'Stage Développeur Web', en: 'Web Developer Internship' },
+    company: 'Egalité pour Tous',
+    period: '2024 - 2025 · 3 mois · Bachelor 1',
+    type: 'stage',
+    description: {
+      fr: [
+        'Stage de 3 mois effectué dans le cadre de mon Bachelor 1 à KEYCE Informatique',
+        'Développement du site web de l\'événement « La Journée de l\'emploi »',
+        'Couverture médiatique nationale à la télévision et radio Balafon',
+      ],
+      en: [
+        '3-month internship completed during my Bachelor 1 at KEYCE Informatique',
+        'Developed the website for the "Job Day" event',
+        'National media coverage on Balafon TV and radio',
+      ],
+    },
+    tech: ['HTML', 'CSS', 'JavaScript', 'PHP'],
+  },
+  {
+    id: 5,
     role: { fr: 'Projets Bachelor 1', en: 'Bachelor 1 Projects' },
     company: 'KEYCE Informatique',
-    period: '2024 – 2025',
+    period: '2024 - 2025',
     type: 'projet',
     description: {
       fr: [
@@ -644,17 +708,34 @@ export interface Education {
 export const educationList: Education[] = [
   {
     id: 1,
-    degree: { fr: 'Bachelor 2 Informatique — Tronc Commun (2025-2026)', en: 'Bachelor 2 Computer Science — Core Curriculum (2025-2026)' },
-    school: 'KEYCE Informatique',
-    period: '2025 – 2026 (En cours)',
+    degree: {
+      fr: 'Bachelor 3 Informatique - Filière IA & BD (2026-2027)',
+      en: 'Bachelor 3 Computer Science - AI & BD Track (2026-2027)'
+    },
+    school: 'KEYCE Informatique & IA',
+    period: '2026 - 2027 (En cours)',
     current: true,
     description: {
-      fr: 'Formation en tronc commun informatique : algorithmique avancée, programmation orientée objet, technologies web & mobile et bases de données. Spécialisation en Génie Logiciel programmée en Bachelor 3 (2026-2027).',
-      en: 'Core curriculum in computer science: advanced algorithms, object-oriented programming, web & mobile technologies, and databases. Planned specialization in Software Engineering in Bachelor 3 (2026-2027).',
+      fr: 'Spécialisation avancée en informatique et intelligence artificielle : ingénierie logicielle, intégration de modèles d\'IA, architectures distribuées, bases de données et développement full-stack.',
+      en: 'Advanced specialization in computer science and artificial intelligence: software engineering, AI model integration, distributed architectures, databases, and full-stack development.'
     },
   },
   {
     id: 2,
+    degree: {
+      fr: 'Bachelor 2 Informatique - Tronc Commun (2025-2026)',
+      en: 'Bachelor 2 Computer Science - Core Curriculum (2025-2026)'
+    },
+    school: 'KEYCE Informatique',
+    period: '2025 - 2026',
+    current: false,
+    description: {
+      fr: 'Formation en tronc commun informatique : algorithmique avancée, programmation orientée objet, technologies web & mobile et bases de données.',
+      en: 'Core curriculum in computer science: advanced algorithms, object-oriented programming, web & mobile technologies, and databases.'
+    },
+  },
+  {
+    id: 3,
     degree: { fr: 'Bachelor 1 Informatique', en: 'Bachelor 1 Computer Science' },
     school: 'KEYCE Informatique',
     period: '2024 – 2025',
@@ -665,7 +746,7 @@ export const educationList: Education[] = [
     },
   },
   {
-    id: 3,
+    id: 4,
     degree: { fr: 'Classe Préparatoire Maths-Physique', en: 'Mathematics-Physics Preparatory Class' },
     school: 'Esprit Prépa',
     period: '2021 – 2024',
@@ -676,7 +757,7 @@ export const educationList: Education[] = [
     },
   },
   {
-    id: 4,
+    id: 5,
     degree: { fr: 'Baccalauréat', en: 'High School Diploma (Baccalauréat)' },
     school: 'Collège La Conquête',
     period: '2021',

@@ -1,78 +1,68 @@
 'use client';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useLayoutEffect } from 'react';
+import { getRequestedFace } from '@/lib/CubeContext';
 
 export default function Preloader() {
   const [displayText, setDisplayText] = useState('');
-  const [isDeleting, setIsDeleting] = useState(false);
-  const [loopNum, setLoopNum] = useState(0);
-  const [typingSpeed, setTypingSpeed] = useState(120);
   const [loadingComplete, setLoadingComplete] = useState(false);
   const [shouldRender, setShouldRender] = useState(true);
-  const [progress, setProgress] = useState(0);
 
-  const fullText = 'Marc Delon...';
-
-  // 6 seconds total loading timer
-  useEffect(() => {
-    const startTime = Date.now();
-    const duration = 6000; // 6 seconds
-
-    const progressInterval = setInterval(() => {
-      const elapsed = Date.now() - startTime;
-      const currentProgress = Math.min(100, (elapsed / duration) * 100);
-      setProgress(currentProgress);
-
-      if (elapsed >= duration) {
-        clearInterval(progressInterval);
-        setLoadingComplete(true);
-        // Remove from DOM after smooth fade-out
-        setTimeout(() => {
-          setShouldRender(false);
-        }, 900);
-      }
-    }, 30);
-
-    return () => clearInterval(progressInterval);
+  // Skip the intro entirely when returning to a specific section (e.g. back from a project page)
+  useLayoutEffect(() => {
+    if (getRequestedFace() !== null) setShouldRender(false);
   }, []);
 
-  // Typewriter effect (writing and deleting "Marc Delon...")
+  // Global exit timer after animation cycles (~4.6s)
   useEffect(() => {
-    if (loadingComplete) return;
+    const DURATION = 4600;
 
-    let timer: NodeJS.Timeout;
+    const timer = setTimeout(() => {
+      setLoadingComplete(true);
+      setTimeout(() => {
+        setShouldRender(false);
+      }, 750);
+    }, DURATION);
 
-    const handleTyping = () => {
-      setDisplayText((prev) => {
-        if (!isDeleting) {
-          // Writing mode
-          const nextText = fullText.substring(0, prev.length + 1);
-          if (nextText === fullText) {
-            // Reached full text: pause then start deleting
-            setTypingSpeed(900);
-            setIsDeleting(true);
-          } else {
-            setTypingSpeed(110);
-          }
-          return nextText;
-        } else {
-          // Deleting mode
-          const nextText = fullText.substring(0, prev.length - 1);
-          if (nextText === '') {
-            // Emptied: pause then restart writing
-            setIsDeleting(false);
-            setLoopNum((l) => l + 1);
-            setTypingSpeed(400);
-          } else {
-            setTypingSpeed(60);
-          }
-          return nextText;
-        }
-      });
-    };
-
-    timer = setTimeout(handleTyping, typingSpeed);
     return () => clearTimeout(timer);
-  }, [displayText, isDeleting, typingSpeed, loadingComplete, loopNum]);
+  }, []);
+
+  // Standard React typewriter loop (zero script tags, 100% React 19 & Next.js compliant)
+  useEffect(() => {
+    const name = 'Marc Delon';
+    let index = 0;
+    let isDeleting = false;
+    let timerId: ReturnType<typeof setTimeout>;
+
+    function tick() {
+      if (!isDeleting) {
+        index++;
+        setDisplayText(name.substring(0, index));
+
+        if (index >= name.length) {
+          isDeleting = true;
+          timerId = setTimeout(tick, 950);
+          return;
+        }
+        timerId = setTimeout(tick, 115);
+      } else {
+        index--;
+        setDisplayText(name.substring(0, index));
+
+        if (index <= 0) {
+          isDeleting = false;
+          timerId = setTimeout(tick, 380);
+          return;
+        }
+        timerId = setTimeout(tick, 60);
+      }
+    }
+
+    timerId = setTimeout(tick, 60);
+
+    return () => {
+      clearTimeout(timerId);
+    };
+  }, []);
 
   if (!shouldRender) return null;
 
@@ -87,144 +77,138 @@ export default function Preloader() {
         flexDirection: 'column',
         alignItems: 'center',
         justifyContent: 'center',
-        backgroundColor: '#140A02',
+        backgroundColor: '#0D0603',
         opacity: loadingComplete ? 0 : 1,
-        transform: loadingComplete ? 'scale(1.04)' : 'scale(1)',
-        filter: loadingComplete ? 'blur(12px)' : 'none',
-        transition: 'opacity 0.85s cubic-bezier(0.16, 1, 0.3, 1), transform 0.85s cubic-bezier(0.16, 1, 0.3, 1), filter 0.85s cubic-bezier(0.16, 1, 0.3, 1)',
+        transform: loadingComplete ? 'scale(1.03)' : 'scale(1)',
+        filter: loadingComplete ? 'blur(10px)' : 'none',
+        transition:
+          'opacity 0.75s cubic-bezier(0.16, 1, 0.3, 1), transform 0.75s cubic-bezier(0.16, 1, 0.3, 1), filter 0.75s cubic-bezier(0.16, 1, 0.3, 1)',
         pointerEvents: loadingComplete ? 'none' : 'auto',
         overflow: 'hidden',
+        userSelect: 'none',
       }}
     >
-      {/* ── Layer 1: Bamileke Heritage Background Artwork ── */}
-      <div
-        style={{
-          position: 'absolute',
-          inset: 0,
-          backgroundImage: 'url(/bamileke.webp)',
-          backgroundSize: 'cover',
-          backgroundPosition: 'center',
-          opacity: 0.38,
-          zIndex: 1,
-          filter: 'contrast(1.15) brightness(0.9)',
-        }}
-      />
+      {/* Bamileke pattern backdrop, slowly settling in */}
+      <div className="preloader-pattern" aria-hidden="true" />
+      {/* Warm dark veil + vignette so the pattern stays soft and the name readable */}
+      <div className="preloader-veil" aria-hidden="true" />
 
-      {/* ── Layer 2: Dark Brown Luxury Transparent Overlay ── */}
-      <div
-        style={{
-          position: 'absolute',
-          inset: 0,
-          background: 'radial-gradient(circle at center, rgba(38, 19, 7, 0.85) 0%, rgba(18, 9, 3, 0.96) 75%, rgba(12, 5, 2, 0.99) 100%)',
-          zIndex: 2,
-        }}
-      />
-
-      {/* ── Layer 3: Subtle Amber Glow in Center ── */}
-      <div
-        style={{
-          position: 'absolute',
-          width: 'min(400px, 80vw)',
-          height: 'min(400px, 80vw)',
-          borderRadius: '50%',
-          background: 'radial-gradient(circle, rgba(224, 123, 31, 0.18) 0%, rgba(224, 123, 31, 0) 70%)',
-          filter: 'blur(40px)',
-          zIndex: 3,
-          pointerEvents: 'none',
-          animation: 'preloaderPulse 3s ease-in-out infinite',
-        }}
-      />
-
-      {/* ── Layer 4: Main Content (Typewriter Text) ── */}
+      {/* Main typewriter container */}
       <div
         style={{
           position: 'relative',
           zIndex: 10,
           display: 'flex',
-          flexDirection: 'column',
           alignItems: 'center',
-          gap: '1.75rem',
-          padding: '2rem',
+          justifyContent: 'center',
+          minHeight: '100px',
         }}
       >
-        {/* Brand Diamond Emblem */}
-        <div
+        <span
           style={{
-            color: 'var(--amber)',
-            fontSize: '1.5rem',
-            animation: 'float 3s ease-in-out infinite',
-            filter: 'drop-shadow(0 0 12px rgba(224, 123, 31, 0.6))',
-          }}
-        >
-          ◆
-        </div>
-
-        {/* Typewriter Name Text in White Serif */}
-        <div
-          style={{
-            fontFamily: 'var(--font-serif)',
-            fontSize: 'clamp(2.25rem, 6.5vw, 4.2rem)',
-            fontWeight: 900,
-            fontStyle: 'italic',
+            fontFamily: "'Candara', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif",
+            fontSize: 'clamp(2.5rem, 6.8vw, 4.8rem)',
+            fontWeight: 700,
+            letterSpacing: '0.06em',
             color: '#FFFFFF',
-            letterSpacing: '-0.02em',
-            textAlign: 'center',
-            minHeight: '1.2em',
-            display: 'flex',
+            textShadow: '0 4px 30px rgba(0, 0, 0, 0.9), 0 0 28px rgba(224, 123, 31, 0.35)',
+            display: 'inline-flex',
             alignItems: 'center',
-            justifyContent: 'center',
-            textShadow: '0 4px 30px rgba(0, 0, 0, 0.7), 0 0 20px rgba(255, 255, 255, 0.15)',
           }}
         >
-          <span>{displayText}</span>
-          {/* Animated Blinking Cursor */}
+          {displayText}
           <span
             style={{
               display: 'inline-block',
-              width: '3px',
+              width: '4px',
               height: '0.85em',
-              backgroundColor: 'var(--amber)',
-              marginLeft: '4px',
+              backgroundColor: '#E07B1F',
+              marginLeft: '6px',
               borderRadius: '2px',
-              animation: 'blink 0.75s infinite',
-              boxShadow: '0 0 10px var(--amber)',
+              boxShadow: '0 0 14px #E07B1F, 0 0 25px rgba(224, 123, 31, 0.6)',
+              animation: 'cursorBlink 0.65s infinite',
             }}
           />
-        </div>
-
-        {/* Fine Amber Progress Bar */}
-        <div
-          style={{
-            width: 'min(220px, 60vw)',
-            height: '3px',
-            backgroundColor: 'rgba(255, 255, 255, 0.08)',
-            borderRadius: '9999px',
-            overflow: 'hidden',
-            marginTop: '0.5rem',
-            border: '1px solid rgba(224, 123, 31, 0.2)',
-          }}
-        >
-          <div
-            style={{
-              height: '100%',
-              width: `${progress}%`,
-              background: 'linear-gradient(90deg, #E07B1F 0%, #FFD0A0 100%)',
-              borderRadius: '9999px',
-              boxShadow: '0 0 8px rgba(224, 123, 31, 0.8)',
-              transition: 'width 0.05s linear',
-            }}
-          />
-        </div>
+        </span>
       </div>
 
-      <style>{`
-        @keyframes blink {
-          0%, 100% { opacity: 1; }
-          50% { opacity: 0; }
+      {/* Soft caption + progress line */}
+      <div className="preloader-footer">
+        <span className="preloader-caption">Portfolio · Full-Stack Developer</span>
+        <span className="preloader-progress"><span /></span>
+      </div>
+
+      <style jsx>{`
+        .preloader-pattern {
+          position: absolute;
+          inset: -4%;
+          background: url('/bamileke.webp') center / cover no-repeat;
+          animation: patternSettle 5.2s cubic-bezier(0.16, 1, 0.3, 1) both;
         }
-        @keyframes preloaderPulse {
-          0%, 100% { transform: scale(1); opacity: 0.7; }
-          50% { transform: scale(1.15); opacity: 1; }
+        .preloader-veil {
+          position: absolute;
+          inset: 0;
+          background:
+            radial-gradient(ellipse at 50% 50%, rgba(13, 6, 3, 0.78) 0%, rgba(13, 6, 3, 0.9) 55%, rgba(8, 3, 1, 0.97) 100%),
+            linear-gradient(rgba(60, 26, 6, 0.25), rgba(60, 26, 6, 0.25));
+        }
+        .preloader-footer {
+          position: absolute;
+          left: 50%;
+          bottom: 12vh;
+          transform: translateX(-50%);
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          gap: 14px;
+          z-index: 10;
+          animation: softFadeUp 1s 0.4s ease both;
+        }
+        .preloader-caption {
+          font-family: 'Candara', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+          font-size: 0.78rem;
+          letter-spacing: 0.32em;
+          text-transform: uppercase;
+          color: rgba(245, 222, 190, 0.6);
+          white-space: nowrap;
+        }
+        .preloader-progress {
+          width: min(180px, 40vw);
+          height: 2px;
+          border-radius: 2px;
+          background: rgba(245, 222, 190, 0.12);
+          overflow: hidden;
+        }
+        .preloader-progress span {
+          display: block;
+          height: 100%;
+          background: linear-gradient(90deg, rgba(224, 123, 31, 0.4), #e07b1f);
+          transform-origin: left;
+          animation: progressFill 4.4s cubic-bezier(0.45, 0, 0.25, 1) forwards;
+        }
+        @keyframes patternSettle {
+          from { transform: scale(1.08); opacity: 0; }
+          to { transform: scale(1); opacity: 1; }
+        }
+        @keyframes softFadeUp {
+          from { opacity: 0; transform: translate(-50%, 8px); }
+          to { opacity: 1; transform: translate(-50%, 0); }
+        }
+        @keyframes progressFill {
+          from { transform: scaleX(0); }
+          to { transform: scaleX(1); }
+        }
+        @media (prefers-reduced-motion: reduce) {
+          .preloader-pattern, .preloader-footer, .preloader-progress span { animation: none; }
+        }
+        @keyframes cursorBlink {
+          0%,
+          100% {
+            opacity: 1;
+          }
+          50% {
+            opacity: 0.2;
+          }
         }
       `}</style>
     </div>

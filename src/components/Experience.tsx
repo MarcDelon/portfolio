@@ -53,11 +53,15 @@ export default function Experience() {
               </span>
               <span style={{
                 fontSize: '0.6rem', fontWeight: 700, letterSpacing: '0.06em',
-                padding: '2px 8px', borderRadius: 'var(--r-full)',
-                background: exp.type === 'stage' ? 'var(--amber)' : 'var(--dark)',
-                color: 'var(--white)', textTransform: 'uppercase',
+                padding: '2px 9px', borderRadius: 'var(--r-full)',
+                background: exp.type === 'poste' ? 'rgba(224,123,31,0.15)' : (exp.type === 'stage' ? 'var(--amber)' : 'var(--dark)'),
+                border: exp.type === 'poste' ? '1.5px solid var(--amber)' : 'none',
+                color: exp.type === 'poste' ? 'var(--amber)' : 'var(--white)',
+                textTransform: 'uppercase',
               }}>
-                {exp.type === 'stage' ? (lang === 'fr' ? 'Stage' : 'Internship') : (lang === 'fr' ? 'Projets' : 'Projects')}
+                {exp.type === 'poste'
+                  ? (lang === 'fr' ? 'Poste' : 'Position')
+                  : (exp.type === 'stage' ? (lang === 'fr' ? 'Stage' : 'Internship') : (lang === 'fr' ? 'Projets' : 'Projects'))}
               </span>
             </div>
 

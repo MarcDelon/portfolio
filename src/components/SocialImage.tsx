@@ -17,7 +17,7 @@ export default function SocialImage({
   height,
   fill,
   sizes,
-  quality = 80,
+  quality = 90,
   priority,
   preload,
   loading,

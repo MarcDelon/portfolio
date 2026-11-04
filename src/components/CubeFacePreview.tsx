@@ -58,6 +58,21 @@ export default function CubeFacePreview({ faceIndex }: FacePreviewProps) {
               <Laptop size={13} className="text-amber" />
               {lang === 'fr' ? 'Développeur Full-Stack' : 'Full-Stack Developer'}
             </p>
+            <div style={{
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: '6px',
+              padding: '2px 8px',
+              borderRadius: '999px',
+              background: 'rgba(34, 211, 238, 0.12)',
+              border: '1px solid rgba(34, 211, 238, 0.35)',
+              margin: '2px auto 6px',
+            }}>
+              <Image src="/nova_transparent.png" alt="Nova Dev" width={13} height={13} style={{ objectFit: 'contain' }} />
+              <span style={{ fontSize: '0.62rem', fontWeight: 700, color: '#22d3ee', letterSpacing: '0.04em' }}>
+                {lang === 'fr' ? 'Fondateur Nova Dev' : 'Nova Dev Founder'}
+              </span>
+            </div>
             <p className="face-snippet">
               {lang === 'fr'
                 ? 'Concepteur d’expériences web modernes & architectures logicielles.'
@@ -103,7 +118,7 @@ export default function CubeFacePreview({ faceIndex }: FacePreviewProps) {
                 <span className="stat-pill-tag">{lang === 'fr' ? 'Projets' : 'Projects'}</span>
               </div>
               <div className="stat-pill-box">
-                <span className="stat-pill-val">B2</span>
+                <span className="stat-pill-val">B3</span>
                 <span className="stat-pill-tag">KEYCE</span>
               </div>
               <div className="stat-pill-box">

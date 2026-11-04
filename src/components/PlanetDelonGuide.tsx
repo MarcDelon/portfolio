@@ -38,11 +38,11 @@ export default function PlanetDelonGuide() {
       id: '2',
       sender: 'bot',
       text: lang === 'fr'
-        ? 'Vous pouvez faire pivoter le cube 3D ou me poser une question sur le parcours, les compétences et les projets de Marc :'
-        : 'You can rotate the 3D cube or ask me any question about Marc\'s background, skills, and projects:',
+        ? 'Cliquez sur une planète en orbite pour ouvrir une section, ou posez-moi une question sur le parcours, les compétences et les projets de Marc :'
+        : 'Click a planet in orbit to open a section, or ask me any question about Marc\'s background, skills, and projects:',
       suggestions: lang === 'fr'
-        ? ['Qui est Marc ?', 'Compétences & formations', 'Projets 3D', 'Contacter Marc', 'Fonctionnement du cube']
-        : ['Who is Marc?', 'Skills & education', '3D Projects', 'Contact Marc', 'How the cube works'],
+        ? ['Qui est Marc ?', "L'équipe Nova Dev", 'Compétences & formations', 'Projets 3D', 'Contacter Marc']
+        : ['Who is Marc?', 'Nova Dev Team', 'Skills & education', '3D Projects', 'Contact Marc'],
       timestamp: '12:00',
     },
   ];
@@ -69,11 +69,11 @@ export default function PlanetDelonGuide() {
         id: '2',
         sender: 'bot',
         text: lang === 'fr'
-          ? 'Vous pouvez faire pivoter le cube 3D ou me poser une question sur le parcours, les compétences et les projets de Marc :'
-          : 'You can rotate the 3D cube or ask me any question about Marc\'s background, skills, and projects:',
+          ? 'Cliquez sur une planète en orbite pour ouvrir une section, ou posez-moi une question sur le parcours, les compétences et les projets de Marc :'
+          : 'Click a planet in orbit to open a section, or ask me any question about Marc\'s background, skills, and projects:',
         suggestions: lang === 'fr'
-          ? ['Qui est Marc ?', 'Compétences & formations', 'Projets 3D', 'Contacter Marc', 'Fonctionnement du cube']
-          : ['Who is Marc?', 'Skills & education', '3D Projects', 'Contact Marc', 'How the cube works'],
+          ? ['Qui est Marc ?', "L'équipe Nova Dev", 'Compétences & formations', 'Projets 3D', 'Contacter Marc']
+          : ['Who is Marc?', 'Nova Dev Team', 'Skills & education', '3D Projects', 'Contact Marc'],
         timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
       },
     ]);
@@ -183,8 +183,8 @@ export default function PlanetDelonGuide() {
           cleanReply || (lang === 'fr' ? 'Je suis à votre disposition.' : 'I am at your service.'),
           action,
           lang === 'fr'
-            ? ['Compétences & formations', 'Projets 3D', 'Contacter Marc']
-            : ['Skills & education', '3D Projects', 'Contact Marc']
+            ? ["L'équipe Nova Dev", 'Compétences & formations', 'Projets 3D', 'Contacter Marc']
+            : ['Nova Dev Team', 'Skills & education', '3D Projects', 'Contact Marc']
         );
       } else {
         throw new Error('API Error');
@@ -197,14 +197,30 @@ export default function PlanetDelonGuide() {
         : 'I am NoVa. I can guide you through Marc\'s skills, projects, or contact info.';
       const action = detectAction(fallbackText, lower);
 
-      if (lower.includes('qui') || lower.includes('who') || lower.includes('marc')) {
+      if ((lower.includes('comment') && (lower.includes('va') || lower.includes('vas') || lower.includes('allez'))) || lower.includes('ça va') || lower.includes('ca va') || lower.includes('how are you')) {
+        fallbackText = lang === 'fr'
+          ? 'Je vais très bien, merci ! En tant qu\'intelligence artificielle de Marc Delon, je suis opérationnelle et à votre disposition. Que souhaitez-vous découvrir ?'
+          : 'I am doing great, thank you! As Marc Delon\'s AI assistant, I am operational and ready to help. What would you like to explore?';
+      } else if (lower.includes('bonjour') || lower.includes('salut') || lower.includes('bonsoir') || lower.includes('coucou') || lower.includes('hello') || lower.includes('hi')) {
+        fallbackText = lang === 'fr'
+          ? 'Bonjour ! Ravi de vous accueillir sur la Planète Delon. Comment puis-je vous aider aujourd\'hui ?'
+          : 'Hello! Welcome to Planet Delon. How can I help you today?';
+      } else if (lower.includes('merci') || lower.includes('thank')) {
+        fallbackText = lang === 'fr'
+          ? 'Avec grand plaisir ! N\'hésitez pas si vous avez d\'autres questions.'
+          : 'You are welcome! Let me know if you have any more questions.';
+      } else if (lower.includes('nova dev') || lower.includes('equipe') || lower.includes('équipe') || lower.includes('team') || lower.includes('startup')) {
+        fallbackText = lang === 'fr'
+          ? 'Nova Dev est l\'équipe de développeurs et la startup technologique fondée et dirigée par Marc Delon. Elle conçoit des solutions logicielles complètes, web, mobiles, 3D et IA de pointe.'
+          : 'Nova Dev is the elite software engineering team and startup founded by Marc Delon, delivering high-performance web, mobile, 3D, and AI digital products.';
+      } else if (lower.includes('qui') || lower.includes('who') || lower.includes('marc')) {
         fallbackText = lang === 'fr'
           ? 'Marc Delon est un ingénieur logiciel full-stack et développeur web/mobile passionné par les architectures modernes et la 3D.'
           : 'Marc Delon is a full-stack software engineer and web/mobile developer passionate about modern architecture and 3D.';
       } else if (lower.includes('competence') || lower.includes('compétence') || lower.includes('formation') || lower.includes('ecole') || lower.includes('école') || lower.includes('keyce')) {
         fallbackText = lang === 'fr'
-          ? 'Marc est actuellement étudiant en Bachelor 2 Informatique (Tronc Commun, 2025-2026) à KEYCE Informatique & Intelligence Artificielle Douala, avec une spécialisation en Génie Logiciel programmée en Bachelor 3 (2026-2027). Il est issu de classe préparatoire Maths-Physique et certifié Cisco CCNA.'
-          : 'Marc is currently a Bachelor 2 Computer Science student (Core Curriculum, 2025-2026) at KEYCE Informatique & AI Douala, preparing for his Software Engineering specialization in Bachelor 3 (2026-2027). He completed Math-Physics preparatory classes and holds a Cisco CCNA certification.';
+          ? 'Marc est actuellement étudiant en Bachelor 3 Informatique, filière IA & BD (2026-2027), à KEYCE Informatique & Intelligence Artificielle Douala, et Développeur Junior chez KARBURA SA. Il est issu de classe préparatoire Maths-Physique et certifié Cisco CCNA.'
+          : 'Marc is currently a Bachelor 3 Computer Science student, AI & BD track (2026-2027), at KEYCE Informatique & AI Douala, and a Junior Developer at KARBURA SA. He completed Math-Physics preparatory classes and holds a Cisco CCNA certification.';
       } else if (lower.includes('projet')) {
         fallbackText = lang === 'fr'
           ? 'La salle des projets 3D regroupe les applications complètes et études de cas développées par Marc.'
@@ -219,8 +235,8 @@ export default function PlanetDelonGuide() {
         fallbackText,
         action,
         lang === 'fr'
-          ? ['Compétences & formations', 'Projets 3D', 'Contacter Marc']
-          : ['Skills & education', '3D Projects', 'Contact Marc']
+          ? ["L'équipe Nova Dev", 'Compétences & formations', 'Projets 3D', 'Contacter Marc']
+          : ['Nova Dev Team', 'Skills & education', '3D Projects', 'Contact Marc']
       );
     }
   };

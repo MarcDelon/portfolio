@@ -46,6 +46,35 @@ export const CubeContext = createContext<CubeCtxType>({
 
 export const useCube = () => useContext(CubeContext);
 
+/* ── Return-to-section handoff (e.g. /projects/[slug] → home "projects" face) ──
+   Client-side navigation to "/#projects" may not expose the hash when the cube
+   mounts, so detail pages also drop a sessionStorage flag before navigating. */
+export const RETURN_KEY = 'cube-return-face';
+
+const SECTION_FACES: Record<string, number> = {
+  home: 0, accueil: 0,
+  about: 1, cv: 1, 'a-propos': 1,
+  projects: 2, projets: 2,
+  contact: 3,
+};
+
+export function markReturnSection(section: string) {
+  try { sessionStorage.setItem(RETURN_KEY, section); } catch {}
+}
+
+/** Face index requested by the URL hash or a pending return flag, or null. */
+export function getRequestedFace(consume = false): number | null {
+  if (typeof window === 'undefined') return null;
+  let section: string | null = null;
+  try {
+    section = sessionStorage.getItem(RETURN_KEY);
+    if (consume) sessionStorage.removeItem(RETURN_KEY);
+  } catch {}
+  if (!section) section = window.location.hash.slice(1).toLowerCase();
+  const face = SECTION_FACES[section];
+  return face === undefined ? null : face;
+}
+
 export function CubeProvider({ children }: { children: ReactNode }) {
   const [current,      setCurrent]      = useState(0);
   const [previous,     setPrevious]     = useState(0);
@@ -62,24 +91,11 @@ export function CubeProvider({ children }: { children: ReactNode }) {
   /* ── Detect URL hash on mount / navigation (e.g. returning from /projects/[slug] via /#projects) ── */
   useEffect(() => {
     const handleHash = () => {
-      const hash = window.location.hash.toLowerCase();
-      if (hash === '#projects' || hash === '#projets') {
-        setCurrent(2);
-        setPrevious(2);
-        setViewMode('expanded');
-      } else if (hash === '#about' || hash === '#cv' || hash === '#a-propos') {
-        setCurrent(1);
-        setPrevious(1);
-        setViewMode('expanded');
-      } else if (hash === '#contact') {
-        setCurrent(3);
-        setPrevious(3);
-        setViewMode('expanded');
-      } else if (hash === '#home' || hash === '#accueil') {
-        setCurrent(0);
-        setPrevious(0);
-        setViewMode('expanded');
-      }
+      const face = getRequestedFace(true);
+      if (face === null) return;
+      setCurrent(face);
+      setPrevious(face);
+      setViewMode('expanded');
     };
 
     handleHash();

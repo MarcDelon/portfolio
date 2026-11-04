@@ -12,8 +12,8 @@ export const viewport: Viewport = {
 export const metadata: Metadata = {
   title: 'NZENANG TCHOUANTCHEU MARC DELON — Portfolio Full-Stack Developer',
   description:
-    'Portfolio de MARC DELON NZENANG TCHOUANTCHEU, étudiant en Bachelor 2 Informatique (Tronc Commun 2025-2026, futur B3 Génie Logiciel 2026-2027) à KEYCE Cameroun. Développeur Full-Stack React JS, Node.js, Next.js.',
-  keywords: ['portfolio', 'développeur', 'react', 'nodejs', 'nextjs', 'cameroun', 'marc delon', 'KEYCE', 'génie logiciel'],
+    'Portfolio de MARC DELON NZENANG TCHOUANTCHEU, étudiant en Bachelor 3 Informatique, filière IA & BD (2026-2027) à KEYCE, et Développeur Junior à KARBURA SA. Développeur Full-Stack React JS, Node.js, Next.js.',
+  keywords: ['portfolio', 'développeur', 'react', 'nodejs', 'nextjs', 'cameroun', 'marc delon', 'KEYCE', 'intelligence artificielle'],
   authors: [{ name: 'NZENANG TCHOUANTCHEU MARC DELON' }],
   icons: {
     icon: '/MD.jpg',
@@ -35,8 +35,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <link rel="icon" href="/MD.jpg" type="image/jpeg" />
         <link rel="shortcut icon" href="/MD.jpg" type="image/jpeg" />
         <link rel="apple-touch-icon" href="/MD.jpg" />
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        {/* Preload Candara fonts */}
+        <link rel="preload" href="/fonts/Candara.ttf" as="font" type="font/ttf" crossOrigin="anonymous" />
+        <link rel="preload" href="/fonts/Candarab.ttf" as="font" type="font/ttf" crossOrigin="anonymous" />
         {/* Preload critical entrance images for instantaneous above-the-fold render */}
         <link rel="preload" as="image" href="/bamileke.webp" type="image/webp" />
         <link rel="preload" as="image" href="/photo.webp" type="image/webp" />

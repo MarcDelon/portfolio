@@ -1,5 +1,6 @@
 'use client';
 import { useEffect, useRef } from 'react';
+import Image from 'next/image';
 import SocialImage from '@/components/SocialImage';
 import { useLanguage } from '@/lib/LanguageContext';
 import { translations } from '@/lib/data';
@@ -80,6 +81,36 @@ export default function About() {
               ))}
             </div>
 
+            {/* Nova Dev Team Badge — dark card so the cyan logo reads on the cream page */}
+            <div style={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: '1rem',
+              padding: '12px 18px 12px 14px',
+              borderRadius: '14px',
+              background: 'linear-gradient(135deg, #0b1416 0%, #12090400 140%), #140a05',
+              border: '1px solid rgba(34, 211, 238, 0.35)',
+              boxShadow: '0 8px 24px rgba(20, 10, 5, 0.25), 0 0 22px rgba(34, 211, 238, 0.12)',
+              width: 'fit-content',
+              maxWidth: '100%',
+            }}>
+              <Image
+                src="/nova_transparent.png"
+                alt="Nova Dev"
+                width={120}
+                height={48}
+                style={{ objectFit: 'contain', width: 120, height: 48, flexShrink: 0 }}
+              />
+              <div style={{ display: 'flex', flexDirection: 'column', gap: 2, borderLeft: '1px solid rgba(34, 211, 238, 0.25)', paddingLeft: '1rem' }}>
+                <span style={{ fontSize: '0.8rem', fontWeight: 800, color: '#ffffff' }}>
+                  {lang === 'fr' ? 'Fondateur & Lead Développeur' : 'Founder & Lead Developer'}
+                </span>
+                <span style={{ fontSize: '0.72rem', color: 'rgba(165, 243, 252, 0.8)', fontWeight: 500 }}>
+                  {lang === 'fr' ? 'Mon équipe de développeurs' : 'My developer team'}
+                </span>
+              </div>
+            </div>
+
             {/* LinkedIn & CV buttons */}
             <div id="about-buttons" style={{ display: 'flex', gap: '0.85rem', flexWrap: 'wrap', paddingTop: '0.5rem', position: 'relative', zIndex: 10 }}>
               <a 
@@ -153,13 +184,14 @@ export default function About() {
                   border: '3px solid var(--amber)',
                   position: 'relative'
                 }}>
-                  <SocialImage
-                    src="/photo.webp"
+                  <Image
+                    src="/photo.png"
                     alt="Marc Delon"
                     fill
-                    sizes="200px"
+                    priority
+                    quality={95}
+                    sizes="(max-width: 768px) 300px, 450px"
                     style={{ objectFit: 'cover', objectPosition: 'center top' }}
-                    shimmerColor="cream"
                   />
                 </div>
                 {/* Amber badge */}
@@ -171,7 +203,7 @@ export default function About() {
                   boxShadow: '0 4px 16px rgba(224,123,31,0.4)',
                   whiteSpace: 'nowrap',
                 }}>
-                  Bachelor 2 · 2025-2026
+                  Bachelor 3 • 2026-2027
                 </div>
               </div>
 

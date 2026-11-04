@@ -1,9 +1,10 @@
 'use client';
-import { use, useState } from 'react';
+import { use, useState, useEffect } from 'react';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { useLanguage } from '@/lib/LanguageContext';
 import { projects } from '@/lib/data';
+import { markReturnSection } from '@/lib/CubeContext';
 import Starfield from '@/components/Starfield';
 import SocialImage from '@/components/SocialImage';
 import { 
@@ -38,6 +39,26 @@ export default function ProjectDetailsPage({ params }: PageProps) {
   const resolvedParams = use(params);
   const { lang, toggleLang } = useLanguage();
   const [activeImage, setActiveImage] = useState<string | null>(null);
+
+  // Lock background scroll while the lightbox is open (+ close with Escape)
+  useEffect(() => {
+    if (!activeImage) return;
+    const html = document.documentElement;
+    const body = document.body;
+    const prevHtml = html.style.overflow;
+    const prevBody = body.style.overflow;
+    html.style.overflow = 'hidden';
+    body.style.overflow = 'hidden';
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') setActiveImage(null);
+    };
+    window.addEventListener('keydown', onKey);
+    return () => {
+      html.style.overflow = prevHtml;
+      body.style.overflow = prevBody;
+      window.removeEventListener('keydown', onKey);
+    };
+  }, [activeImage]);
 
   // Find project by slug or numeric id
   const projectIndex = projects.findIndex(
@@ -75,7 +96,7 @@ export default function ProjectDetailsPage({ params }: PageProps) {
       {/* ── Top Fixed Navigation Bar ── */}
       <header className="project-page-nav">
         <div className="container project-nav-inner">
-          <Link href="/#projects" className="project-back-link">
+          <Link href="/#projects" className="project-back-link" onClick={() => markReturnSection('projects')}>
             <ArrowLeft size={18} className="back-icon" />
             <span>{lang === 'fr' ? 'Retour au Portfolio' : 'Back to Portfolio'}</span>
           </Link>
@@ -93,7 +114,7 @@ export default function ProjectDetailsPage({ params }: PageProps) {
             >
               {lang === 'fr' ? 'EN' : 'FR'}
             </button>
-            <Link href="/#contact" className="nav-contact-pill">
+            <Link href="/#contact" className="nav-contact-pill" onClick={() => markReturnSection('contact')}>
               {lang === 'fr' ? 'Me Contacter' : 'Contact Me'}
             </Link>
           </div>
@@ -316,7 +337,7 @@ export default function ProjectDetailsPage({ params }: PageProps) {
               <div className="corridor-nav-placeholder" />
             )}
 
-            <Link href="/#projects" className="corridor-back-hub">
+            <Link href="/#projects" className="corridor-back-hub" onClick={() => markReturnSection('projects')}>
               <span>{lang === 'fr' ? 'Explorer tous les projets' : 'Explore all projects'}</span>
             </Link>
 
@@ -356,7 +377,9 @@ export default function ProjectDetailsPage({ params }: PageProps) {
               height={850}
               sizes="95vw"
               className="lightbox-zoomed-img"
-              style={{ maxWidth: '95vw', maxHeight: '90vh', objectFit: 'contain', width: 'auto', height: 'auto' }}
+              wrapperClassName="lightbox-img-wrapper"
+              wrapperStyle={{ width: 'auto', height: 'auto', maxWidth: '92vw', maxHeight: '88vh', display: 'block', borderRadius: '14px' }}
+              style={{ display: 'block', maxWidth: '92vw', maxHeight: '88vh', objectFit: 'contain', width: 'auto', height: 'auto' }}
               shimmerColor="dark"
             />
           </div>
